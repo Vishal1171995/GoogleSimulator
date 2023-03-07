@@ -1,0 +1,49 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Students/Views/Shared/Student_Layout.cshtml";
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+    <script>
+        (function ($) {
+            $(window).load(function () {
+            });
+        })(jQuery);
+        $(document).ready(function () {
+            //ShowResultStudentCampaignTab();
+            $("#liResources").addClass("active");
+            $(".nav-tabs a").click(function () {
+                debugger;
+                $(this).tab('show');
+                //alert(this);
+            });
+            //li_ads
+            $('.nav-tabs a').on('shown.bs.tab', function (event) {
+                debugger;
+                var x = $(event.target).text();         // active tab
+                var y = $(event.relatedTarget).text();  // previous tab
+                $(".act span").text(x);
+                $(".prev span").text(y);
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="contant-campainge">
+                <p>
+                    <h1>Resources</h1>
+                    Lorem ipsum dolor sit amet, omnes noster atomorum ius id, omnis integre an pro. Liber bonorum deserunt vim no. Iriure regione ut quo. His utamur denique vituperatoribus in. Est ut fierent
+                    splendide incorrupte, pro an unum partiendo contentiones.His utamur denique vituperatoribus in. Est ut fierent
+                    splendide incorrupte, pro an unum partiendo contentiones.
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

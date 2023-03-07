@@ -1,0 +1,351 @@
+﻿@{
+    Layout = "~/Areas/Admin/Views/Shared/Admin_Manage_Layout.cshtml";
+}
+<div class="admin-tab">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="tab-content">
+                    <div id="accounts2" class="tab-pane fade in active">
+                        <div class="admin-manage-header">
+                            <div class="row">
+                                <div class="col-md-3"><h3>Accounts</h3></div>
+
+
+                                <div class="col-md-9 text-right">
+
+
+                                    <ul class="campaings-nav pull-right">
+
+                                        <li><a href="#" data-toggle="modal" onclick="showAccPopup();" data-target="#myModal30"><img src="/content/images/plus-icon.png" alt="icon">Add Account</a></li>
+
+
+
+                                    </ul>
+
+
+
+
+
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                @*<div class="col-md-12">
+
+                                        <div class="account-report">
+
+                                            <div class="item-row">
+                                                <div class="list-item">
+                                                    <div>
+
+                                                        <img src="/content/images/admin/flipkart-icon.png" class="img-box">
+                                                        <div class="brand-details">
+                                                            <h4><a href="#a">Flipkart</a></h4>
+                                                            <div class="ibox-tools">
+                                                                <a href="#">
+                                                                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                                                                </a>
+                                                                <a href="#"><i class="fa fa-trash" aria-hidden="true"></i></a>
+
+                                                            </div>
+                                                            <span>e-Commerce</span>
+
+                                                        </div>
+
+
+
+                                                    </div>
+
+                                                    <p>Lorem ipsum dolor sit amet, omnes noster atomorum ius id, omnis integre an pro. Liber bonorum deserunt vim no. Iriure regione ut quo. His utamur denique vituperatoribus in. Est ut fierent splendide incorrupte,</p>
+
+
+                                                </div>
+                                                <div class="list-item left_minus-padding">
+
+
+                                                    <div>
+                                                        <img src="/content/images/admin/snapdeal-icon.png" class="img-box">
+                                                        <div class="brand-details">
+                                                            <h4><a href="#a">Snapdeal</a></h4>
+                                                            <div class="ibox-tools">
+                                                                <a href="#">
+                                                                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                                                                </a>
+                                                                <a href="#"><i class="fa fa-trash" aria-hidden="true"></i></a>
+
+                                                            </div>
+                                                            <span>e-Commerce</span>
+
+                                                        </div>
+
+
+
+                                                    </div>
+
+                                                    <p>Lorem ipsum dolor sit amet, omnes noster atomorum ius id, omnis integre an pro. Liber bonorum deserunt vim no. Iriure regione ut quo. His utamur denique vituperatoribus in. Est ut fierent splendide incorrupte,</p>
+
+
+
+
+
+                                                </div>
+                                            </div>
+                                            <div class="item-row top_minus-padding">
+                                                <div class="list-item">
+                                                    <div>
+
+                                                        <img src="/content/images/admin/ebay-icon.png" class="img-box">
+                                                        <div class="brand-details">
+                                                            <h4><a href="#a">ebay</a></h4>
+                                                            <div class="ibox-tools">
+                                                                <a href="#">
+                                                                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                                                                </a>
+                                                                <a href="#"><i class="fa fa-trash" aria-hidden="true"></i></a>
+
+                                                            </div>
+                                                            <span>e-Commerce</span>
+
+                                                        </div>
+
+
+
+                                                    </div>
+
+                                                    <p>Lorem ipsum dolor sit amet, omnes noster atomorum ius id, omnis integre an pro. Liber bonorum deserunt vim no. Iriure regione ut quo. His utamur denique vituperatoribus in. Est ut fierent splendide incorrupte,</p>
+
+
+                                                </div>
+                                                <div class="list-item left_minus-padding">
+
+
+                                                    <div>
+                                                        <img src="/content/images/admin/mintra-icon.png" class="img-box">
+                                                        <div class="brand-details">
+                                                            <h4><a href="#a">Myntra</a></h4>
+                                                            <div class="ibox-tools">
+                                                                <a href="#">
+                                                                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                                                                </a>
+                                                                <a href="#"><i class="fa fa-trash" aria-hidden="true"></i></a>
+
+                                                            </div>
+                                                            <span>e-Commerce</span>
+
+                                                        </div>
+
+
+                                                    </div>
+
+                                                    <p>Lorem ipsum dolor sit amet, omnes noster atomorum ius id, omnis integre an pro. Liber bonorum deserunt vim no. Iriure regione ut quo. His utamur denique vituperatoribus in. Est ut fierent splendide incorrupte,</p>
+
+
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>*@
+                            </div>
+
+
+                            <div id="div_result5"></div>
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--add account-->
+@*@using (Ajax.BeginForm("CreateAccount", "Manage", FormMethod.Post, new AjaxOptions { OnSuccess = "closepoup", OnBegin = "AjaxBegin", OnFailure = "Failure();" }, new { enctype = "multipart/form-data" }))
+    {
+    }*@
+<div class="modal fade in" id="myModal30" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <h4 id="TitlePopupAccount" class="modal-title">Add Account</h4>
+            </div>
+            <form enctype="multipart/form-data" id="frmUplaodFileAdd">
+                <div class="modal-body">
+                    <div class="form-details">
+
+                        <div class="row">
+
+
+                            <div class="form-group">
+                                <div class="col-xs-12 col-md-3"> <label class="lab_01  required">Account Name</label>   </div>
+                                <div class="col-xs-12 col-md-9">
+                                    <div class="form-group"> <input type="text" id="txtAccountName" name="txtAccountName" class="form-control"> </div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="form-group">
+                                <div class="col-xs-12 col-md-3"> <label class="lab_01 required">Upload Logo</label>   </div>
+                                <div class="col-xs-12 col-md-9">
+                                    <div class="form-group">
+
+                                        <div class="fileinput-button">
+                                            <input type="file" name="file" id="file" class="">
+                                            @*<label for="imageUpload" class="file-btn">  Upload Excel</label>*@
+                                            @*<input type="button" class="uplaod-button" value="Upload">*@
+                                            <div class="error-green">Accepted file types are: .jpg, .png, .jpeg</div>
+                                            <img id="imgAcc" alt="no image" height="69" width="69" class="img-box hidden">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-xs-12 col-md-3"> <label class="lab_01 required">Description</label>   </div>
+                                <div class="col-xs-12 col-md-9">
+                                    <div class="form-group">
+                                        <textarea type="text" TextMode="MultiLine" Height="100" name="txtAccountDesrpsn" id="txtAccountDesrpsn" class="form-control"></textarea>
+                                        <span id="spntxtAccount"> 150 Characters left</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div id="divAccountNotify" class="error-red erroor-boder">All Fields are required</div>
+                        <input type="hidden" id="hdnAccountCode" value="0" name="hdnAccountCode" />
+
+
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default cancel" onclick="ClearAccountPopup();">Cancel</button>
+                    <button type="submit" id="btnCreateAccount" name="btnCreateAccount" class="btn btn-default save" onclick="return AccountValidation();">Save</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade" id="ModalAccountSuccess" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                @*<button type="button" class="close" data-dismiss="modal">&times;</button>*@
+                <h5 id="AccountSuccessHead" class="modal-title"></h5>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function ()
+    {
+        $('#accounts2').addClass("active");
+        getAccountsOnDemand();
+        $(function ()
+        {
+            $('#txtAccountDesrpsn').keyup(function ()
+            {
+                var desc = $('#txtAccountDesrpsn').val();
+                var len = desc.length;
+                if (desc.length >= 300)
+                {
+                    this.value = this.value.substring(0, 300);
+                    $('#spntxtAccount').text(0 + ' Characters Left');
+                }
+                else
+                {
+                    $('#spntxtAccount').text(300 - len + ' Characters Left');
+                }
+            });
+        });
+        //$("#btnCreateAccount").click(function () {
+        //    
+        //    var formData = new FormData($('#frmUplaodFileAdd')[0]);
+        //    $.ajax({
+        //        url: '/Admin/Manage/CreateAccount',  //Server script to process data
+        //        type: 'POST',
+        //        xhr: function () {  // Custom XMLHttpRequest
+        //            var myXhr = $.ajaxSettings.xhr();
+        //            if (myXhr.upload) { // Check if upload property exists
+        //                myXhr.upload.addEventListener('progress',
+        //                progressHandlingFunction, false); // For handling the progress of the upload
+        //            }
+        //            return myXhr;
+        //        },
+        //        data: formData,
+        //        //Options to tell jQuery not to process data or worry about content-type.
+        //        cache: false,
+        //        contentType: false,
+        //        processData: false,
+        //        beforeSend: function () {
+        //            $(".Loader").show();
+        //            
+        //        },
+        //        complete: function () {
+        //            $(".Loader").hide();
+        //        },
+        //        success: function (data)
+        //        {
+        //            
+        //           //closepoup(data);
+        //        }, async: false,
+
+        //        error: function (data) {
+        //            Failure();
+        //        }
+        //    });
+        //});
+
+    });
+    function closepoup(data) {
+        
+        var JsonObj = data[0];
+        $('#divAccountNotify').text(data[0]);
+        fadeOut("divAccountNotify");
+        if (data[0] == "0") {
+            $('#hdnAccountCode').val('0');
+            $('#AccountSuccessHead').text('You have created account successFully.');
+        }
+        if (data[0] == "1") {
+            $('#hdnAccountCode').val('0');
+            $('#AccountSuccessHead').text('You have updated account successfully.');
+        }
+        $("#btnCreateAccount").attr("disabled", false);
+        if (data[1] == "1")
+        {
+            ClearAccountPopup();
+            getAccountsOnDemand();
+            $('#ModalAccountSuccess').modal('show');
+            $('#hdnAccountCode').val('0');
+        }
+    }
+    function Failure() {
+        alert('Some internal error occurs, Please contact to administrator.');
+    }
+    function AjaxBegin()
+    {
+        $("#btnCreateAccount").attr("disabled", true);
+    }
+    function ClearAccountPopup() {
+        $('#txtAccountName').val('');
+        $('#file').val('');
+        $('#txtAccountDesrpsn').val('');
+        $('#divAccountNotify').text('All fields are required');
+        $("#btnCreateAccount").attr("disabled", false);
+        $('#hdnAccountCode').val('0');
+        $('#myModal30').modal('hide');
+        $("#imgAcc").removeClass("show").addClass("hidden");
+    }
+
+</script>

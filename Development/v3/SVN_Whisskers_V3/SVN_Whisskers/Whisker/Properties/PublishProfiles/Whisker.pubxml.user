@@ -1,0 +1,643 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit http://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <_PublishTargetUrl>G:\Publish whisker</_PublishTargetUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <File Include="App_Code/CommonFunc.cs">
+      <publishTime>06/14/2016 12:59:04</publishTime>
+    </File>
+    <File Include="App_Start/Content/css/bootstrap.css">
+      <publishTime>06/14/2016 12:59:04</publishTime>
+    </File>
+    <File Include="App_Start/Content/css/bootstrap.min.css">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="App_Start/Content/css/font-awesome.min.css">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="App_Start/Content/css/jquery.mCustomScrollbar.min.css">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="App_Start/Content/css/login.css">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="App_Start/Content/css/style.css">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="App_Start/Content/css/style1.css">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="App_Start/Content/images/arrow-left.png">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="App_Start/Content/images/arrow-right.png">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="App_Start/Content/images/arrow.png">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="App_Start/Content/images/bg-img.jpg">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="App_Start/Content/images/bg-img1.jpg">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="App_Start/Content/images/check-icon.png">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="App_Start/Content/images/close.png">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="App_Start/Content/images/lock.png">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="App_Start/Content/images/logo-inner.jpg">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="App_Start/Content/images/logo.jpg">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="App_Start/Content/images/plus-icon.png">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="App_Start/Content/images/plus.png">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="App_Start/Content/images/student/amazon.jpg">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="App_Start/Content/images/student/delete.png">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="App_Start/Content/images/student/edit-icon.png">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="App_Start/Content/images/trainer/amazon.png">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="App_Start/Content/images/trainer/cancel-icon.png">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="App_Start/Content/images/trainer/check-icon.png">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="App_Start/Content/images/trainer/edit-icon.png">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="App_Start/Content/images/trainer/flipcart.png">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="App_Start/Content/images/trainer/group-icon.png">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="App_Start/Content/images/trainer/jabong.png">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="App_Start/Content/images/trainer/snapdeal.png">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Areas/Admin/Views/Home/Index.cshtml">
+      <publishTime>12/28/2016 13:45:54</publishTime>
+    </File>
+    <File Include="Areas/Admin/Views/Manage/Accounts.cshtml">
+      <publishTime>01/17/2017 11:41:14</publishTime>
+    </File>
+    <File Include="Areas/Admin/Views/Manage/Batches.cshtml">
+      <publishTime>01/13/2017 17:53:36</publishTime>
+    </File>
+    <File Include="Areas/Admin/Views/Manage/BatchView.cshtml">
+      <publishTime>09/15/2016 15:10:58</publishTime>
+    </File>
+    <File Include="Areas/Admin/Views/Manage/ChangeHistory.cshtml">
+      <publishTime>02/01/2017 16:08:30</publishTime>
+    </File>
+    <File Include="Areas/Admin/Views/Manage/Index.cshtml">
+      <publishTime>12/28/2016 13:49:14</publishTime>
+    </File>
+    <File Include="Areas/Admin/Views/Manage/Keywords.cshtml">
+      <publishTime>10/12/2016 12:09:58</publishTime>
+    </File>
+    <File Include="Areas/Admin/Views/Manage/Phrases.cshtml">
+      <publishTime>02/16/2017 22:20:56</publishTime>
+    </File>
+    <File Include="Areas/Admin/Views/Manage/Students.cshtml">
+      <publishTime>02/03/2017 10:14:18</publishTime>
+    </File>
+    <File Include="Areas/Admin/Views/Manage/Trainers.cshtml">
+      <publishTime>01/31/2017 18:12:52</publishTime>
+    </File>
+    <File Include="Areas/Admin/Views/Shared/Admin_Layout.cshtml">
+      <publishTime>01/17/2018 11:18:31</publishTime>
+    </File>
+    <File Include="Areas/Admin/Views/Shared/Admin_Manage_Layout.cshtml">
+      <publishTime>09/29/2016 11:43:24</publishTime>
+    </File>
+    <File Include="Areas/Admin/Views/Web.config">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Areas/Students/Views/Home/DownloadKeyword.cshtml">
+      <publishTime>08/23/2016 11:06:22</publishTime>
+    </File>
+    <File Include="Areas/Students/Views/Home/Index.cshtml">
+      <publishTime>01/17/2018 09:25:09</publishTime>
+    </File>
+    <File Include="Areas/Students/Views/Home/Opportunities - Copy.cshtml">
+      <publishTime>09/15/2016 14:28:46</publishTime>
+    </File>
+    <File Include="Areas/Students/Views/Home/Resources.cshtml">
+      <publishTime>02/17/2017 16:34:30</publishTime>
+    </File>
+    <File Include="Areas/Students/Views/Home/Tools.cshtml">
+      <publishTime>09/15/2016 14:07:30</publishTime>
+    </File>
+    <File Include="Areas/Students/Views/Report/Industry.cshtml">
+      <publishTime>01/31/2017 18:19:56</publishTime>
+    </File>
+    <File Include="Areas/Students/Views/Shared/Student_Layout.cshtml">
+      <publishTime>01/17/2018 11:08:07</publishTime>
+    </File>
+    <File Include="Areas/Students/Views/Web.config">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Areas/Students/Web.config">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Areas/Trainers/Views/Home/CreateAccount.cshtml">
+      <publishTime>09/19/2016 15:20:28</publishTime>
+    </File>
+    <File Include="Areas/Trainers/Views/Home/Index.cshtml">
+      <publishTime>08/04/2016 16:58:38</publishTime>
+    </File>
+    <File Include="Areas/Trainers/Views/Report/Account.cshtml">
+      <publishTime>09/22/2016 18:04:28</publishTime>
+    </File>
+    <File Include="Areas/Trainers/Views/Report/Industry.cshtml">
+      <publishTime>01/25/2017 11:53:46</publishTime>
+    </File>
+    <File Include="Areas/Trainers/Views/Shared/Exception.cshtml">
+      <publishTime>08/24/2016 11:25:36</publishTime>
+    </File>
+    <File Include="Areas/Trainers/Views/Shared/NoBatch.cshtml">
+      <publishTime>09/14/2016 14:49:54</publishTime>
+    </File>
+    <File Include="Areas/Trainers/Views/Shared/Trainer_Layout.cshtml">
+      <publishTime>01/17/2018 11:15:00</publishTime>
+    </File>
+    <File Include="Areas/Trainers/Views/Web.config">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="bin/Antlr3.Runtime.dll">
+      <publishTime>06/14/2016 12:59:10</publishTime>
+    </File>
+    <File Include="bin/Antlr3.Runtime.pdb">
+      <publishTime>06/14/2016 12:59:10</publishTime>
+    </File>
+    <File Include="bin/EntityFramework.dll">
+      <publishTime>06/14/2016 12:59:10</publishTime>
+    </File>
+    <File Include="bin/MCPG.ASP.net.ENC.dll">
+      <publishTime>02/07/2018 12:00:37</publishTime>
+    </File>
+    <File Include="bin/MCPG.CCA.Util.dll">
+      <publishTime>02/07/2018 11:56:42</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Web.Infrastructure.dll">
+      <publishTime>06/14/2016 12:59:10</publishTime>
+    </File>
+    <File Include="bin/Newtonsoft.Json.dll">
+      <publishTime>06/14/2016 12:59:10</publishTime>
+    </File>
+    <File Include="bin/System.Linq.Dynamic.dll">
+      <publishTime>06/21/2016 17:00:34</publishTime>
+    </File>
+    <File Include="bin/System.Net.Http.dll">
+      <publishTime>06/14/2016 12:59:10</publishTime>
+    </File>
+    <File Include="bin/System.Net.Http.Formatting.dll">
+      <publishTime>06/14/2016 12:59:10</publishTime>
+    </File>
+    <File Include="bin/System.Net.Http.WebRequest.dll">
+      <publishTime>06/14/2016 12:59:10</publishTime>
+    </File>
+    <File Include="bin/System.Web.Helpers.dll">
+      <publishTime>06/14/2016 12:59:10</publishTime>
+    </File>
+    <File Include="bin/System.Web.Http.dll">
+      <publishTime>06/14/2016 12:59:10</publishTime>
+    </File>
+    <File Include="bin/System.Web.Http.WebHost.dll">
+      <publishTime>06/14/2016 12:59:10</publishTime>
+    </File>
+    <File Include="bin/System.Web.Mvc.dll">
+      <publishTime>06/14/2016 12:59:10</publishTime>
+    </File>
+    <File Include="bin/System.Web.Optimization.dll">
+      <publishTime>06/14/2016 12:59:10</publishTime>
+    </File>
+    <File Include="bin/System.Web.Razor.dll">
+      <publishTime>06/14/2016 12:59:10</publishTime>
+    </File>
+    <File Include="bin/System.Web.WebPages.Deployment.dll">
+      <publishTime>06/14/2016 12:59:10</publishTime>
+    </File>
+    <File Include="bin/System.Web.WebPages.dll">
+      <publishTime>06/14/2016 12:59:10</publishTime>
+    </File>
+    <File Include="bin/System.Web.WebPages.Razor.dll">
+      <publishTime>06/14/2016 12:59:10</publishTime>
+    </File>
+    <File Include="bin/WebGrease.dll">
+      <publishTime>06/14/2016 12:59:12</publishTime>
+    </File>
+    <File Include="bin/Whisker.dll">
+      <publishTime>02/10/2018 20:37:49</publishTime>
+    </File>
+    <File Include="bin/Whisker.pdb">
+      <publishTime>02/10/2018 20:37:49</publishTime>
+    </File>
+    <File Include="Content/css/admin.css">
+      <publishTime>10/17/2016 17:06:36</publishTime>
+    </File>
+    <File Include="Content/css/bootstrap.css">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Content/css/bootstrap.min.css">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Content/css/error.css">
+      <publishTime>07/27/2016 17:51:44</publishTime>
+    </File>
+    <File Include="Content/css/font-awesome.min.css">
+      <publishTime>06/17/2016 17:42:40</publishTime>
+    </File>
+    <File Include="Content/css/HtmlTable.css">
+      <publishTime>07/01/2016 11:30:28</publishTime>
+    </File>
+    <File Include="Content/css/jquery-ui.css">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Content/css/jquery.mCustomScrollbar.min.css">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Content/css/login.css">
+      <publishTime>08/02/2016 11:32:52</publishTime>
+    </File>
+    <File Include="Content/css/style.css">
+      <publishTime>02/03/2017 16:20:28</publishTime>
+    </File>
+    <File Include="Content/css/style1.css">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Content/css/Whisskers_MIx.css">
+      <publishTime>08/09/2016 17:30:46</publishTime>
+    </File>
+    <File Include="Content/fonts/fontawesome-webfont.eot">
+      <publishTime>06/17/2016 17:45:30</publishTime>
+    </File>
+    <File Include="Content/fonts/fontawesome-webfont.svg">
+      <publishTime>06/17/2016 17:45:30</publishTime>
+    </File>
+    <File Include="Content/fonts/fontawesome-webfont.ttf">
+      <publishTime>06/17/2016 17:45:30</publishTime>
+    </File>
+    <File Include="Content/fonts/fontawesome-webfont.woff">
+      <publishTime>06/17/2016 17:45:30</publishTime>
+    </File>
+    <File Include="Content/fonts/fontawesome-webfont.woff2">
+      <publishTime>06/17/2016 17:45:30</publishTime>
+    </File>
+    <File Include="Content/fonts/FontAwesome.otf">
+      <publishTime>06/17/2016 17:45:30</publishTime>
+    </File>
+    <File Include="Content/fonts/glyphicons-halflings-regular.eot">
+      <publishTime>06/17/2016 17:45:30</publishTime>
+    </File>
+    <File Include="Content/fonts/glyphicons-halflings-regular.svg">
+      <publishTime>06/17/2016 17:45:30</publishTime>
+    </File>
+    <File Include="Content/fonts/glyphicons-halflings-regular.ttf">
+      <publishTime>06/17/2016 17:45:30</publishTime>
+    </File>
+    <File Include="Content/fonts/glyphicons-halflings-regular.woff">
+      <publishTime>06/17/2016 17:45:30</publishTime>
+    </File>
+    <File Include="Content/fonts/glyphicons-halflings-regular.woff2">
+      <publishTime>06/17/2016 17:45:30</publishTime>
+    </File>
+    <File Include="Content/images/arrow-left.png">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Content/images/arrow-right.png">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Content/images/arrow.png">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Content/images/bg-img.jpg">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Content/images/bg-img1.jpg">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Content/images/check-icon.png">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Content/images/close.png">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Content/images/CTR_Table.png">
+      <publishTime>02/03/2017 11:53:36</publishTime>
+    </File>
+    <File Include="Content/images/CVR_Table.png">
+      <publishTime>02/03/2017 11:35:00</publishTime>
+    </File>
+    <File Include="Content/images/excel.png">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Content/images/lock.png">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Content/images/logo-inner.jpg">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Content/images/logo.jpg">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Content/images/plus-icon.png">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Content/images/plus.png">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Content/images/progressbar.gif">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Content/images/student/delete.png">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Content/images/student/edit-icon.png">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Content/images/trainer/cancel-icon.png">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Content/images/trainer/check-icon.png">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Content/images/trainer/CVR_Table.png">
+      <publishTime>02/03/2017 11:34:42</publishTime>
+    </File>
+    <File Include="Content/images/trainer/edit-icon.png">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Content/images/trainer/group-icon.png">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="fonts/fontawesome-webfont.eot">
+      <publishTime>06/17/2016 17:45:30</publishTime>
+    </File>
+    <File Include="fonts/fontawesome-webfont.svg">
+      <publishTime>06/17/2016 17:45:30</publishTime>
+    </File>
+    <File Include="fonts/fontawesome-webfont.ttf">
+      <publishTime>06/17/2016 17:45:30</publishTime>
+    </File>
+    <File Include="fonts/fontawesome-webfont.woff">
+      <publishTime>06/17/2016 17:45:30</publishTime>
+    </File>
+    <File Include="fonts/fontawesome-webfont.woff2">
+      <publishTime>06/17/2016 17:45:30</publishTime>
+    </File>
+    <File Include="fonts/FontAwesome.otf">
+      <publishTime>06/17/2016 17:45:30</publishTime>
+    </File>
+    <File Include="fonts/glyphicons-halflings-regular.eot">
+      <publishTime>06/17/2016 17:45:30</publishTime>
+    </File>
+    <File Include="fonts/glyphicons-halflings-regular.svg">
+      <publishTime>06/17/2016 17:45:30</publishTime>
+    </File>
+    <File Include="fonts/glyphicons-halflings-regular.ttf">
+      <publishTime>06/17/2016 17:45:30</publishTime>
+    </File>
+    <File Include="fonts/glyphicons-halflings-regular.woff">
+      <publishTime>06/17/2016 17:45:30</publishTime>
+    </File>
+    <File Include="fonts/glyphicons-halflings-regular.woff2">
+      <publishTime>06/17/2016 17:45:30</publishTime>
+    </File>
+    <File Include="Global.asax">
+      <publishTime>06/14/2016 12:59:08</publishTime>
+    </File>
+    <File Include="packages.config">
+      <publishTime>06/21/2016 17:00:36</publishTime>
+    </File>
+    <File Include="Scripts/admin.js">
+      <publishTime>01/07/2018 14:13:23</publishTime>
+    </File>
+    <File Include="Scripts/AdminUtility.js">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Scripts/bootstrap.js">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Scripts/bootstrap.min.js">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Scripts/CallCentreUtility.js">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Scripts/designutility.js">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Scripts/EmployerInstitute.js">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Scripts/Employerutility.js">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Scripts/EmployerWisestudentdetails.js">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Scripts/FacultyUtility.js">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Scripts/GraduateUtility.js">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Scripts/gridmvc.js">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Scripts/gridmvc.lang.ru.js">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Scripts/gridmvc.min.js">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Scripts/instituteUtility.js">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Scripts/InstituteWise.js">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Scripts/jquery-1.11.0.min.js">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Scripts/jquery-1.9.1.js">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Scripts/jquery-1.9.1.min.js">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Scripts/jquery-1.9.1.min.map">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Scripts/jquery-ui-1.10.2.js">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Scripts/jquery-ui-1.8.24.js">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Scripts/jquery-ui-1.8.24.min.js">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Scripts/jquery-ui.js">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Scripts/jquery.canvasjs.min.js">
+      <publishTime>09/22/2016 16:14:30</publishTime>
+    </File>
+    <File Include="Scripts/jquery.maskedinput.min.js">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Scripts/jquery.mCustomScrollbar.concat.min.js">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Scripts/jquery.min.js">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Scripts/jquery.tooltipster.js">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Scripts/jquery.unobtrusive-ajax.js">
+      <publishTime>06/14/2016 12:59:08</publishTime>
+    </File>
+    <File Include="Scripts/jquery.unobtrusive-ajax.min.js">
+      <publishTime>06/14/2016 12:59:08</publishTime>
+    </File>
+    <File Include="Scripts/jquery.validate.js">
+      <publishTime>06/14/2016 12:59:08</publishTime>
+    </File>
+    <File Include="Scripts/jquery.validate.min.js">
+      <publishTime>06/14/2016 12:59:08</publishTime>
+    </File>
+    <File Include="Scripts/jquery.validate.unobtrusive.js">
+      <publishTime>06/14/2016 12:59:08</publishTime>
+    </File>
+    <File Include="Scripts/jquery.validate.unobtrusive.min.js">
+      <publishTime>06/14/2016 12:59:08</publishTime>
+    </File>
+    <File Include="Scripts/knockout-2.2.0.debug.js">
+      <publishTime>06/14/2016 12:59:08</publishTime>
+    </File>
+    <File Include="Scripts/knockout-2.2.0.js">
+      <publishTime>06/14/2016 12:59:08</publishTime>
+    </File>
+    <File Include="Scripts/Locationwisestudentdetails.js">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Scripts/MasterUtility.js">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Scripts/modernizr-2.6.2.js">
+      <publishTime>06/14/2016 12:59:08</publishTime>
+    </File>
+    <File Include="Scripts/npm.js">
+      <publishTime>06/14/2016 12:59:08</publishTime>
+    </File>
+    <File Include="Scripts/Paging.js">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Scripts/ReportUtility.js">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Scripts/TestUtility.js">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Scripts/trainer.js">
+      <publishTime>02/03/2017 16:11:46</publishTime>
+    </File>
+    <File Include="Scripts/TrainerWiseStudentReport.js">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Scripts/UtilityScript.js">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Scripts/webGrid.js">
+      <publishTime>06/14/2016 12:59:08</publishTime>
+    </File>
+    <File Include="Scripts/Whiskers.validations.js">
+      <publishTime>12/31/2017 12:14:58</publishTime>
+    </File>
+    <File Include="Scripts/_references.js">
+      <publishTime>06/14/2016 12:59:06</publishTime>
+    </File>
+    <File Include="Views/CCAPayment/ccavRequestHandler.cshtml">
+      <publishTime>02/08/2018 13:17:06</publishTime>
+    </File>
+    <File Include="Views/CCAPayment/ccavResponseHandler.cshtml">
+      <publishTime>02/10/2018 20:34:02</publishTime>
+    </File>
+    <File Include="Views/CCAPayment/Index.cshtml">
+      <publishTime>02/09/2018 11:02:10</publishTime>
+    </File>
+    <File Include="Views/Home/changePassword.cshtml">
+      <publishTime>08/29/2016 15:12:02</publishTime>
+    </File>
+    <File Include="Views/Home/ErrorBoard.cshtml">
+      <publishTime>02/03/2017 16:26:26</publishTime>
+    </File>
+    <File Include="Views/Home/Exception.cshtml">
+      <publishTime>01/25/2017 18:47:50</publishTime>
+    </File>
+    <File Include="Views/Home/Forgot.cshtml">
+      <publishTime>09/09/2016 12:32:16</publishTime>
+    </File>
+    <File Include="Views/Home/Index.cshtml">
+      <publishTime>02/08/2018 11:16:42</publishTime>
+    </File>
+    <File Include="Views/Home/Opportunities.cshtml">
+      <publishTime>01/23/2018 10:57:40</publishTime>
+    </File>
+    <File Include="Views/Home/RegistrationSuccessful.cshtml">
+      <publishTime>02/08/2018 12:31:42</publishTime>
+    </File>
+    <File Include="Views/Home/Resources.cshtml">
+      <publishTime>01/17/2018 10:37:34</publishTime>
+    </File>
+    <File Include="Views/Home/SignUP.cshtml">
+      <publishTime>02/08/2018 11:49:28</publishTime>
+    </File>
+    <File Include="Views/Shared/Error.cshtml">
+      <publishTime>03/23/2017 19:36:58</publishTime>
+    </File>
+    <File Include="Views/Shared/MasterLayout.cshtml">
+      <publishTime>08/09/2016 16:35:14</publishTime>
+    </File>
+    <File Include="Views/Web.config">
+      <publishTime>06/14/2016 12:59:08</publishTime>
+    </File>
+    <File Include="Web.config">
+      <publishTime>02/08/2018 13:58:21</publishTime>
+    </File>
+    <File Include="WhiskerDB.edmx.diagram">
+      <publishTime>02/16/2017 20:33:44</publishTime>
+    </File>
+  </ItemGroup>
+</Project>

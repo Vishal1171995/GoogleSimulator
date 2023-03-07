@@ -1,0 +1,142 @@
+﻿body {
+}
+    .forgot-wrapper {
+    max-width: 720px;
+    position: relative;
+    margin: 0 auto;
+    margin-top: 150px;
+    top: -100px;
+}
+
+.forgot-wrapper .logo {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.passf-Area {
+    width: 100%;
+    clear: both;
+    float: left;
+    margin-top: 20px;
+}
+
+.passRightArea, .forgotPasswordArea {
+    width: 100%;
+    background: #f5f5f5;
+    /* min-height: 120px; */
+    padding: 10px;
+    border: 1px solid #eee;
+    /* border-width: 1px 1px 0 1px; */
+    border-collapse: collapse;
+    border-radius: 6px 6px 0 0;
+    -webkit-border-radius: 6px 6px 0 0;
+    -moz-border-radius: 6px 6px 0 0;
+    -ms-border-radius: 6px 6px 0 0;
+    -o-border-radius: 6px 6px 0 0;
+}
+
+.passinfo {
+    text-align: left;
+    padding: 5px 10px;
+    font-family: 'Open Sans', Arial, sans-serif;
+}
+
+
+.passinfo table {
+    border-collapse: collapse;
+}
+
+.passinfo table td {
+    font-family: 'Open Sans', Arial, sans-serif;
+}
+
+.passinfo td, .formArea td {
+    padding: 5px 0;
+}
+
+
+.formArea td label {
+    padding: 5px 0;
+    width:100%;
+    display:block;
+    font-weight:400;
+}
+
+
+.passinfo table td span {
+    font-family: 'Open Sans', Arial, sans-serif;
+    font-weight:700;
+}
+
+.passLeftArea {
+    width: 100%;
+    clear: both;
+    background: #fff;
+    /* min-height: 120px; */
+    padding: 10px;
+    border: 1px solid #eee;
+    border-width: 0 1px 1px 1px;
+    border-collapse: collapse;
+}
+
+.formArea {
+    padding: 5px 10px 0 10px;
+}
+
+
+.formArea input[type=text], .formArea input[type=password], select {
+    border: 1px solid #ccc;
+    padding: 8px 6px;
+    font-size: 12px;
+    margin: 0 0 4px 0;
+    float: left;
+    width: 350PX;
+    outline: none;
+}
+
+
+.btn-inverse {
+        
+    background: #c6c5c5;
+    color:#000!important;
+  
+}
+
+.btn-inverse:hover {
+        
+    color: #000;
+  
+}
+
+
+.save,.btn-inverse {
+    
+    color: #fff;
+    transition: all .4s ease-in-out;
+    border: none;
+    outline: none;
+    padding: 8px 15px;
+    border-radius:0px!important;
+    line-height:normal;
+}
+
+.save{
+    background: #ff975a;
+
+}
+
+.save:hover{
+    color:#fff;
+    text-decoration:none;
+
+}
+
+.cancel{
+
+    height:34px;
+    margin-top:-2px;
+}
+.error-red
+{
+    color:#ff975a;
+}

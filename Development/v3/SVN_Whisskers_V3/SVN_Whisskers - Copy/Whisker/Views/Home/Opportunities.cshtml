@@ -1,0 +1,78 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+    <style type="text/css">
+        ol > li {
+            font-weight: bold;
+            margin-bottom: 1.5em;
+        }
+        ul > li {
+            font-weight: normal;
+            margin-top: 0.7em;
+        }
+    </style>
+    <script>
+        (function ($) {
+            $(window).load(function () {
+            });
+        })(jQuery);
+        $(document).ready(function () {
+            //ShowResultStudentCampaignTab();
+            $("#liOpportunities").addClass("active");
+            $(".nav-tabs a").click(function () {
+                debugger;
+                $(this).tab('show');
+                //alert(this);
+            });
+            //li_ads
+            $('.nav-tabs a').on('shown.bs.tab', function (event) {
+                debugger;
+                var x = $(event.target).text();         // active tab
+                var y = $(event.relatedTarget).text();  // previous tab
+                $(".act span").text(x);
+                $(".prev span").text(y);
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="contant-campainge">
+                            <h1>Opportunities</h1>
+                            <p>Already set up your basic account, and have ran the first round of RFA? You're at the right place now!<br /> Below are some ideas to help you sail through the next rounds of optimizations.</p>
+                            <ol>
+                                <li>
+                                    To Improve Traffic / Conversion
+                                    <ul type="disc">
+                                        <li>Go to keyword planner and look for secondary keywords and feel free to bid on them even if you have to go 20% lower than what has been recommended there.</li>
+                                        <li>If you have already run the first RFA, then pick up keywords that have worked for you in your account and increase bids for the same.</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    Reduce CPA
+                                    <ul type="disc">
+                                        <li>Filter out all your keywords that have low conversions and high cost  and lower down their bids.</li>
+                                        <li>Filter out all the keywords that have high conversions and low cost and increase their bids to a significant level.</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    To Improve Average Position
+                                    <ul type="disc">
+                                        <li>Improve your overall quality score to improve your average position.</li>
+                                        <li>Tighter theming of ad groups which should include customized text and ad copies for each ad group.</li>
+                                        <li>Have a relevant sub domain in the ad URL in order to land the customer to the main sub page, thus increasing your relevancy to the keyword and in turn improving your quality score.</li>
+                                    </ul>
+                                </li>
+                            </ol>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+     </body>
+</html>

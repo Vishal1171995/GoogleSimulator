@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="29c8c0f03a584faca6fa0d054fccadef" Name="Diagram1" ZoomLevel="55">
+        <EntityTypeShape EntityType="WhiskersDBModel.BatchAndStudentMapping" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="WhiskersDBModel.keyWordRank" Width="1.5" PointX="2.75" PointY="0.75" />
+        <EntityTypeShape EntityType="WhiskersDBModel.LocationMaster" Width="1.5" PointX="0.75" PointY="3.125" />
+        <EntityTypeShape EntityType="WhiskersDBModel.MapKeywordsAG" Width="1.5" PointX="2.75" PointY="3.25" />
+        <EntityTypeShape EntityType="WhiskersDBModel.RFA_Percentage_Result" Width="1.5" PointX="4.75" PointY="0.75" />
+        <EntityTypeShape EntityType="WhiskersDBModel.RFA_Result" Width="1.5" PointX="4.75" PointY="4.25" />
+        <EntityTypeShape EntityType="WhiskersDBModel.sysdiagram" Width="1.5" PointX="6.75" PointY="0.75" />
+        <EntityTypeShape EntityType="WhiskersDBModel.UserMaster" Width="1.5" PointX="0.75" PointY="5.125" />
+        <EntityTypeShape EntityType="WhiskersDBModel.AccountsMaster" Width="1.5" PointX="6.75" PointY="3" />
+        <EntityTypeShape EntityType="WhiskersDBModel.AdGroup" Width="1.5" PointX="6.75" PointY="5.625" />
+        <EntityTypeShape EntityType="WhiskersDBModel.BatchAndTrainerMapping" Width="1.5" PointX="8.75" PointY="0.75" />
+        <EntityTypeShape EntityType="WhiskersDBModel.BatchMaster" Width="1.5" PointX="8.75" PointY="2.75" />
+        <EntityTypeShape EntityType="WhiskersDBModel.CampaignMaster" Width="1.5" PointX="8.75" PointY="5.625" />
+        <EntityTypeShape EntityType="WhiskersDBModel.KeywordMaster" Width="1.5" PointX="10.75" PointY="0.75" />
+        <EntityTypeShape EntityType="WhiskersDBModel.RFA_Result_bak" Width="1.5" PointX="10.75" PointY="3.625" />
+        <EntityTypeShape EntityType="WhiskersDBModel.RFAMaster" Width="1.5" PointX="0.75" PointY="9.625" />
+        <EntityTypeShape EntityType="WhiskersDBModel.tblAd" Width="1.5" PointX="2.75" PointY="5.875" />
+        <EntityTypeShape EntityType="WhiskersDBModel.SearchQueryMaster" Width="1.5" PointX="6.75" PointY="8" />
+        <EntityTypeShape EntityType="WhiskersDBModel.RFAHistory" Width="1.5" PointX="8.75" PointY="8.5" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

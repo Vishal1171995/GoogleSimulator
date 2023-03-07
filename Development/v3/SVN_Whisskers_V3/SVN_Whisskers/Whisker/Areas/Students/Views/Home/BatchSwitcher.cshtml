@@ -1,0 +1,22 @@
+﻿@{
+    ViewBag.Title = "Batch Switcher";
+    Layout = "~/Views/Shared/MasterLayoutOuter.cshtml";
+}
+
+<section id="box-wrapper">
+    <div class="choose-box">
+        <h3>Choose Your Batch</h3>
+        <form action="">
+            <div class="form-item">
+                <div include="form-input-select()">
+                    <select id="ddlBatchSwitcher" class="select margin-bottom" name="ddlBatchSwitcher" required>
+                        <option value="" hidden>Select Any Batch</option>
+                    </select>
+                </div>
+            </div>
+            <div class="button">
+                <button type="submit" class="submit-btn">Proceed</button>
+            </div>
+        </form>
+    </div>
+</section>

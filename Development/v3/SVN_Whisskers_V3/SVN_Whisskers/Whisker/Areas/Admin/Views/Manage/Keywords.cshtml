@@ -1,0 +1,201 @@
+﻿@{
+    Layout = "~/Areas/Admin/Views/Shared/Admin_Manage_Layout.cshtml";
+}
+<div class="admin-tab">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="tab-content">
+                    <div id="Keywords2" class="tab-pane fade in active">
+                        <div class="admin-manage-header">
+                            <div class="row">
+                                <div class="col-md-3"><h3>Keywords</h3></div>
+
+
+                                <div class="col-md-9 text-right">
+
+
+                                    <ul class="campaings-nav pull-right">
+
+                                        <li><a  href="/Admin/Manage/KeywordDownloadExcel"><i class="fa fa-download" area-hidden="true"></i>  Download</a></li>
+                                        <li class="dropdown">
+                                            <img src="/content/images/excel.png" /> <a href="#" class="dropdown-toggle" onclick="OpenExcelPopup('KEYWORD');" data-toggle="modal"> Import From Excel</a>
+                                        </li>
+                                        <li><a href="#" data-toggle="modal" onclick="showKeywordPopup();" data-target="#myModal29"><img src="/content/images/plus-icon.png" alt="icon">Add Keyword</a></li>
+                                       
+
+
+                                    </ul>
+
+
+
+
+
+                                </div>
+                            </div>
+                            <div id="div_result6"></div>
+                        </div>
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--add keywords-->
+@using (Ajax.BeginForm("CreateKeyword", "Manage", FormMethod.Post, new AjaxOptions { OnSuccess = "closepoup", OnBegin = "AjaxBegin", OnFailure = "OnError" }))
+{
+    <div class="modal fade" id="myModal29" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h4 id="TitlePopupKeyword" class="modal-title">Add Keywords</h4>
+                </div>
+                <form action="" method="post">
+
+
+                    <div class="modal-body">
+
+                        <div class="form-details">
+
+                            <div class="row">
+
+
+                                <div class="form-group">
+                                    <div class="col-xs-12 col-md-3"> <label class="lab_01 required">Keyword</label>   </div>
+                                    <div class="col-xs-12 col-md-9">
+                                        <div class="form-group">
+                                            <input type="text" id="txtKeywordName" maxlength="49" name="txtKeywordName" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-xs-12 col-md-3"> <label class="lab_01 required">Avg Monthly Searches</label>   </div>
+                                    <div class="col-xs-12 col-md-9">
+                                        <div class="form-group">
+                                            <input type="text" id="txtKeywordAvgMonthSearch" maxlength="5" name="txtKeywordAvgMonthSearch" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="clearfix"></div>
+
+
+                                
+
+
+                                <div class="form-group">
+                                    <div class="col-xs-12 col-md-3"> <label class="lab_01 required">Suggested Bid</label>   </div>
+                                    <div class="col-xs-12 col-md-9">
+                                        <div class="form-group">
+                                            <input type="text" maxlength="6" id="txtKeywordSuggestBid" name="txtKeywordSuggestBid" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                
+
+                            </div>
+
+                            <div class="clearfix"></div>
+
+
+                            <div id="divKeywordNotify" class="error-red erroor-boder">All Fields are required</div>
+                            <input type="hidden" id="hdnKeywordCode" value="0" name="hdnKeywordCode" />
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="btnCancelKeyword" class="btn btn-default cancel" onclick="ClearKeywordPopup();">Cancel</button>
+                        <button type="submit" id="btnCreateKeyword" class="btn btn-default save" onclick="return KeywordValidation();">Save</button>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+}
+<div class="modal fade" id="ModalKeywordSuccess" role="dialog" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                @*<button type="button" class="close" data-dismiss="modal">&times;</button>*@
+                <h5 id="KeywordSuccessHead" class="modal-title"></h5>
+                <button type="button" id="btnCloseBatch" data-dismiss="modal" class="btn btn-default close-btn">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function ()
+    {
+        $("#li_Manage").addClass("active");
+        $('#keywords2').addClass("active");
+        getKeywordsOnDemand();
+    });
+    function closepoup(data) {
+        debugger;
+        var JsonObj = data[0];
+        $('#divKeywordNotify').text(data[0]);
+        fadeOut("divKeywordNotify");
+        if (data[0] == "0") {
+            $('#hdnKeywordCode').val('0');
+            $('#KeywordSuccessHead').text('New keyword is added successfully.');
+        }
+        if (data[0] == "1") {
+            $('#hdnKeywordCode').val('0');
+            $('#KeywordSuccessHead').text('Keyword is updated successfully.');
+        }
+        $("#btnCreateKeyword").attr("disabled", false);
+        $(".Loader").hide();
+        if (data[1] == "1") {
+            ClearKeywordPopup();
+            getKeywordsOnDemand();
+            $('#ModalKeywordSuccess').modal('show');
+            $('#hdnKeywordCode').val('0');
+        }
+    }
+    function Failure() {
+        alert('Some internal error occurs, please contact to administrator.');
+    }
+    function AjaxBegin() {
+        $("#btnCreateKeyword").attr("disabled", true);
+    }
+    function ClearKeywordPopup() {
+        $('#txtKeywordName').val('');
+        $('#txtKeywordAvgMonthSearch').val('');
+        $('#txtKeywordSuggestBid').val('');
+        $('#divKeywordNotify').text('All fields are required');
+        $("#btnCreateKeyword").attr("disabled", false);
+        $('#hdnKeywordCode').val('0');
+        $('#myModal29').modal('hide');
+    }
+
+    function KeywordDataTable() {
+        var t = $('#tableKeyword').DataTable({
+            "searching": false,
+            "columnDefs": [{
+                "searchable": false,
+                "orderable": false,
+                "targets": 0
+            }],
+            "order": [[1, 'asc']]
+        });
+
+        t.on('order.dt search.dt', function () {
+            t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+                cell.innerHTML = i + 1;
+            });
+        }).draw();
+    }
+</script>

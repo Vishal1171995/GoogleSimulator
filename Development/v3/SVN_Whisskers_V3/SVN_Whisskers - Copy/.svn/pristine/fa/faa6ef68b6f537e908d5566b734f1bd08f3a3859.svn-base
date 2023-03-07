@@ -1,0 +1,801 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="WhiskersDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'Whiskers.dbo.AccountsMaster' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="AccountsMaster">
+    <Key>
+      <PropertyRef Name="AccCode" />
+    </Key>
+    <Property Name="AccCode" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="AccName" Type="varchar" MaxLength="300" />
+    <Property Name="ImagePath" Type="varchar" MaxLength="300" />
+    <Property Name="Description" Type="varchar" MaxLength="300" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="AccFullName" Type="varchar" MaxLength="300" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'Whiskers.dbo.AdGroups' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="AdGroups">
+    <Key>
+      <PropertyRef Name="AdGroupCode" />
+      <PropertyRef Name="CampaignCode" />
+      <PropertyRef Name="AccCode" />
+    </Key>
+    <Property Name="AdGroupCode" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CampaignCode" Type="int" Nullable="false" />
+    <Property Name="AccCode" Type="int" Nullable="false" />
+    <Property Name="AdGroupName" Type="varchar" MaxLength="100" />
+    <Property Name="CreatedBy" Type="varchar" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="BatchAndStudentMapping">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="BatchCode" Type="int" />
+    <Property Name="UserID" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="AccCode" Type="int" />
+    <Property Name="Status" Type="int" />
+    <Property Name="isMappingActive" Type="bit" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'Whiskers.dbo.BatchAndTrainerMapping' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="BatchAndTrainerMapping">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="BatchCode" Type="int" />
+    <Property Name="UserID" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="isMappingActive" Type="bit" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'Whiskers.dbo.BatchMaster' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="BatchMaster">
+    <Key>
+      <PropertyRef Name="BatchCode" />
+    </Key>
+    <Property Name="BatchCode" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="BatchName" Type="varchar" MaxLength="20" />
+    <Property Name="Location" Type="varchar" MaxLength="10" />
+    <Property Name="Address" Type="varchar" MaxLength="150" />
+    <Property Name="StratDate" Type="datetime" />
+    <Property Name="EndDate" Type="datetime" />
+    <Property Name="Time" Type="time" Precision="7" />
+    <Property Name="isActive" Type="bit" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'Whiskers.dbo.CampaignMaster' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="CampaignMaster">
+    <Key>
+      <PropertyRef Name="CampaignCode" />
+      <PropertyRef Name="AccCode" />
+      <PropertyRef Name="isActive" />
+    </Key>
+    <Property Name="CampaignCode" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CampaignName" Type="varchar" MaxLength="100" />
+    <Property Name="NetWorkType" Type="nchar" MaxLength="10" />
+    <Property Name="Location" Type="varchar" MaxLength="10" />
+    <Property Name="Budget" Type="numeric" Precision="18" Scale="0" />
+    <Property Name="AccCode" Type="int" Nullable="false" />
+    <Property Name="CreatedBy" Type="varchar" MaxLength="50" />
+    <Property Name="isActive" Type="bit" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6013: The table/view 'Whiskers.dbo.CTR' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="CTR">
+          <Property Name="AvgPos" Type="decimal" Precision="9" Scale="2" />
+          <Property Name="PerCtr" Type="decimal" Precision="9" Scale="2" />
+        </EntityType>-->
+  <!--Errors Found During Generation:
+warning 6013: The table/view 'Whiskers.dbo.CVR' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="CVR">
+          <Property Name="AvgPos" Type="decimal" Precision="9" Scale="2" />
+          <Property Name="PerCvr" Type="decimal" Precision="9" Scale="2" />
+        </EntityType>-->
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'Whiskers.dbo.KeywordMaster' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="KeywordMaster">
+    <Key>
+      <PropertyRef Name="KeyCode" />
+    </Key>
+    <Property Name="KeyCode" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="KeyName" Type="varchar" MaxLength="150" />
+    <Property Name="AvgMonthlySrch" Type="varchar" MaxLength="10" />
+    <Property Name="Competition" Type="varchar" MaxLength="10" />
+    <Property Name="SuggestedBid" Type="decimal" Precision="9" Scale="2" />
+    <Property Name="CTR" Type="decimal" Precision="9" Scale="2" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="FromMaster" Type="bit" />
+  </EntityType>
+  <EntityType Name="keyWordRank">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Heading" Type="numeric" Precision="18" Scale="4" />
+    <Property Name="DisplayUrl" Type="numeric" Precision="18" Scale="4" />
+    <Property Name="description1" Type="numeric" Precision="18" Scale="4" />
+    <Property Name="description2" Type="numeric" Precision="18" Scale="4" />
+    <Property Name="AdgroupName" Type="decimal" Precision="9" Scale="2" />
+  </EntityType>
+  <EntityType Name="LocationMaster">
+    <Key>
+      <PropertyRef Name="LocationCode" />
+    </Key>
+    <Property Name="LocationCode" Type="varchar" MaxLength="300" Nullable="false" />
+    <Property Name="LocationName" Type="nvarchar" MaxLength="50" />
+    <Property Name="isActive" Type="int" />
+  </EntityType>
+  <EntityType Name="MapKeywordsAG">
+    <Key>
+      <PropertyRef Name="MappingId" />
+    </Key>
+    <Property Name="CampaignCode" Type="int" Nullable="false" />
+    <Property Name="AdGroupCode" Type="int" Nullable="false" />
+    <Property Name="KeyCode" Type="int" Nullable="false" />
+    <Property Name="CreatedBy" Type="varchar" MaxLength="10" />
+    <Property Name="ModifiedBy" Type="varchar" MaxLength="10" />
+    <Property Name="NewBid" Type="int" />
+    <Property Name="MappingId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+  </EntityType>
+  <EntityType Name="RFA_Percentage_Result">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="KeyCode" Type="varchar" MaxLength="50" />
+    <Property Name="AdGroupCode" Type="varchar" MaxLength="50" />
+    <Property Name="CampaignCode" Type="varchar" MaxLength="50" />
+    <Property Name="Parent" Type="varchar" MaxLength="50" />
+    <Property Name="KeyNamePercentCount" Type="decimal" Precision="9" Scale="2" />
+    <Property Name="HeadlinePercentCount" Type="decimal" Precision="9" Scale="2" />
+    <Property Name="Descline1PercentCount" Type="decimal" Precision="9" Scale="2" />
+    <Property Name="Descline2PercentCount" Type="decimal" Precision="9" Scale="2" />
+    <Property Name="DispUrlPercentCount" Type="decimal" Precision="9" Scale="2" />
+    <Property Name="AdGroupNamePercentCount" Type="decimal" Precision="9" Scale="2" />
+  </EntityType>
+  <EntityType Name="RFA_Result">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SearchQuery" Type="varchar" MaxLength="100" />
+    <Property Name="BatchCode" Type="int" Nullable="false" />
+    <Property Name="AccCode" Type="int" />
+    <Property Name="CampaignCode" Type="int" />
+    <Property Name="AdCode" Type="int" />
+    <Property Name="KeyCode" Type="int" />
+    <Property Name="MatchCountKTSQ" Type="decimal" Precision="9" Scale="2" />
+    <Property Name="MatchCountKTADs" Type="decimal" Precision="9" Scale="2" />
+    <Property Name="AdRank" Type="decimal" Precision="9" Scale="2" />
+    <Property Name="AdGroupCode" Type="varchar" MaxLength="50" />
+    <Property Name="HeadlineMatchCount" Type="decimal" Precision="9" Scale="2" />
+    <Property Name="Descline1MatchCount" Type="decimal" Precision="9" Scale="2" />
+    <Property Name="Descline2MatchCount" Type="decimal" Precision="9" Scale="2" />
+    <Property Name="DispUrlMatchCount" Type="decimal" Precision="9" Scale="2" />
+    <Property Name="AdGroupNamePercentCount" Type="decimal" Precision="9" Scale="2" />
+    <Property Name="Impressions" Type="decimal" Precision="9" Scale="2" />
+    <Property Name="CTR" Type="decimal" Precision="9" Scale="2" />
+    <Property Name="Position" Type="decimal" Precision="9" Scale="2" />
+    <Property Name="CVR" Type="decimal" Precision="9" Scale="2" />
+    <Property Name="RFAId" Type="int" />
+    <Property Name="CPC" Type="decimal" Precision="9" Scale="2" />
+    <Property Name="CostPerConversions" Type="decimal" Precision="9" Scale="2" />
+    <Property Name="RevActualCost" Type="decimal" Precision="9" Scale="2" />
+    <Property Name="RevNewClicks" Type="decimal" Precision="9" Scale="2" />
+    <Property Name="RevNewImpression" Type="decimal" Precision="9" Scale="2" />
+    <Property Name="ImpressionShare" Type="decimal" Precision="9" Scale="2" />
+    <Property Name="RFA_Id" Type="int" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'Whiskers.dbo.RFA_Result_bak' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="RFA_Result_bak">
+    <Key>
+      <PropertyRef Name="Id" />
+      <PropertyRef Name="BatchCode" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SearchQuery" Type="varchar" MaxLength="100" />
+    <Property Name="BatchCode" Type="int" Nullable="false" />
+    <Property Name="AccCode" Type="int" />
+    <Property Name="CampaignCode" Type="int" />
+    <Property Name="AdGroupCode" Type="int" />
+    <Property Name="KeyCode" Type="int" />
+    <Property Name="MatchCountKTSQ" Type="decimal" Precision="9" Scale="2" />
+    <Property Name="MatchCountKTADs" Type="decimal" Precision="9" Scale="2" />
+    <Property Name="AdRank" Type="decimal" Precision="9" Scale="2" />
+    <Property Name="ParentAdGroupCode" Type="varchar" MaxLength="50" />
+    <Property Name="HeadlineMatchCount" Type="decimal" Precision="9" Scale="2" />
+    <Property Name="Descline1MatchCount" Type="decimal" Precision="9" Scale="2" />
+    <Property Name="Descline2MatchCount" Type="decimal" Precision="9" Scale="2" />
+    <Property Name="DispUrlMatchCount" Type="decimal" Precision="9" Scale="2" />
+    <Property Name="AdGroupNamePercentCount" Type="decimal" Precision="9" Scale="2" />
+    <Property Name="Impressions" Type="int" />
+    <Property Name="Clicks" Type="int" />
+    <Property Name="CTR" Type="decimal" Precision="9" Scale="2" />
+    <Property Name="COST" Type="decimal" Precision="9" Scale="2" />
+    <Property Name="Avg_Cpc" Type="decimal" Precision="9" Scale="2" />
+    <Property Name="Conversions" Type="decimal" Precision="9" Scale="2" />
+    <Property Name="CostPerConversion" Type="decimal" Precision="9" Scale="2" />
+  </EntityType>
+  <EntityType Name="RFAHistory">
+    <Key>
+      <PropertyRef Name="RFAId" />
+    </Key>
+    <Property Name="RFAId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="BatchCode" Type="int" />
+    <Property Name="UserID" Type="varchar" MaxLength="50" />
+    <Property Name="Status" Type="int" />
+    <Property Name="CreatedOn" Type="datetime2" Precision="7" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'Whiskers.dbo.RFAMaster' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="RFAMaster">
+    <Key>
+      <PropertyRef Name="Id" />
+      <PropertyRef Name="BatchCode" />
+      <PropertyRef Name="AccountCode" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="BatchCode" Type="int" Nullable="false" />
+    <Property Name="AccountCode" Type="int" Nullable="false" />
+    <Property Name="Status" Type="varchar" MaxLength="10" />
+    <Property Name="CreatedBy" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'Whiskers.dbo.SearchQueryMaster' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="SearchQueryMaster">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SearchQuery" Type="varchar" MaxLength="100" />
+    <Property Name="CreatedOn" Type="datetime" />
+    <Property Name="CreatedBy" Type="varchar" MaxLength="50" />
+    <Property Name="Traffic" Type="int" />
+    <Property Name="isActive" Type="bit" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'Whiskers.dbo.tblAds' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="tblAds">
+    <Key>
+      <PropertyRef Name="CampaignCode" />
+      <PropertyRef Name="AdGroupCode" />
+      <PropertyRef Name="ADCode" />
+    </Key>
+    <Property Name="CampaignCode" Type="int" Nullable="false" />
+    <Property Name="AdGroupCode" Type="int" Nullable="false" />
+    <Property Name="ADCode" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ADText" Type="varchar" MaxLength="100" />
+    <Property Name="HeadLine" Type="varchar" MaxLength="100" />
+    <Property Name="DescLine1" Type="varchar" MaxLength="50" />
+    <Property Name="DescLine2" Type="varchar" MaxLength="50" />
+    <Property Name="DispUrl" Type="nvarchar" MaxLength="70" />
+    <Property Name="FinalUrl" Type="nvarchar" MaxLength="70" />
+    <Property Name="CreatedBy" Type="varchar" MaxLength="15" />
+  </EntityType>
+  <EntityType Name="UserMaster">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="UserID" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="FirstName" Type="varchar" MaxLength="20" />
+    <Property Name="MiddleName" Type="varchar" MaxLength="20" />
+    <Property Name="LastName" Type="varchar" MaxLength="20" />
+    <Property Name="DOB" Type="date" />
+    <Property Name="Email" Type="nvarchar" MaxLength="50" />
+    <Property Name="UserType" Type="smallint" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="Password" Type="nvarchar" MaxLength="50" />
+    <Property Name="Location" Type="nvarchar" MaxLength="10" />
+    <Property Name="Address" Type="nvarchar" MaxLength="150" />
+    <Property Name="Contact" Type="nvarchar" MaxLength="15" />
+    <Property Name="CreatedBy" Type="varchar" MaxLength="50" />
+    <Property Name="CreatedOn" Type="datetime" />
+    <Property Name="ModifiedOn" Type="datetime" />
+    <Property Name="ModifiedBy" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <Function Name="CheckRFAStatus" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="AccCode" Type="varchar" Mode="In" />
+    <Parameter Name="CreatedBy" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="CountOccurrencesOfWord" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int">
+    <Parameter Name="text" Type="varchar(max)" Mode="In" />
+    <Parameter Name="word" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="f_functionx" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="decimal">
+    <Parameter Name="str1" Type="varchar" Mode="In" />
+    <Parameter Name="str2" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="fn_ConvertAccountIdtoName" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="varchar(max)">
+    <Parameter Name="AccCode" Type="varchar(max)" Mode="In" />
+  </Function>
+  <Function Name="fn_ConvertBatchIdtoName" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="varchar(max)">
+    <Parameter Name="BatchCode" Type="varchar(max)" Mode="In" />
+  </Function>
+  <Function Name="fn_ConvertUserIdtoName" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="varchar(max)">
+    <Parameter Name="userid" Type="varchar(max)" Mode="In" />
+  </Function>
+  <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+  <Function Name="GetAccountAdGrpReport" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="BatchCode" Type="int" Mode="In" />
+  </Function>
+  <Function Name="GetAccountCampReport" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="BatchCode" Type="int" Mode="In" />
+  </Function>
+  <Function Name="GetAccountReport" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="BatchCode" Type="int" Mode="In" />
+  </Function>
+  <Function Name="getADGroupsOnDemand" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="CampaignCode" Type="varchar" Mode="In" />
+    <Parameter Name="CreatedBy" Type="varchar" Mode="In" />
+    <Parameter Name="AdGroupCode" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="getAssignedStudentsPerBatch" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="BatchCode" Type="varchar" Mode="In" />
+    <Parameter Name="Type" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="GetBatchesOfTrainer" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="TrainerCode" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="GetCalculatedData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="decimal">
+    <Parameter Name="CampaignCode" Type="int" Mode="In" />
+    <Parameter Name="Batchcode" Type="int" Mode="In" />
+    <Parameter Name="AccCode" Type="int" Mode="In" />
+    <Parameter Name="CostPerConversion" Type="decimal" Mode="In" />
+  </Function>
+  <Function Name="getCampaignAdsOnDemand" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="Userid" Type="varchar" Mode="In" />
+    <Parameter Name="CampaignCode" Type="varchar" Mode="In" />
+    <Parameter Name="AdGroupCode" Type="varchar" Mode="In" />
+    <Parameter Name="AdCode" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="GetCampaignMatrix_Report" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="BatchCode" Type="int" Mode="In" />
+  </Function>
+  <Function Name="GetIndustryReport_TopKey" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="BatchCode" Type="int" Mode="In" />
+  </Function>
+  <Function Name="GetMappedkeyWords" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="CreatedBy" Type="varchar" Mode="In" />
+    <Parameter Name="CampaignCode" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="getMappedkeyWordsOnDemand" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="CreatedBy" Type="varchar" Mode="In" />
+    <Parameter Name="CampaignCode" Type="varchar" Mode="In" />
+    <Parameter Name="AdGroupCode" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="getSingleKeywordDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="CampaignCode" Type="varchar" Mode="In" />
+    <Parameter Name="AdGroupCode" Type="varchar" Mode="In" />
+    <Parameter Name="CreatedBy" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="GetTopAccount_Report" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="BatchCode" Type="int" Mode="In" />
+  </Function>
+  <Function Name="getTrainerToBatch" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="patternValue" Type="varchar(max)" Mode="In" />
+    <Parameter Name="BatchCode" Type="varchar(max)" Mode="In" />
+  </Function>
+  <Function Name="prcAccountsPerBatches" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="BatchCode" Type="varchar" Mode="In" />
+    <Parameter Name="AccCode" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="prcAssignedStudentsAndTrainer" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="BatchCode" Type="varchar" Mode="In" />
+    <Parameter Name="UserID" Type="varchar" Mode="In" />
+    <Parameter Name="AssignedTo" Type="varchar" Mode="In" />
+    <Parameter Name="isMappingActive" Type="varchar" Mode="In" />
+    <Parameter Name="Status" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="prcBatchesOnDemand" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="BatchTime" Type="int" Mode="In" />
+    <Parameter Name="TrainerCode" Type="varchar" Mode="In" />
+    <Parameter Name="LocationCode" Type="varchar" Mode="In" />
+    <Parameter Name="BatchCode" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="prcCheckKeywordFromMapKeywordsAG" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="KeywordCode" Type="int" Mode="In" />
+    <Parameter Name="CampaignCode" Type="varchar" Mode="In" />
+    <Parameter Name="AdGroupCode" Type="varchar" Mode="In" />
+    <Parameter Name="UserId" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="prcCreateAccount" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="AccName" Type="varchar" Mode="In" />
+    <Parameter Name="ImagePath" Type="varchar" Mode="In" />
+    <Parameter Name="Description" Type="varchar" Mode="In" />
+    <Parameter Name="InputAccountCode" Type="varchar" Mode="In" />
+    <Parameter Name="Status" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="prcCreateAD" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="CampaignCode" Type="varchar" Mode="In" />
+    <Parameter Name="AdGroupCode" Type="varchar" Mode="In" />
+    <Parameter Name="ADText" Type="varchar" Mode="In" />
+    <Parameter Name="HeadLine" Type="varchar" Mode="In" />
+    <Parameter Name="DescLine1" Type="varchar" Mode="In" />
+    <Parameter Name="DescLine2" Type="varchar" Mode="In" />
+    <Parameter Name="DispUrl" Type="varchar" Mode="In" />
+    <Parameter Name="FinalUrl" Type="varchar" Mode="In" />
+    <Parameter Name="CreatedBy" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="prcCreateADGroup" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="CampaignCode" Type="varchar" Mode="In" />
+    <Parameter Name="AdGroupName" Type="varchar" Mode="In" />
+    <Parameter Name="AccCode" Type="varchar" Mode="In" />
+    <Parameter Name="ADText" Type="varchar" Mode="In" />
+    <Parameter Name="HeadLine" Type="varchar" Mode="In" />
+    <Parameter Name="DescLine1" Type="varchar" Mode="In" />
+    <Parameter Name="DescLine2" Type="varchar" Mode="In" />
+    <Parameter Name="DispUrl" Type="varchar" Mode="In" />
+    <Parameter Name="FinalUrl" Type="varchar" Mode="In" />
+    <Parameter Name="CreatedBy" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="prcCreateBatch" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="BatchName" Type="varchar" Mode="In" />
+    <Parameter Name="Location" Type="varchar" Mode="In" />
+    <Parameter Name="Address" Type="varchar" Mode="In" />
+    <Parameter Name="StratDate" Type="datetime" Mode="In" />
+    <Parameter Name="EndDate" Type="datetime" Mode="In" />
+    <Parameter Name="InputLocationCode" Type="varchar" Mode="In" />
+    <Parameter Name="Time" Type="time" Mode="In" />
+    <Parameter Name="InputBatchCode" Type="varchar" Mode="In" />
+    <Parameter Name="Status" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="prcCreateCampaign" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="CampaignName" Type="varchar" Mode="In" />
+    <Parameter Name="NetwordType" Type="int" Mode="In" />
+    <Parameter Name="Location" Type="varchar" Mode="In" />
+    <Parameter Name="Budget" Type="numeric" Mode="In" />
+    <Parameter Name="AccCode" Type="int" Mode="In" />
+    <Parameter Name="CreatedBy" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="prcCreateKeyword" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="KeywordName" Type="varchar" Mode="In" />
+    <Parameter Name="KeywordAvgMonthSearch" Type="varchar" Mode="In" />
+    <Parameter Name="KeywordCompetition" Type="varchar" Mode="In" />
+    <Parameter Name="KeywordSuggestBid" Type="int" Mode="In" />
+    <Parameter Name="KeywordSuggestCTR" Type="varchar" Mode="In" />
+    <Parameter Name="InputKeywordCode" Type="varchar" Mode="In" />
+    <Parameter Name="Status" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="prcCreateMappedKeywords" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="KeywordName" Type="varchar" Mode="In" />
+    <Parameter Name="KeywordCode" Type="varchar" Mode="In" />
+    <Parameter Name="CampaignCode" Type="varchar" Mode="In" />
+    <Parameter Name="AdGroupCode" Type="varchar" Mode="In" />
+    <Parameter Name="KeywordBid" Type="varchar" Mode="In" />
+    <Parameter Name="UserId" Type="varchar" Mode="In" />
+    <Parameter Name="flag" Type="int" Mode="In" />
+  </Function>
+  <Function Name="prcCreatePhrase" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="PhraseName" Type="varchar" Mode="In" />
+    <Parameter Name="CreatedOn" Type="datetime" Mode="In" />
+    <Parameter Name="CreatedBy" Type="varchar" Mode="In" />
+    <Parameter Name="Traffic" Type="int" Mode="In" />
+    <Parameter Name="InputPhraseCode" Type="varchar" Mode="In" />
+    <Parameter Name="Status" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="prcCreateStudent" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="FirstName" Type="varchar" Mode="In" />
+    <Parameter Name="MiddleName" Type="varchar" Mode="In" />
+    <Parameter Name="LastName" Type="varchar" Mode="In" />
+    <Parameter Name="Location" Type="varchar" Mode="In" />
+    <Parameter Name="Email" Type="varchar" Mode="In" />
+    <Parameter Name="Contact" Type="varchar" Mode="In" />
+    <Parameter Name="InputLocationCode" Type="varchar" Mode="In" />
+    <Parameter Name="InputStudentCode" Type="varchar" Mode="In" />
+    <Parameter Name="Status" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="prcCreateTrainer" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="FirstName" Type="varchar" Mode="In" />
+    <Parameter Name="MiddleName" Type="varchar" Mode="In" />
+    <Parameter Name="LastName" Type="varchar" Mode="In" />
+    <Parameter Name="Location" Type="varchar" Mode="In" />
+    <Parameter Name="Email" Type="varchar" Mode="In" />
+    <Parameter Name="Contact" Type="varchar" Mode="In" />
+    <Parameter Name="InputLocationCode" Type="varchar" Mode="In" />
+    <Parameter Name="InputTrainerCode" Type="varchar" Mode="In" />
+    <Parameter Name="Status" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="prcGetAccntsDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="TrainerCode" Type="varchar" Mode="In" />
+    <Parameter Name="BatchCode" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="prcGetAdGroups" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="CampaignCode" Type="varchar" Mode="In" />
+    <Parameter Name="CreatedBy" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="prcGetAdGroupsByID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="CampaignCode" Type="varchar" Mode="In" />
+    <Parameter Name="CreatedBy" Type="varchar" Mode="In" />
+    <Parameter Name="AdGroupCode" Type="varchar" Mode="In" />
+    <Parameter Name="ADCode" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="prcGetAdGroupsByID_old" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="CampaignCode" Type="varchar" Mode="In" />
+    <Parameter Name="CreatedBy" Type="varchar" Mode="In" />
+    <Parameter Name="AdGroupCode" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="prcGetCampaign" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="Userid" Type="varchar" Mode="In" />
+    <Parameter Name="CampaignCode" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="prcGetCampaignAds" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="Userid" Type="varchar" Mode="In" />
+    <Parameter Name="CampaignCode" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="prcGetCurrentBatches" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="Userid" Type="varchar" Mode="In" />
+    <Parameter Name="BatchType" Type="varchar" Mode="In" />
+    <Parameter Name="BatchCode" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="prcGetDistAdGroups" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="CampaignCode" Type="varchar" Mode="In" />
+    <Parameter Name="CreatedBy" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="prcGetKeywords" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="Keywordtxt" Type="varchar" Mode="In" />
+    <Parameter Name="flag" Type="int" Mode="In" />
+  </Function>
+  <Function Name="prcGetKeywordsbyCampCode" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="campcode" Type="varchar" Mode="In" />
+    <Parameter Name="adgroupcode" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="prcGetRemainingAccounts" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="AccCode" Type="varchar(max)" Mode="In" />
+    <Parameter Name="TrainerCode" Type="varchar(max)" Mode="In" />
+    <Parameter Name="BatchCode" Type="varchar(max)" Mode="In" />
+  </Function>
+  <Function Name="prcGetUserDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="emailID" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="prcMappedKeyword" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="KeywordCode" Type="varchar" Mode="In" />
+    <Parameter Name="CampaignCode" Type="varchar" Mode="In" />
+    <Parameter Name="AdGroupCode" Type="varchar" Mode="In" />
+    <Parameter Name="KeywordBid" Type="varchar" Mode="In" />
+    <Parameter Name="UserId" Type="varchar" Mode="In" />
+    <Parameter Name="flag" Type="int" Mode="In" />
+  </Function>
+  <Function Name="prcPhraseOnDemand" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="prcSaveAccount" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="StudentIDS" Type="varchar(max)" Mode="In" />
+    <Parameter Name="AccountID" Type="varchar(max)" Mode="In" />
+    <Parameter Name="Status" Type="int" Mode="In" />
+    <Parameter Name="TrainerCode" Type="varchar(max)" Mode="In" />
+  </Function>
+  <Function Name="prcSrudentsPerBatches" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="BatchCode" Type="varchar" Mode="In" />
+    <Parameter Name="AccCode" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="prcStudentOnDemand" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="BatchCode" Type="varchar" Mode="In" />
+    <Parameter Name="LocationCode" Type="varchar" Mode="In" />
+    <Parameter Name="StudentCode" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="prcTrainerOnDemand" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="BatchCode" Type="varchar" Mode="In" />
+    <Parameter Name="LocationCode" Type="varchar" Mode="In" />
+    <Parameter Name="TrainerCode" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="prcUpdateAdGroup" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="Userid" Type="varchar" Mode="In" />
+    <Parameter Name="CampaignCode" Type="varchar" Mode="In" />
+    <Parameter Name="AdGroupCode" Type="varchar" Mode="In" />
+    <Parameter Name="AdGroupName" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="prcUpdateAds" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="Userid" Type="varchar" Mode="In" />
+    <Parameter Name="CampaignCode" Type="varchar" Mode="In" />
+    <Parameter Name="AdGroupCode" Type="varchar" Mode="In" />
+    <Parameter Name="AdCode" Type="varchar" Mode="In" />
+    <Parameter Name="ADText" Type="varchar" Mode="In" />
+    <Parameter Name="HeadLine" Type="varchar" Mode="In" />
+    <Parameter Name="DescLine1" Type="varchar" Mode="In" />
+    <Parameter Name="DescLine2" Type="varchar" Mode="In" />
+    <Parameter Name="DispUrl" Type="varchar" Mode="In" />
+    <Parameter Name="FinalUrl" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="prcUpdateCampaign" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="Userid" Type="varchar" Mode="In" />
+    <Parameter Name="CampaignCode" Type="int" Mode="In" />
+    <Parameter Name="CampaignName" Type="varchar" Mode="In" />
+    <Parameter Name="Location" Type="varchar" Mode="In" />
+    <Parameter Name="Budget" Type="varchar" Mode="In" />
+    <Parameter Name="Network" Type="varchar" Mode="In" />
+    <Parameter Name="isActive" Type="bit" Mode="In" />
+  </Function>
+  <Function Name="prcUpdateMappedKeywords" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="KeywordName" Type="varchar" Mode="In" />
+    <Parameter Name="KeywordCode" Type="varchar" Mode="In" />
+    <Parameter Name="CampaignCode" Type="varchar" Mode="In" />
+    <Parameter Name="AdGroupCode" Type="varchar" Mode="In" />
+    <Parameter Name="KeywordBid" Type="varchar" Mode="In" />
+    <Parameter Name="UserId" Type="varchar" Mode="In" />
+    <Parameter Name="flag" Type="int" Mode="In" />
+    <Parameter Name="status" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="prcUserDetailsOnDemand" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="UserType" Type="int" Mode="In" />
+  </Function>
+  <Function Name="RFA_Algorithm" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="RFA_Calculation" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="RFA_Calculation_bak" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="RFAAlgo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="RFAIniateByStudent" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="AccCode" Type="varchar" Mode="In" />
+    <Parameter Name="CreatedBy" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <EntityContainer Name="WhiskersDBModelStoreContainer">
+    <EntitySet Name="BatchAndStudentMapping" EntityType="Self.BatchAndStudentMapping" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="keyWordRank" EntityType="Self.keyWordRank" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="LocationMaster" EntityType="Self.LocationMaster" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="MapKeywordsAG" EntityType="Self.MapKeywordsAG" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="RFA_Percentage_Result" EntityType="Self.RFA_Percentage_Result" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="RFA_Result" EntityType="Self.RFA_Result" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="RFAHistory" EntityType="Self.RFAHistory" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UserMaster" EntityType="Self.UserMaster" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="AccountsMaster" EntityType="Self.AccountsMaster" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+[AccountsMaster].[AccCode] AS [AccCode], 
+[AccountsMaster].[AccName] AS [AccName], 
+[AccountsMaster].[ImagePath] AS [ImagePath], 
+[AccountsMaster].[Description] AS [Description], 
+[AccountsMaster].[IsActive] AS [IsActive], 
+[AccountsMaster].[AccFullName] AS [AccFullName]
+FROM [dbo].[AccountsMaster] AS [AccountsMaster]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="AdGroups" EntityType="Self.AdGroups" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+[AdGroups].[AdGroupCode] AS [AdGroupCode], 
+[AdGroups].[CampaignCode] AS [CampaignCode], 
+[AdGroups].[AccCode] AS [AccCode], 
+[AdGroups].[AdGroupName] AS [AdGroupName], 
+[AdGroups].[CreatedBy] AS [CreatedBy]
+FROM [dbo].[AdGroups] AS [AdGroups]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="BatchAndTrainerMapping" EntityType="Self.BatchAndTrainerMapping" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+[BatchAndTrainerMapping].[BatchCode] AS [BatchCode], 
+[BatchAndTrainerMapping].[UserID] AS [UserID], 
+[BatchAndTrainerMapping].[isMappingActive] AS [isMappingActive]
+FROM [dbo].[BatchAndTrainerMapping] AS [BatchAndTrainerMapping]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="BatchMaster" EntityType="Self.BatchMaster" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+[BatchMaster].[BatchCode] AS [BatchCode], 
+[BatchMaster].[BatchName] AS [BatchName], 
+[BatchMaster].[Location] AS [Location], 
+[BatchMaster].[Address] AS [Address], 
+[BatchMaster].[StratDate] AS [StratDate], 
+[BatchMaster].[EndDate] AS [EndDate], 
+[BatchMaster].[Time] AS [Time], 
+[BatchMaster].[isActive] AS [isActive]
+FROM [dbo].[BatchMaster] AS [BatchMaster]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="CampaignMaster" EntityType="Self.CampaignMaster" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+[CampaignMaster].[CampaignCode] AS [CampaignCode], 
+[CampaignMaster].[CampaignName] AS [CampaignName], 
+[CampaignMaster].[NetWorkType] AS [NetWorkType], 
+[CampaignMaster].[Location] AS [Location], 
+[CampaignMaster].[Budget] AS [Budget], 
+[CampaignMaster].[AccCode] AS [AccCode], 
+[CampaignMaster].[CreatedBy] AS [CreatedBy], 
+[CampaignMaster].[isActive] AS [isActive]
+FROM [dbo].[CampaignMaster] AS [CampaignMaster]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="KeywordMaster" EntityType="Self.KeywordMaster" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+[KeywordMaster].[KeyCode] AS [KeyCode], 
+[KeywordMaster].[KeyName] AS [KeyName], 
+[KeywordMaster].[AvgMonthlySrch] AS [AvgMonthlySrch], 
+[KeywordMaster].[Competition] AS [Competition], 
+[KeywordMaster].[SuggestedBid] AS [SuggestedBid], 
+[KeywordMaster].[CTR] AS [CTR], 
+[KeywordMaster].[IsActive] AS [IsActive], 
+[KeywordMaster].[FromMaster] AS [FromMaster]
+FROM [dbo].[KeywordMaster] AS [KeywordMaster]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="RFA_Result_bak" EntityType="Self.RFA_Result_bak" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+[RFA_Result_bak].[Id] AS [Id], 
+[RFA_Result_bak].[SearchQuery] AS [SearchQuery], 
+[RFA_Result_bak].[BatchCode] AS [BatchCode], 
+[RFA_Result_bak].[AccCode] AS [AccCode], 
+[RFA_Result_bak].[CampaignCode] AS [CampaignCode], 
+[RFA_Result_bak].[AdGroupCode] AS [AdGroupCode], 
+[RFA_Result_bak].[KeyCode] AS [KeyCode], 
+[RFA_Result_bak].[MatchCountKTSQ] AS [MatchCountKTSQ], 
+[RFA_Result_bak].[MatchCountKTADs] AS [MatchCountKTADs], 
+[RFA_Result_bak].[AdRank] AS [AdRank], 
+[RFA_Result_bak].[ParentAdGroupCode] AS [ParentAdGroupCode], 
+[RFA_Result_bak].[HeadlineMatchCount] AS [HeadlineMatchCount], 
+[RFA_Result_bak].[Descline1MatchCount] AS [Descline1MatchCount], 
+[RFA_Result_bak].[Descline2MatchCount] AS [Descline2MatchCount], 
+[RFA_Result_bak].[DispUrlMatchCount] AS [DispUrlMatchCount], 
+[RFA_Result_bak].[AdGroupNamePercentCount] AS [AdGroupNamePercentCount], 
+[RFA_Result_bak].[Impressions] AS [Impressions], 
+[RFA_Result_bak].[Clicks] AS [Clicks], 
+[RFA_Result_bak].[CTR] AS [CTR], 
+[RFA_Result_bak].[COST] AS [COST], 
+[RFA_Result_bak].[Avg_Cpc] AS [Avg_Cpc], 
+[RFA_Result_bak].[Conversions] AS [Conversions], 
+[RFA_Result_bak].[CostPerConversion] AS [CostPerConversion]
+FROM [dbo].[RFA_Result_bak] AS [RFA_Result_bak]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="RFAMaster" EntityType="Self.RFAMaster" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+[RFAMaster].[Id] AS [Id], 
+[RFAMaster].[BatchCode] AS [BatchCode], 
+[RFAMaster].[AccountCode] AS [AccountCode], 
+[RFAMaster].[Status] AS [Status], 
+[RFAMaster].[CreatedBy] AS [CreatedBy]
+FROM [dbo].[RFAMaster] AS [RFAMaster]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="SearchQueryMaster" EntityType="Self.SearchQueryMaster" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+[SearchQueryMaster].[Id] AS [Id], 
+[SearchQueryMaster].[SearchQuery] AS [SearchQuery], 
+[SearchQueryMaster].[CreatedOn] AS [CreatedOn], 
+[SearchQueryMaster].[CreatedBy] AS [CreatedBy], 
+[SearchQueryMaster].[Traffic] AS [Traffic], 
+[SearchQueryMaster].[isActive] AS [isActive]
+FROM [dbo].[SearchQueryMaster] AS [SearchQueryMaster]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="tblAds" EntityType="Self.tblAds" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+[tblAds].[CampaignCode] AS [CampaignCode], 
+[tblAds].[AdGroupCode] AS [AdGroupCode], 
+[tblAds].[ADCode] AS [ADCode], 
+[tblAds].[ADText] AS [ADText], 
+[tblAds].[HeadLine] AS [HeadLine], 
+[tblAds].[DescLine1] AS [DescLine1], 
+[tblAds].[DescLine2] AS [DescLine2], 
+[tblAds].[DispUrl] AS [DispUrl], 
+[tblAds].[FinalUrl] AS [FinalUrl], 
+[tblAds].[CreatedBy] AS [CreatedBy]
+FROM [dbo].[tblAds] AS [tblAds]</DefiningQuery>
+    </EntitySet>
+  </EntityContainer>
+</Schema>

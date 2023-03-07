@@ -1,0 +1,241 @@
+﻿@{
+    Layout = "~/Areas/Admin/Views/Shared/Admin_Manage_Layout.cshtml";
+}
+<div class="admin-tab">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="tab-content">
+                    <div id="trainers2" class="tab-pane fade in active">
+                        <div class="admin-manage-header">
+                            <div class="row">
+                                <div class="col-md-2"><h3>Trainers</h3></div>
+                                <div class="col-md-10 text-right">
+                                    <ul class="campaings-nav pull-right">
+                                        <li><a href="/Admin/Manage/TrainerDownloadExcel"><i class="fa fa-download" area-hidden="true"></i>  Download</a></li>
+                                        <li class="dropdown">
+                                            <img src="/content/images/excel.png" /> <a href="#" class="dropdown-toggle" onclick="OpenExcelPopup('TRAINER');" data-toggle="modal"> Import From Excel</a>
+                                        </li>
+
+                                        <li><a href="#" data-toggle="modal" onclick="showTrainerPopup();" data-target="#myModal27"><img src="/content/images/plus-icon.png" alt="icon">Add New Trainer</a></li>
+
+                                    </ul>
+
+
+                                    <div class="campaings-nav pull-right">
+                                        <select id="dropTrainerCode" onchange="getTrainersOnDemand();">
+                                            <option value="">Trainer</option>
+                                            @foreach (var item in @ViewBag.TrainerDetails)
+                                            {
+                                                <option value="@item.UserID">@item.FullName</option>
+                                            }
+                                        </select>
+                                        <select id="dropBatchCode" onchange="getTrainersOnDemand();">
+                                            <option value="">Batch</option>
+                                            @foreach (var item in @ViewBag.BatchDetails)
+                                            {
+                                                <option value="@item.BatchCode">@item.BatchName</option>
+                                            }
+                                        </select>
+                                        <select id="dropLocationCode" onchange="getTrainersOnDemand();">
+                                            <option value="">Location</option>
+                                            @foreach (var item in @ViewBag.Location)
+                                            {
+                                                <option value="@item.LocationCode">@item.LocationName</option>
+                                            }
+                                        </select>
+                                    </div>
+
+
+
+
+
+                                </div>
+                            </div>
+
+                            <div id="div_result4"></div>
+                        </div>
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--add new trainer-->
+@using (Ajax.BeginForm("CreateTrainer", "Manage", FormMethod.Post, new AjaxOptions { OnSuccess = "closepoup", OnBegin = "AjaxBegin", OnFailure = "Failure();" }))
+{
+    <div class="modal fade in" id="myModal27" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h4 id="TitlePopupTrainer" class="modal-title">Add New Trainer</h4>
+                </div>
+                <form>
+
+
+                    <div class="modal-body">
+
+                        <div class="form-details">
+
+                            <div class="row">
+
+
+                                <div class="form-group">
+
+                                    <div class="col-xs-12 col-md-3">
+                                        <label class="lab_01">Trainer Name</label>
+                                    </div>
+                                    <div class="col-xs-12 col-md-9">
+                                        <div class="col-form-box">
+                                            <div class="form-group">
+                                                <input type="text" id="txtFirstName" name="txtFirstName" class="form-control">
+
+                                                <span class="required">First</span>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-form-box">
+                                            <div class="form-group">
+                                                <input type="text" id="txtMiddleName" name="txtMiddleName" class="form-control">
+
+                                                <span>Middle</span>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-form-box">
+                                            <div class="form-group">
+                                                <input type="text" id="txtLastName" name="txtLastName" class="form-control">
+
+                                                <span class="required">Last</span>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-xs-12 col-md-3"> <label class="lab_01 required">Location</label>   </div>
+                                    <div class="col-xs-12 col-md-9">
+                                        <div class="form-group"> <input type="text" id="txtLocation" name="txtLocation" class="form-control"> </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-xs-12 col-md-3"> <label class="lab_01 required">Email Id</label>   </div>
+                                    <div class="col-xs-12 col-md-9">
+                                        <div class="form-group"> <input type="text" id="txtEmail" name="txtEmail" class="form-control"> </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <div class="col-xs-12 col-md-3"> <label class="lab_01 required">Contact</label>   </div>
+                                    <div class="col-xs-12 col-md-9">
+                                        <div class="form-group"> <input type="text" id="txtContact" maxlength="10" name="txtContact" class="form-control"> </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="clearfix"></div>
+                            <div id="divTrainerNotify" class="error-red erroor-boder">All Fields are required</div>
+                            <input type="hidden" id="hdnTrainerCode" value="0" name="hdnTrainerCode" />
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default cancel" onclick="ClearTrainerPopup();">Cancel</button>
+                        <button type="submit" id="btnCreateTrainer" class="btn btn-default save" onclick="return TrainerValidation();">Save</button>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+}
+<div class="modal fade" id="ModalTrainerSuccess" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                @*<button type="button" class="close" data-dismiss="modal">&times;</button>*@
+                <h5 id="TrainerSuccessHead" class="modal-title"></h5>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function ()
+    {
+        getTrainersOnDemand();
+        $('#Trainers2').addClass("active");
+        //$(".Loader").show();
+    });
+    function closepoup(data) {
+        var JsonObj = data[0];
+        $('#divTrainerNotify').text(data[0]);
+        fadeOut("divTrainerNotify");
+        if (data[0] == "0")
+        {
+            $('#hdnTrainerCode').val('0');
+            $('#TrainerSuccessHead').text('You have created trainer successFully');
+        }
+        if (data[0] == "1") {
+            $('#hdnTrainerCode').val('0');
+            $('#TrainerSuccessHead').text('You have updated trainer successfully');
+        }
+        $("#btnCreateTrainer").attr("disabled", false);
+        if (data[1] == "1") {
+            ClearTrainerPopup();
+            getTrainersOnDemand();
+            $('#ModalTrainerSuccess').modal('show');
+            $('#hdnTrainerCode').val('0');
+        }
+    }
+    function Failure() {
+        alert('Some internal error occurs, Please contact to administrator.');
+    }
+    function AjaxBegin() {
+        $("#btnCreateTrainer").attr("disabled", true);
+    }
+    function ClearTrainerPopup()
+    {
+        $('#txtFirstName').val('');
+        $('#txtMiddleName').val('');
+        $('#txtLastName').val('');
+        $('#txtLocation').val('');
+        $('#txtEmail').val('');
+        $('#txtContact').val('');
+        $('#divTrainerNotify').text('All fields are required');
+        $("#btnCreateTrainer").attr("disabled", false);
+        $('#hdnTrainerCode').val('0');
+        $('#myModal27').modal('hide');
+    }
+    function TrainerDataTable()
+    {
+        //check admin.css DataTable section if you want to hide header paging
+        $('#tableTrainer').dataTable({
+            "searching": false,
+            //scrollY: '50vh',
+            //scrollCollapse: true,
+            "bLengthChange": true,
+            "oLanguage":
+            {
+                "sEmptyTable": "No Record Found"
+            }
+        });
+    }
+</script>

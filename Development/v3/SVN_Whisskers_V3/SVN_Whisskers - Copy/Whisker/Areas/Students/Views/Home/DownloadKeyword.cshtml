@@ -1,0 +1,91 @@
+﻿@{
+    ViewBag.Title = "Tools";
+    Layout = "~/Areas/Students/Views/Shared/Student_Layout.cshtml";
+}
+
+<link href="~/Content/css/admin.css" rel="stylesheet" />
+<script src="~/Scripts/Whiskers.validations.js"></script>
+
+
+
+<!---------------------  Content start  --------------------->
+
+<div class="container">
+
+    <div class="fileUploder">
+        <form id="excelUpload1">
+            <div><h3>Find Keywords</h3></div>
+            @*<div class="downLoad">
+                <a href="/Students/Home/KeyPlanDownloadTemplateCSV" id="KeyPlanTmplate">Download Template</a>
+            </div>*@
+            @*<div class="chooseFile">
+
+                <input type="file" name="excelfile1" id="excelfile1">
+                <input type="hidden" id="hdnIdenType1" value="GET_KEYPLAN" name="hdnIdenType1" />
+                <div class="error-green">Accepted file types is: .csv</div>
+            </div>*@
+            <div class="changeKeyWord1">
+                <label id="Notify2" class="">Keyword Idea</label>
+               <div></div>
+                <textarea id="keywordIdeas" name="keywordIdeas" rows="4" cols="50" class="textareaVertical" placeholder="Enter each keyword idea in a separate line by pressing enter key"></textarea>
+            </div>
+            <div class="changeKeyWord1">
+                <label id="Notify2" class="">Enter keyword name which you want to exclude</label>
+                <div></div>
+                <textarea id="excludeKeyword" name="excludeKeyword" rows="4" cols="50" class="textareaVertical" placeholder="Enter each keyword in a separate line by pressing enter key"></textarea>
+            </div>
+            <div class="uploadLabel">
+                <div id="uploadLabelValidation" class="error-red"></div>
+            </div>
+            <div></div>
+            <div class="findKeyWords">
+                <button type="submit" id="btnKeyPlanUploadExcel" name="btnKeyPlanUploadExcel" value="" class="btn btn-find save" onclick="return getKeyPlanExcel();">Find Keywords</button>
+            </div>
+            <div class="download">
+                @*<a id="DownloadGetKeyPlanExcel" href="/Students/Home/DownloadGetKeyPlanCSV" class="">Download</a>*@
+
+            </div>
+            <div id="ShowGetKeyPlanExcel">
+                
+            </div>
+
+            
+            </form>
+
+
+
+
+    </div>
+</div>
+<!---------------------  Content End  --------------------->
+<div id="dialog" style="display: none"></div>
+<style type="text/css">
+    body {
+        font-family: Arial;
+        font-size: 10pt;
+    }
+
+    #dialog {
+        height: 600px;
+        overflow: auto;
+        font-size: 10pt !important;
+        font-weight: normal !important;
+        background-color: #FFFFC1;
+        margin: 10px;
+        border: 1px solid #ff6a00;
+    }
+
+        #dialog div {
+            margin-bottom: 15px;
+        }
+</style>
+<script>
+    (function ($) {
+        $(window).load(function () {
+            $("#liTools").addClass("active");
+        });
+    })(jQuery);
+    $(document).ready(function () {
+
+    });
+</script>

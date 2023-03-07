@@ -1,0 +1,1503 @@
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using Whisker.Models;
+using Whisker.Areas.Students.Models;
+using Whisker.App_Start;
+using System.Data;
+using System.IO;
+using System.Data.OleDb;
+using System.Text;
+
+namespace Whisker.Areas.Students.Controllers
+{
+    [SessionExpireFilterAttribute]
+    public class HomeController : Controller
+    {
+        //
+        // GET: /Students/Home/
+        WhiskersDBEntities objDBentity = new WhiskersDBEntities();
+        UserLoginInfo objUserInfo = new UserLoginInfo();
+        DataTable dtKeyword = null;
+        Whisker.CommonClass.CommonFunc cmnF = new Whisker.CommonClass.CommonFunc();
+        Whisker.Areas.Admin.Models.Keyword KeyDtl;
+
+        public ActionResult Index()
+        {
+            Session["dtKeyword"] = null;
+            objUserInfo = (UserLoginInfo)Session["LoginInfo"];
+            getAccountDetails(objUserInfo.EMAILID);
+            if (Request.QueryString.HasKeys())
+            {
+                if (Request.QueryString["Camp"] != null)
+                {
+                    getCampaign(objUserInfo.UserID, Request.QueryString["Camp"]);
+                }
+            }
+            else
+            {
+                getCampaign(objUserInfo.UserID, null);
+            }
+            return View();
+        }
+        private void getCampaign(string userID, string cCode)
+        {
+            // var unicornName = TempData["email"].ToString();// Request.QueryString["email"];
+            // var unicornName = Request.QueryString["email"].ToString();
+            var userCampaign = objDBentity.prcGetCampaign(objUserInfo.BatchCode, objUserInfo.AccCode.ToString(),null);
+            //* var userType = objDBentity.prcGetUserDetails("student@gmail.com");
+            /* foreach (var item in userCampaign)
+             {
+                // item.CampaignName
+                // item.Budget
+
+             }*/
+            ViewBag.uCampaign = userCampaign;
+
+            //ViewBag.data = "khgij";
+            /*ViewBag.FName = userInfo.FirstName;
+            ViewBag.AccName = userInfo.AccName;
+            ViewBag.ImagePath = userInfo.ImagePath;
+            ViewBag.Description = userInfo.Description;
+            ViewBag.AccFullName = userInfo.AccFullName;*/
+        }
+
+
+        private void getAccountDetails(string unicornName)
+        {
+            //var unicornName = TempData["email"].ToString();// Request.QueryString["email"];
+            //var unicornName = Request.QueryString["email"].ToString();
+            var userInfo = objDBentity.prcGetUserDetails(unicornName).FirstOrDefault();
+            /* var userType = objDBentity.prcGetUserDetails("student@gmail.com");
+             foreach (var item in userType)
+             { 
+                item.
+             }*/
+
+            // ViewBag.data = "khgij";
+            ViewBag.FName = userInfo.FirstName;
+            ViewBag.AccCode = userInfo.AccCode;
+            ViewBag.AccName = userInfo.AccName;
+            ViewBag.ImagePath = userInfo.ImagePath;
+            ViewBag.Description = userInfo.Description;
+            ViewBag.AccFullName = userInfo.AccFullName;
+            ViewBag.UserID = userInfo.UserID;
+
+        }
+
+        public JsonResult GetADGroupsData(string cCode)
+        {
+            if (cCode == "ALL")
+                cCode = null;
+
+            objUserInfo = (UserLoginInfo)Session["LoginInfo"];
+            var userAdGroup = objDBentity.prcGetAdGroups(cCode, objUserInfo.UserID);
+
+            return Json(userAdGroup, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetADsData(string cCode)
+        {
+            if (cCode == "ALL")
+                cCode = null;
+
+
+            objUserInfo = (UserLoginInfo)Session["LoginInfo"];
+            var userAdGroup = objDBentity.prcGetCampaignAds(objUserInfo.UserID, cCode);
+
+           // var userAewrddGroup = objDBentity.prcGetCampaignAds(objUserInfo.UserID, cCode).ToList();
+            var ndfegjbje = Json(userAdGroup, JsonRequestBehavior.AllowGet);
+
+            return Json(userAdGroup, JsonRequestBehavior.AllowGet);
+
+
+        }
+
+        public JsonResult GetKeywordsData(string cCode)
+        {
+            if (cCode == "ALL")
+                cCode = null;
+            objUserInfo = (UserLoginInfo)Session["LoginInfo"];
+            var userAdGroup = objDBentity.GetMappedkeyWords(objUserInfo.UserID, cCode).ToList();
+            return Json(userAdGroup, JsonRequestBehavior.AllowGet);
+
+        }
+
+
+
+
+        //public JsonResult GetKeywords(string Keywordtxt)
+        //{
+
+        //    objUserInfo = (UserLoginInfo)Session["LoginInfo"];
+        //    var keywords = objDBentity.prcGetKeywords(Keywordtxt).ToList();
+
+
+        //    return Json(keywords, JsonRequestBehavior.AllowGet);
+
+        //}
+
+        public ActionResult GetKeywords(string Keywordtxt)
+        {
+
+            objUserInfo = (UserLoginInfo)Session["LoginInfo"];
+            var keywords = objDBentity.prcGetKeywords(Keywordtxt, 0).ToList();
+
+            List<string> lst = new List<string>();
+
+            if (keywords.Count <= 0)
+            {
+                //lst.Add(string.Format("failure"));
+            }
+            else
+            {
+                if (keywords.Count > 0)
+                {
+
+                    for (int i = 0; i < keywords.Count(); i++)
+                    {
+                        if (keywords[i].KeyName != "")
+                            lst.Add(string.Format(keywords[i].KeyName));
+                        //lst.Add(Convert.ToString(keywords[i].SuggestedBid));
+                    }
+                }
+            }
+
+            //lst2.Add(lst);
+
+            return Json(lst, JsonRequestBehavior.AllowGet);
+
+
+        }
+
+        public ActionResult GetKeywordsAllData(string CampaignCode, string AdGroupCode, string Keywordtxt)
+        {
+            objUserInfo = (UserLoginInfo)Session["LoginInfo"];
+            var keywords = objDBentity.prcGetKeywords(Keywordtxt, 1).ToList();
+            if (keywords.Count > 0)
+            {
+                var Temp = objDBentity.prcCheckKeywordFromMapKeywordsAG(keywords[0].KeyCode, CampaignCode, AdGroupCode, Convert.ToString(objUserInfo.UserID)).ToList();
+                if (Temp.Count > 0)
+                {
+                    return Json("Already exist", JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(keywords, JsonRequestBehavior.AllowGet);
+                }
+            }
+            else
+            {
+                return Json(keywords, JsonRequestBehavior.AllowGet);
+
+            }
+        }
+        [HttpPost]
+        public ActionResult MapKeywordsAD(string empdata)
+        {
+            var serializeData = JsonConvert.DeserializeObject<List<KeywordMapping>>(empdata);
+            bool status = false;
+            foreach (var data in serializeData)
+            {
+                if (data.keyBid == "N/A")
+                {
+                    data.keyBid = "0";
+                }
+                objUserInfo = (UserLoginInfo)Session["LoginInfo"];
+                objDBentity.prcMappedKeyword(data.KeyCode, data.CampaignCode, data.AdGroupCode, null, Convert.ToString(objUserInfo.UserID), 0);
+                status = true;
+            }
+            return Json(status, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetKeywordsByCampId(string campcode, string adgroupcode)
+        {
+
+            objUserInfo = (UserLoginInfo)Session["LoginInfo"];
+            var keywords = objDBentity.prcGetKeywordsbyCampCode(campcode, adgroupcode);
+
+            return Json(keywords, JsonRequestBehavior.AllowGet);
+
+        }
+
+        public JsonResult DeleteKey(string cCode, string adgroupCode, string keyCode)
+        {
+            objUserInfo = (UserLoginInfo)Session["LoginInfo"];
+            var keywords = objDBentity.prcMappedKeyword(keyCode, cCode, adgroupCode, null, Convert.ToString(objUserInfo.UserID), 1);
+            return Json(keywords, JsonRequestBehavior.AllowGet);
+        }
+
+
+        //public ActionResult GetValidateemailvolunteer(string query)
+        //{
+        //    // string uid = "";
+
+        //    string[] str = new string[4];
+        //    str = query.Split(',');
+        //    string url = WebApiURL + "PreRegistration/GetEmailValidate?query=" + str[0] + "&type=1";
+        //    List<dynamic> lstuserInfo = (List<dynamic>)Newtonsoft.Json.JsonConvert.DeserializeObject((client.DownloadString(url)), typeof(List<dynamic>));
+
+        //    //url = WebApiURL + "PreRegistration/GetValidateemailvol_prereg?query=" + str[0];
+        //    //List<dynamic> lstuserInfo1 = (List<dynamic>)Newtonsoft.Json.JsonConvert.DeserializeObject((client.DownloadString(url)), typeof(List<dynamic>));
+
+        //    List<string> lst = new List<string>();
+        //    if (lstuserInfo.Count <= 0)
+        //    {
+        //        lst.Add(string.Format("failure"));
+        //    }
+        //    else
+        //    {
+
+        //        if (lstuserInfo.Count > 0)
+        //        {
+        //            if (lstuserInfo[0].email.Value != "")
+        //                lst.Add(string.Format(lstuserInfo[0].email.Value));
+        //        }
+
+        //    }
+
+        //    return Json(lst, JsonRequestBehavior.AllowGet);
+        //}
+
+        /// <summary>
+        /// Edit Functionality
+        /// </summary>
+        /// <param name="fc"></param>
+        /// <returns></returns>
+        //[HttpPost]
+        //public ActionResult UpdateCompaign(FormCollection fc)
+        //{
+        //    objUserInfo = (UserLoginInfo)Session["LoginInfo"];
+        //    var CampaignName = fc["txtCampaignNameEdit"];
+        //    var NetwordType = fc["ddlNetwordTypeEdit"];
+        //    var Location = fc["txtLocationEdit"];
+        //    var Budget = fc["txtBudgetEdit"];
+        //    var CampaignCode = fc["hdnCampId"];
+
+        //    objDBentity.prcUpdateCampaign(Convert.ToString(objUserInfo.UserID), CampaignCode, CampaignName, Location, Budget,NetwordType);
+        //    //objDBentity.prcCreateCampaign(CampaignName, Convert.ToInt16(NetwordType), Location, Convert.ToDecimal(Budget), objUserInfo.AccCode, objUserInfo.UserID);
+
+        //    return RedirectToAction("Index");
+        //    // return JavaScript("window.location = 'Students/Home/Index'");
+        //}
+
+        //[HttpPost]
+        //public ActionResult UpdateAdGroup(FormCollection fc)
+        //{
+        //    objUserInfo = (UserLoginInfo)Session["LoginInfo"];
+        //    var CampaignCode = fc["ddlCampaignADGMEdit"];
+        //    var ADGroupName = fc["txtADGroupNameEdit"];
+        //    var ADGroupText = fc["txtADGroupTextEdit"];
+        //    var ADGroupHeadline = fc["txtADGroupHeadlineEdit"];
+        //    var ADGroupDesc1 = fc["txtADGroupDesc1Edit"];
+        //    var ADGroupDesc2 = fc["txtADGroupDesc2Edit"];
+        //    var ADGroupDespUrl = fc["txtADGroupDespUrlEdit"];
+        //    var ADGroupFinalUrl = fc["txtADGroupFinalUrlEdit"];
+        //    var AdGroupId = fc["hdnAdGroupId"];
+
+        //    objDBentity.prcUpdateAdGroup(Convert.ToString(objUserInfo.UserID), CampaignCode, AdGroupId, ADGroupName, ADGroupText, ADGroupHeadline, ADGroupDesc1, ADGroupDesc2, ADGroupDespUrl, ADGroupFinalUrl);
+
+        //    return new RedirectResult(Url.Action("Index") + "#adgroups");
+        //    // return JavaScript("window.location = 'Students/Home/Index'");
+        //}
+
+
+        //[HttpPost]
+        //public ActionResult UpdateAD(FormCollection fc)
+        //{
+        //    objUserInfo = (UserLoginInfo)Session["LoginInfo"];
+        //    var CampaignCode = fc["ddlCampaignADEdit"];
+        //    var ParentADGroup = fc["ddlADName"];
+        //    var ADGroupText = fc["txtADTextEdit"];
+        //    var ADGroupHeadline = fc["txtADHeadlineEdit"];
+        //    var ADGroupDesc1 = fc["txtADDesc1Edit"];
+        //    var ADGroupDesc2 = fc["txtADDesc2Edit"];
+        //    var ADGroupDespUrl = fc["txtADDespUrlEdit"];
+        //    var ADGroupFinalUrl = fc["txtADFinalUrlEdit"];
+        //    var AdGroupId = fc["hdnAdGrpId"];
+
+        //    //objDBentity.prcUpdateAdGroup(Convert.ToString(objUserInfo.UserID), CampaignCode, AdGroupId, ADGroupName, ADGroupText, ADGroupHeadline, ADGroupDesc1, ADGroupDesc2, ADGroupDespUrl, ADGroupFinalUrl);
+        //    objDBentity.prcUpdateAds(Convert.ToString(objUserInfo.UserID), CampaignCode, ParentADGroup, "", ADGroupText, ADGroupHeadline, ADGroupDesc1, ADGroupDesc2, ADGroupDespUrl, ADGroupFinalUrl, AdGroupId);
+        //    return new RedirectResult(Url.Action("Index") + "#ads");
+        //}
+
+        #region aman student module work
+
+        public JsonResult GetCampaigns()
+        {
+            objUserInfo = (UserLoginInfo)Session["LoginInfo"];
+            var userCampaign = objDBentity.prcGetCampaign(objUserInfo.BatchCode, objUserInfo.AccCode.ToString(), null);
+            return Json(userCampaign, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult GetADGroupsDataDistinct(string cCode)
+        {
+            if (cCode == "ALL")
+                cCode = null;
+
+            objUserInfo = (UserLoginInfo)Session["LoginInfo"];
+            var userAdGroup = objDBentity.prcGetDistAdGroups(cCode, objUserInfo.UserID);
+
+            return Json(userAdGroup, JsonRequestBehavior.AllowGet);
+
+        }
+        #region Campaign
+        //For select campaigns
+        public JsonResult getCampaignsOnDemand(string CampaignCode)
+        {
+            if (CampaignCode == "ALL")
+                CampaignCode = null;
+
+            objUserInfo = (UserLoginInfo)Session["LoginInfo"];
+            var userCampaign = objDBentity.prcGetCampaign(objUserInfo.BatchCode, objUserInfo.AccCode.ToString(), CampaignCode).ToList();
+            return Json(userCampaign, JsonRequestBehavior.AllowGet);
+        }
+        //For create campaigns
+        [HttpPost]
+        public ActionResult CreateCompaign(FormCollection fc)
+        {
+            List<string> ContentResult = new List<string>();
+            var CampaignStatus = true;
+            objUserInfo = (UserLoginInfo)Session["LoginInfo"];
+            var CampaignName = fc["txtCampaignName"];
+            var NetwordType = fc["ddlNetwordType"];
+            var Location = fc["txtLocation"];
+            var Budget = fc["txtBudget"];
+            var CampaignCode = fc["hdnCampId"];
+            var TempCampaignStatus = fc["someSwitchOption001"];
+            if (TempCampaignStatus == "on")
+            {
+                CampaignStatus = true;
+            }
+            else
+            {
+                CampaignStatus = false;
+            }
+            if (CampaignCode == "0")
+            {
+                objDBentity.prcCreateCampaign(CampaignName, Convert.ToInt32(CampaignCode), Convert.ToInt16(NetwordType), Location, Convert.ToDecimal(Budget), objUserInfo.AccCode, objUserInfo.UserID, Convert.ToString(objUserInfo.BatchCode), CampaignStatus);
+                ContentResult.Add("0");
+                ContentResult.Add("1");
+                goto Exitlabel;
+            }
+            if (CampaignCode != "0")
+            {
+                objDBentity.prcCreateCampaign(CampaignName, Convert.ToInt32(CampaignCode), Convert.ToInt16(NetwordType), Location, Convert.ToDecimal(Budget), objUserInfo.AccCode, objUserInfo.UserID, Convert.ToString(objUserInfo.BatchCode), CampaignStatus);
+                ContentResult.Add("1");
+                ContentResult.Add("1");
+                goto Exitlabel;
+            }
+        Exitlabel:
+            return Json(ContentResult, JsonRequestBehavior.AllowGet);
+        }
+        //For Edit campaigns
+        public JsonResult GetCampaignData(string cCode)
+        {
+            if (cCode == "ALL")
+                cCode = null;
+
+            objUserInfo = (UserLoginInfo)Session["LoginInfo"];
+            var userCampaign = objDBentity.prcGetCampaign(objUserInfo.BatchCode, objUserInfo.AccCode.ToString(), cCode).ToList();
+            var userCampaig1n = objDBentity.prcGetCampaign(objUserInfo.BatchCode, objUserInfo.AccCode.ToString(), cCode).ToList();
+            return Json(userCampaign, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+
+        #region AdGroup
+        //For select AdGroups
+        public JsonResult getADGroupsOnDemand(string CampaignCode, string AdGroupCode)
+        {
+            if (CampaignCode == "ALL")
+            {
+                CampaignCode = null;
+            }
+            if (AdGroupCode == "ALL")
+            {
+                AdGroupCode = null;
+            }
+            objUserInfo = (UserLoginInfo)Session["LoginInfo"];
+            var userAdGroup = objDBentity.getADGroupsOnDemand(CampaignCode, AdGroupCode);
+            var TempuserAdGroup = objDBentity.getADGroupsOnDemand(CampaignCode, AdGroupCode).ToList();
+
+            return Json(userAdGroup, JsonRequestBehavior.AllowGet);
+        }
+        //For create AdGroups
+        [HttpPost]
+        public ActionResult CreateADGroup(FormCollection fc)
+        {
+            List<string> ContentResult = new List<string>();
+            objUserInfo = (UserLoginInfo)Session["LoginInfo"];
+            var CampaignCode = fc["ddlCampaignADGM"];
+            var ADGroupName = fc["txtADGroupName"];
+            var ADGroupText = fc["txtADGroupText"];
+            var ADGroupHeadline = fc["txtADGroupHeadline"];
+            var ADGroupDesc1 = fc["txtADGroupDesc1"];
+            var ADGroupDesc2 = fc["txtADGroupDesc2"];
+            var ADGroupDespUrl = fc["txtADGroupDespUrl"];
+            var ADGroupFinalUrl = fc["txtADGroupFinalUrl"];
+            var AdGroupId = fc["hdnAdGroupId"];
+
+            if (AdGroupId == "0")
+            {
+                objDBentity.prcCreateADGroup(CampaignCode, ADGroupName, Convert.ToString(objUserInfo.AccCode), ADGroupText, ADGroupHeadline, ADGroupDesc1, ADGroupDesc2, ADGroupDespUrl, ADGroupFinalUrl, objUserInfo.UserID, AdGroupId);
+                ContentResult.Add("0");
+                ContentResult.Add("1");
+                goto Exitlabel;
+            }
+            if (AdGroupId != "0")
+            {
+                objDBentity.prcCreateADGroup(CampaignCode, ADGroupName, Convert.ToString(objUserInfo.AccCode), ADGroupText, ADGroupHeadline, ADGroupDesc1, ADGroupDesc2, ADGroupDespUrl, ADGroupFinalUrl, objUserInfo.UserID, AdGroupId);
+                ContentResult.Add("1");
+                ContentResult.Add("1");
+                goto Exitlabel;
+            }
+        Exitlabel:
+            return Json(ContentResult, JsonRequestBehavior.AllowGet);
+        }
+        //For edit AdGroups
+        public JsonResult GetADGroupsDataByID(string cCode, string AdgroupCode)
+        {
+            if (cCode == "ALL")
+                cCode = null;
+
+            objUserInfo = (UserLoginInfo)Session["LoginInfo"];
+            //var userAdGroup = objDBentity.prcGetAdGroups(cCode, objUserInfo.UserID);
+            var userAdGroup = objDBentity.prcGetAdGroupsByID(cCode,AdgroupCode).ToList();
+            return Json(userAdGroup, JsonRequestBehavior.AllowGet);
+
+
+        }
+        #endregion
+
+        #region Ads
+        //For select Ads
+        public JsonResult getCampaignAdsOnDemand(string CampaignCode, string AdGroupCode, string AdCode)
+        {
+            if (CampaignCode == "ALL")
+            {
+                CampaignCode = null;
+            }
+            if (AdGroupCode == "ALL")
+            {
+                AdGroupCode = null;
+            }
+            objUserInfo = (UserLoginInfo)Session["LoginInfo"];
+            var userAdGroup = objDBentity.getCampaignAdsOnDemand(objUserInfo.UserID, CampaignCode, AdGroupCode, AdCode);
+            var tempuserAdGroup = objDBentity.getCampaignAdsOnDemand(objUserInfo.UserID, CampaignCode, AdGroupCode, AdCode).ToList();
+            return Json(userAdGroup, JsonRequestBehavior.AllowGet);
+        }
+        //For create Ads
+        [HttpPost]
+        public ActionResult CreateAD(FormCollection fc)
+        {
+            List<string> ContentResult = new List<string>();
+            objUserInfo = (UserLoginInfo)Session["LoginInfo"];
+            var CampaignCode = fc["ddlCampaignAD"];
+            var ADGroupCode = fc["ddlADGroupName"];
+            var ADGroupName = fc["hidADGName"];
+            var ADCode = fc["hidadCode"];
+            var ADGroupText = fc["txtADText"];
+            var ADGroupHeadline = fc["txtADHeadline"];
+            var ADGroupDesc1 = fc["txtADDesc1"];
+            var ADGroupDesc2 = fc["txtADDesc2"];
+            var ADGroupDespUrl = fc["txtADDespUrl"];
+            var ADGroupFinalUrl = fc["txtADFinalUrl"];
+
+            var AdGroupId = fc["hdnAdGrpId"];
+
+            if (ADCode == "0")
+            {
+                objDBentity.prcCreateAD(CampaignCode, ADGroupCode, ADGroupText, ADGroupHeadline, ADGroupDesc1, ADGroupDesc2, ADGroupDespUrl, ADGroupFinalUrl, objUserInfo.UserID, ADCode);
+                ContentResult.Add("0");
+                ContentResult.Add("1");
+                goto Exitlabel;
+            }
+            else
+            {
+                objDBentity.prcCreateAD(CampaignCode, ADGroupCode, ADGroupText, ADGroupHeadline, ADGroupDesc1, ADGroupDesc2, ADGroupDespUrl, ADGroupFinalUrl, objUserInfo.UserID, ADCode);
+                ContentResult.Add("1");
+                ContentResult.Add("1");
+                goto Exitlabel;
+            }
+        Exitlabel:
+            return Json(ContentResult, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+
+
+
+        public JsonResult getMappedkeyWordsOnDemand(string CampaignCode, string AdGroupCode)
+        {
+            if (CampaignCode == "ALL")
+            {
+                CampaignCode = null;
+            }
+            if (AdGroupCode == "ALL")
+            {
+                AdGroupCode = null;
+            }
+            objUserInfo = (UserLoginInfo)Session["LoginInfo"];
+            var userAdGroup = objDBentity.getMappedkeyWordsOnDemand(objUserInfo.UserID, CampaignCode, AdGroupCode);
+            return Json(userAdGroup, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult CampaignDownloadExcel()
+        {
+            Double Budget = 0;
+            Double Imps = 0;
+            Double Clicks = 0;
+            Double CTR = 0;
+            Double Cost = 0;
+            Double CPC = 0;
+            Double cnver = 0;
+            Double CostCpc = 0;
+            Double CountCamp = 0;
+
+            StringBuilder sb = new StringBuilder();
+            string sFileName = "Campaign" + ".xls";
+            //Bind data list from edmx
+            objUserInfo = (UserLoginInfo)Session["LoginInfo"];
+            var getCampaign = objDBentity.prcGetCampaign(objUserInfo.BatchCode, objUserInfo.AccCode.ToString(),null).ToList();
+            if (getCampaign != null && getCampaign.Any())
+            {
+                var HeaderCSS = ".download-tbl{width: 100 %; border: 0px;}"+
+                    ".download-tbl th{background:#e4e4e4;color:#000; padding: 6px 12px;text-align:center; border:0px;}" +
+                    ".download-tbl td{ border:0px;padding: 6px 12px;}" +
+                    ".download-tbl tr:nth-child(even){background:#f0f1f1;color:#000;}";
+                sb.Append("<head><style>"+ HeaderCSS + "</style></head>");
+                sb.Append("<table border='1' class='download-tbl' style='border:0px; width:100%;'>");
+                sb.Append("<caption>All Campaign List</caption><colgroup align='left'></colgroup><colgroup span='5' align='left'></colgroup>");
+                sb.Append("<thead><tr>");
+                sb.Append("<th>Index</th>");
+                sb.Append("<th>Campaigns</th>");
+                sb.Append("<th>Budget</th>");
+                sb.Append("<th>Impressions</th>");
+
+                sb.Append("<th>Clicks</th>");
+                sb.Append("<th>CTR</th>");
+                sb.Append("<th>Cost</th>");
+                sb.Append("<th>Avg CPC</th>");
+                sb.Append("<th>Conversions</th>");
+                sb.Append("<th>CPC</th>");
+                sb.Append("</tr></thead><tbody>");
+                int inc = 0;
+                foreach (var result in getCampaign)
+                {
+                    CountCamp = getCampaign.Count;
+                    sb.Append("<tr>");
+                    sb.Append("<td align='center' style='width:50px;height:50px;'>" + (++inc) + "</td>");
+
+                    sb.Append("<td align='center' style='width:200px;height:50px;'>" + result.CampaignName + "</td>");
+                    sb.Append("<td align='center' style='width:50px;height:50px;'>" + result.Budget + "</td>");
+                    sb.Append("<td align='center' style='width:50px;height:50px;'>" + result.Impressions + "</td>");
+                    sb.Append("<td align='center' style='width:50px;height:50px;'>" + result.Clicks + "</td>");
+                    sb.Append("<td align='center' style='width:200px;height:50px;'>" + result.CTR + "</td>");
+                    sb.Append("<td align='center' style='width:50px;height:50px;'>" + result.COST + "</td>");
+                    sb.Append("<td align='center' style='width:50px;height:50px;'>" + result.CPC + "</td>");
+                    sb.Append("<td align='center' style='width:50px;height:50px;'>" + result.Conversions + "</td>");
+                    sb.Append("<td align='center' style='width:50px;height:50px;'>" + result.CostPerConversion + "</td>");
+                    sb.Append("</tr>");
+
+                    Budget += Convert.ToDouble(result.Budget);
+                    Imps += Convert.ToDouble(result.Impressions);
+                    Clicks += Convert.ToDouble(result.Clicks);
+                    CTR += Convert.ToDouble(result.CTR);
+                    Cost += Convert.ToDouble(result.COST);
+                    CPC += Convert.ToDouble(result.CPC);
+                    cnver += Convert.ToDouble(result.Conversions);
+                    CostCpc += Convert.ToDouble(result.CostPerConversion);
+
+                }
+                sb.Append("<tr>");
+                sb.Append("<td align='center' style='width:200px;height:50px;'>Total</td>");
+                sb.Append("<td align='center' style='width:50px;height:50px;'>" + Budget + "</td>");
+                sb.Append("<td align='center' style='width:50px;height:50px;'>" + Imps + "</td>");
+                sb.Append("<td align='center' style='width:50px;height:50px;'>" + Clicks + "</td>");
+                sb.Append("<td align='center' style='width:200px;height:50px;'>" + CTR + "</td>");
+                sb.Append("<td align='center' style='width:50px;height:50px;'>" + Cost + "</td>");
+                sb.Append("<td align='center' style='width:50px;height:50px;'>" +  CPC + "</td>");
+                sb.Append("<td align='center' style='width:50px;height:50px;'>" + cnver + "</td>");
+                sb.Append("<td align='center' style='width:50px;height:50px;'>" + CostCpc + "</td>");
+                sb.Append("<td align='center' style='width:50px;height:50px;'></td>");
+                sb.Append("</tr>");
+
+                sb.Append("<tr>");
+                sb.Append("<td align='center' style='width:200px;height:50px;'>Avg</td>");
+                sb.Append("<td align='center' style='width:50px;height:50px;'></td>");
+                sb.Append("<td align='center' style='width:50px;height:50px;'></td>");
+                sb.Append("<td align='center' style='width:50px;height:50px;'></td>");
+                sb.Append("<td align='center' style='width:200px;height:50px;'></td>");
+                sb.Append("<td align='center' style='width:50px;height:50px;'></td>");
+                sb.Append("<td align='center' style='width:50px;height:50px;'></td>");
+                sb.Append("<td align='center' style='width:50px;height:50px;'>" + CPC / CountCamp + "</td>");
+                sb.Append("<td align='center' style='width:50px;height:50px;'></td>");
+                sb.Append("<td align='center' style='width:50px;height:50px;'></td>");
+                sb.Append("</tr>");
+                sb.Append("</tbody></table>");
+            }
+            HttpContext.Response.AddHeader("content-disposition", "attachment; filename=" + sFileName);
+            this.Response.ContentType = "application/vnd.ms-excel";
+            //this.Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+
+            byte[] buffer = System.Text.Encoding.UTF8.GetBytes(sb.ToString());
+            return File(buffer, "application/vnd.ms-excel");
+        }
+        public ActionResult AdGroupDownloadExcel()
+        {
+            Double Budget = 0;
+            Double Imps = 0;
+            Double Clicks = 0;
+            Double CTR = 0;
+            Double Cost = 0;
+            Double CPC = 0;
+            Double cnver = 0;
+            Double CostCpc = 0;
+            Double CountCamp = 0;
+
+            StringBuilder sb = new StringBuilder();
+            string sFileName = "Campaign" + ".xls";
+            //Bind data list from edmx
+            objUserInfo = (UserLoginInfo)Session["LoginInfo"];
+            var getCampaign = objDBentity.prcGetCampaign(objUserInfo.BatchCode, objUserInfo.AccCode.ToString(),null).ToList();
+            if (getCampaign != null && getCampaign.Any())
+            {
+                var HeaderCSS = ".download-tbl{width: 100 %; border: 0px;}" +
+                    ".download-tbl th{background:#e4e4e4;color:#000; padding: 6px 12px;text-align:center; border:0px;}" +
+                    ".download-tbl td{ border:0px;padding: 6px 12px;}" +
+                    ".download-tbl tr:nth-child(even){background:#f0f1f1;color:#000;}";
+                sb.Append("<head><style>" + HeaderCSS + "</style></head>");
+                sb.Append("<table border='1' class='download-tbl' style='border:0px; width:100%;'>");
+                sb.Append("<caption>All Campaign List</caption><colgroup align='left'></colgroup><colgroup span='5' align='left'></colgroup>");
+                sb.Append("<thead><tr>");
+                sb.Append("<th>Index</th>");
+                sb.Append("<th>Campaigns</th>");
+                sb.Append("<th>Budget</th>");
+                sb.Append("<th>Impressions</th>");
+
+                sb.Append("<th>Clicks</th>");
+                sb.Append("<th>CTR</th>");
+                sb.Append("<th>Cost</th>");
+                sb.Append("<th>Avg CPC</th>");
+                sb.Append("<th>Conversions</th>");
+                sb.Append("<th>CPC</th>");
+                sb.Append("</tr></thead><tbody>");
+                int inc = 0;
+                foreach (var result in getCampaign)
+                {
+                    CountCamp = getCampaign.Count;
+                    sb.Append("<tr>");
+                    sb.Append("<td align='center' style='width:50px;height:50px;'>" + (++inc) + "</td>");
+
+                    sb.Append("<td align='center' style='width:200px;height:50px;'>" + result.CampaignName + "</td>");
+                    sb.Append("<td align='center' style='width:50px;height:50px;'>" + result.Budget + "</td>");
+                    sb.Append("<td align='center' style='width:50px;height:50px;'>" + result.Impressions + "</td>");
+                    sb.Append("<td align='center' style='width:50px;height:50px;'>" + result.Clicks + "</td>");
+                    sb.Append("<td align='center' style='width:200px;height:50px;'>" + result.CTR + "</td>");
+                    sb.Append("<td align='center' style='width:50px;height:50px;'>" + result.COST + "</td>");
+                    sb.Append("<td align='center' style='width:50px;height:50px;'>" + result.CPC + "</td>");
+                    sb.Append("<td align='center' style='width:50px;height:50px;'>" + result.Conversions + "</td>");
+                    sb.Append("<td align='center' style='width:50px;height:50px;'>" + result.CostPerConversion + "</td>");
+                    sb.Append("</tr>");
+
+                    Budget += Convert.ToDouble(result.Budget);
+                    Imps += Convert.ToDouble(result.Impressions);
+                    Clicks += Convert.ToDouble(result.Clicks);
+                    CTR += Convert.ToDouble(result.CTR);
+                    Cost += Convert.ToDouble(result.COST);
+                    CPC += Convert.ToDouble(result.CPC);
+                    cnver += Convert.ToDouble(result.Conversions);
+                    CostCpc += Convert.ToDouble(result.CostPerConversion);
+
+                }
+                sb.Append("<tr>");
+                sb.Append("<td align='center' style='width:200px;height:50px;'>Total</td>");
+                sb.Append("<td align='center' style='width:50px;height:50px;'>" + Budget + "</td>");
+                sb.Append("<td align='center' style='width:50px;height:50px;'>" + Imps + "</td>");
+                sb.Append("<td align='center' style='width:50px;height:50px;'>" + Clicks + "</td>");
+                sb.Append("<td align='center' style='width:200px;height:50px;'>" + CTR + "</td>");
+                sb.Append("<td align='center' style='width:50px;height:50px;'>" + Cost + "</td>");
+                sb.Append("<td align='center' style='width:50px;height:50px;'>" + CPC + "</td>");
+                sb.Append("<td align='center' style='width:50px;height:50px;'>" + cnver + "</td>");
+                sb.Append("<td align='center' style='width:50px;height:50px;'>" + CostCpc + "</td>");
+                sb.Append("<td align='center' style='width:50px;height:50px;'></td>");
+                sb.Append("</tr>");
+
+                sb.Append("<tr>");
+                sb.Append("<td align='center' style='width:200px;height:50px;'>Avg</td>");
+                sb.Append("<td align='center' style='width:50px;height:50px;'></td>");
+                sb.Append("<td align='center' style='width:50px;height:50px;'></td>");
+                sb.Append("<td align='center' style='width:50px;height:50px;'></td>");
+                sb.Append("<td align='center' style='width:200px;height:50px;'></td>");
+                sb.Append("<td align='center' style='width:50px;height:50px;'></td>");
+                sb.Append("<td align='center' style='width:50px;height:50px;'></td>");
+                sb.Append("<td align='center' style='width:50px;height:50px;'>" + CPC / CountCamp + "</td>");
+                sb.Append("<td align='center' style='width:50px;height:50px;'></td>");
+                sb.Append("<td align='center' style='width:50px;height:50px;'></td>");
+                sb.Append("</tr>");
+                sb.Append("</tbody></table>");
+            }
+            HttpContext.Response.AddHeader("content-disposition", "attachment; filename=" + sFileName);
+            this.Response.ContentType = "application/vnd.ms-excel";
+            //this.Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+
+            byte[] buffer = System.Text.Encoding.UTF8.GetBytes(sb.ToString());
+            return File(buffer, "application/vnd.ms-excel");
+        }
+        #region Keyword
+        public ActionResult CheckKeywordsToKeywordDataTable(string CampaignCode, string AdGroupCode, string Keywordtxt, string alldata)
+        {
+            if (Session["dtKeyword"] == null)
+            {
+                CreateKeywordDatatable();
+            }
+            else
+            {
+                dtKeyword = (DataTable)Session["dtKeyword"];
+            }
+            UpdateBidValue(alldata);
+            var rowcount = dtKeyword.Rows.Count;
+            objUserInfo = (UserLoginInfo)Session["LoginInfo"];
+            var keywords = objDBentity.prcGetKeywords(Keywordtxt, 1).ToList();
+            var TempKeywordName = "";
+            var TempKeywordCode = "0";
+
+            if (dtKeyword.Rows.Count > 0)
+            {
+                if (keywords.Count > 0)
+                {
+                    TempKeywordCode = Convert.ToString(keywords[0].KeyCode);
+                    var temp1 = isKeywordExistInDT(TempKeywordName, TempKeywordCode, Keywordtxt);
+                    if (!temp1)
+                    {
+                        return Json("Already exist", JsonRequestBehavior.AllowGet);
+                    }
+                }
+                if (keywords.Count <= 0)
+                {
+                    TempKeywordName = Keywordtxt;
+                    var temp1 = isKeywordExistInDT(TempKeywordName, TempKeywordCode, Keywordtxt);
+                    if (!temp1)
+                    {
+                        return Json("Already exist", JsonRequestBehavior.AllowGet);
+                    }
+                }
+            }
+            if (keywords.Count > 0)
+            {
+                objUserInfo = (UserLoginInfo)Session["LoginInfo"];
+                var Temp = objDBentity.prcCheckKeywordFromMapKeywordsAG(keywords[0].KeyCode, CampaignCode, AdGroupCode, Convert.ToString(objUserInfo.UserID)).ToList();
+                if (Temp.Count > 0)
+                {
+                    //foreach (DataRow row in dtKeyword.Rows)
+                    //{
+                    //    if (row["KeywordCode"].ToString() == keywords[0].KeyCode && row["KeywordStatus"].ToString() == "DELETE")
+                    //    {
+                    //        dtKeyword.Rows.Add(rowcount + 1, keywords[0].KeyCode, Keywordtxt, 0, "INSERT", "1");
+                    //        break;
+                    //    }
+                    //    else
+                    //    {
+                    //        return Json("Already exist", JsonRequestBehavior.AllowGet);
+                    //    }
+                    //}
+                    return Json("Already exist", JsonRequestBehavior.AllowGet);
+                    /*Important Note -- Uncomment Code to show functionality on edit and comment line just above one*/
+                }
+                else
+                {
+                    dtKeyword.Rows.Add(rowcount + 1, keywords[0].KeyCode, Keywordtxt, 0, "INSERT", "1");
+                    // return Json(keywords, JsonRequestBehavior.AllowGet);
+                }
+            }
+            else
+            {
+                dtKeyword.Rows.Add(rowcount + 1, "0", Keywordtxt, 0, "INSERT", "0");
+                //return Json(keywords, JsonRequestBehavior.AllowGet);
+            }
+            Session["dtKeyword"] = dtKeyword;
+            string a = JsonConvert.SerializeObject(dtKeyword);
+            return Json(a, JsonRequestBehavior.AllowGet);
+        }
+        public void CreateKeywordDatatable()
+        {
+            if (dtKeyword == null)
+            {
+                dtKeyword = new DataTable();
+                dtKeyword.Clear();
+                DataColumn dc = dtKeyword.Columns.Add("KeywordRowId", typeof(int));
+                dc.AutoIncrement = true;
+                dc.AutoIncrementSeed = 1;
+                dc.AutoIncrementStep = 1;
+                dtKeyword.Columns.Add("KeywordCode", typeof(String));
+                dtKeyword.Columns.Add("KeywordName", typeof(String));
+                dtKeyword.Columns.Add("KeywordBid", typeof(Int32));
+                dtKeyword.Columns.Add("KeywordStatus", typeof(String));
+                dtKeyword.Columns.Add("KeywordFromMaster", typeof(String));
+            }
+        }
+        public bool isKeywordExistInDT(string TempKeywordName, string TempKeywordCode, string userKeywordText)
+        {
+            var temp = "";
+            var status = true;
+            foreach (DataRow row in dtKeyword.Rows)
+            {
+                if (TempKeywordName == "" && TempKeywordCode != "0" && userKeywordText != "")
+                {
+                    temp = row["KeywordCode"].ToString();
+                    if (temp == TempKeywordCode && row["KeywordStatus"].ToString() != "DELETE")
+                    {
+                        status = false;
+                        break;
+                    }
+                }
+                if (TempKeywordName != "" && TempKeywordCode == "0" && userKeywordText != "")
+                {
+                    temp = row["KeywordName"].ToString();
+                    if ((temp.Trim().ToUpper() == TempKeywordName.Trim().ToUpper()) && row["KeywordStatus"].ToString() != "DELETE")
+                    {
+                        status = false;
+                        break;
+                    }
+                }
+            }
+            return status;
+        }
+        public ActionResult deleteKeywordRow(string KeywordRowId, string alldata)
+        {
+            UpdateBidValue(alldata);
+            if (Session["dtKeyword"] != null)
+            {
+                dtKeyword = (DataTable)Session["dtKeyword"];
+                DataRow dr = dtKeyword.Select("KeywordRowId=' " + KeywordRowId + " ' ").FirstOrDefault();
+                if (dr != null)
+                {
+                    dr["KeywordStatus"] = "DELETE";
+                }
+                dtKeyword.AcceptChanges();
+                Session["dtKeyword"] = dtKeyword;
+                string JsonResult = JsonConvert.SerializeObject(dtKeyword);
+                return Json(JsonResult, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(null, JsonRequestBehavior.AllowGet);
+            }
+        }
+        public void ClearKeywordSession()
+        {
+            Session["dtKeyword"] = null;
+        }
+        public void UpdateBidValue(string alldata)
+        {
+            var serializeData = JsonConvert.DeserializeObject<List<KeywordMapping>>(alldata);
+            if (Session["dtKeyword"] != null && serializeData.Count > 0)
+            {
+                dtKeyword = (DataTable)Session["dtKeyword"];
+                for (int i = 0; i < serializeData.Count; i++)
+                {
+                    DataRow dr = dtKeyword.Select("KeywordRowId=' " + serializeData[i].RowId + " ' ").FirstOrDefault();
+                    if (dr != null)
+                    {
+                        dr["KeywordBid"] = serializeData[i].BidValue;
+                    }
+                }
+                dtKeyword.AcceptChanges();
+                Session["dtKeyword"] = dtKeyword;
+            }
+        }
+        [HttpPost]
+        public ActionResult SaveMapKeywords(string CampaignCode, string AdGroupCode, string alldata, string hdnKeywordFlag)
+        {
+            bool status = false;
+            UpdateBidValue(alldata);
+            if (Session["dtKeyword"] != null)
+            {
+                dtKeyword = (DataTable)Session["dtKeyword"];
+                objUserInfo = (UserLoginInfo)Session["LoginInfo"];
+                if (hdnKeywordFlag == "CREATE")
+                {
+                    foreach (DataRow row in dtKeyword.Rows)
+                    {
+                        if (row["KeywordStatus"].ToString() != "DELETE")
+                        {
+                            var KeywordName = row["KeywordName"].ToString();
+                            var KeywordCode = row["KeywordCode"].ToString();
+                            var KeywordBid = row["KeywordBid"].ToString();
+                            var KeywordFromMaster = row["KeywordFromMaster"].ToString();
+                            objDBentity.prcCreateMappedKeywords(KeywordName, KeywordCode, CampaignCode, AdGroupCode, KeywordBid, Convert.ToString(objUserInfo.UserID), Convert.ToInt32(KeywordFromMaster));
+                        }
+                    }
+                }
+                if (hdnKeywordFlag == "EDIT")
+                {
+                    foreach (DataRow row in dtKeyword.Rows)
+                    {
+                        if (row["KeywordStatus"].ToString() == "DELETE")
+                        {
+                            var KeywordName = row["KeywordName"].ToString();
+                            var KeywordCode = row["KeywordCode"].ToString();
+                            var KeywordBid = row["KeywordBid"].ToString();
+                            var KeywordFromMaster = row["KeywordFromMaster"].ToString();
+                            var KeywordStatus = row["KeywordStatus"].ToString();
+                            objDBentity.prcUpdateMappedKeywords(KeywordName, KeywordCode, CampaignCode, AdGroupCode, KeywordBid, Convert.ToString(objUserInfo.UserID), Convert.ToInt32(KeywordFromMaster), KeywordStatus);
+                        }
+                    }
+                    foreach (DataRow row in dtKeyword.Rows)
+                    {
+                        if (row["KeywordStatus"].ToString() != "DELETE")
+                        {
+                            var KeywordName = row["KeywordName"].ToString();
+                            var KeywordCode = row["KeywordCode"].ToString();
+                            var KeywordBid = row["KeywordBid"].ToString();
+                            var KeywordFromMaster = row["KeywordFromMaster"].ToString();
+                            var KeywordStatus = row["KeywordStatus"].ToString();
+                            objDBentity.prcUpdateMappedKeywords(KeywordName, KeywordCode, CampaignCode, AdGroupCode, KeywordBid, Convert.ToString(objUserInfo.UserID), Convert.ToInt32(KeywordFromMaster), KeywordStatus);
+                        }
+                    }
+                }
+            }
+            ClearKeywordSession();
+            status = true;
+            return Json(status, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult getSingleKeywordDetails(string CampaignCode, string AdGroupCode)
+        {
+            ClearKeywordSession();
+            CreateKeywordDatatable();
+            objUserInfo = (UserLoginInfo)Session["LoginInfo"];
+            var rowcount = dtKeyword.Rows.Count;
+            var keywords = objDBentity.getSingleKeywordDetails(CampaignCode, AdGroupCode, objUserInfo.UserID).ToList();
+            for (int i = 0; i < keywords.Count; i++)
+            {
+                if (keywords[i].KeywordFromMaster == true)
+                {
+                    dtKeyword.Rows.Add((i + 1), keywords[i].KeywordCode, keywords[i].KeywordName, keywords[i].KeywordBid, "UPDATE", "1");
+                }
+                if (keywords[i].KeywordFromMaster == false)
+                {
+                    dtKeyword.Rows.Add((i + 1), keywords[i].KeywordCode, keywords[i].KeywordName, keywords[i].KeywordBid, "UPDATE", "0");
+                }
+            }
+            dtKeyword.AcceptChanges();
+            Session["dtKeyword"] = dtKeyword;
+            string JsonResult = JsonConvert.SerializeObject(dtKeyword);
+            return Json(JsonResult, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+        #region KeywordPlanner
+        public ActionResult Tools()
+        {
+            GetAccountDetails();
+            return View();
+        }
+        public ActionResult DownloadKeyword()
+        {
+            GetAccountDetails();
+            return View();
+        }
+        public ActionResult KeyPlanDownloadTemplateExcel()
+        {
+            StringBuilder sb = new StringBuilder();
+            string sFileName = "KeywordPlannerTemplate" + ".xls";
+
+            sb.Append("<table>");
+            sb.Append("<thead><tr>");
+            sb.Append("<th align='center' style='width:200px;background-color:#fc9003;'><b>Keyword Name</b></th>");
+            sb.Append("</tr></thead>");
+            sb.Append("</table>");
+
+            HttpContext.Response.AddHeader("content-disposition", "attachment; filename=" + sFileName);
+            this.Response.ContentType = "application/vnd.ms-excel";
+            //this.Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+
+            byte[] buffer = System.Text.Encoding.UTF8.GetBytes(sb.ToString());
+            return File(buffer, "application/vnd.ms-excel");
+        }
+        [HttpPost]
+        public ActionResult SaveKeyPlanExcel(FormCollection fc, IEnumerable<HttpPostedFileBase> excelfile)
+        {
+            objUserInfo = (UserLoginInfo)Session["LoginInfo"];
+            var hjbh = fc["hdnexcelCampaignValue"].ToUpper();
+            var hjbh1 = fc["hdnexcelAdGroupValue"].ToUpper();
+
+            var ExcelImagePath = "";
+            var FileExtension = "";
+            var fileName = "";
+            var newPath = "";
+            DataSet ds = new DataSet();
+            KeyDtl = new Whisker.Areas.Admin.Models.Keyword();
+            HttpPostedFileBase UploadedFile = excelfile.FirstOrDefault();
+            List<string> ContentResult = new List<string>();
+            if (UploadedFile == null || fc["hdnIdenType"].ToUpper() != "KEYPLAN")
+            {
+                ContentResult.Add("Excel file is required");//to show error calidation message
+                ContentResult.Add("0");                     //to show response of stored procedure has not executed
+                goto Exitlabel;
+            }
+            if (fc["hdnexcelCampaignValue"].ToUpper() == "ALL")
+            {
+                ContentResult.Add("Please select Campaign");
+                ContentResult.Add("0");
+                goto Exitlabel;
+            }
+            if (fc["hdnexcelAdGroupValue"].ToUpper() == "ALL")
+            {
+                ContentResult.Add("Please select AdGroup");
+                ContentResult.Add("0");                     
+                goto Exitlabel;
+            }
+            if (UploadedFile != null)
+            {
+                if (UploadedFile.ContentLength > 0)
+                {
+                    int MaxContentLength = 1024 * 1024 * 4; //Size = 4 MB
+                    string[] AllowedFileExtensions = new string[] { ".xls", ".xlsx", ".csv" };
+                    if (!AllowedFileExtensions.Contains
+                       (UploadedFile.FileName.Substring(UploadedFile.FileName.LastIndexOf('.'))))
+                    {
+                        ContentResult.Add("Choose valid file types are: " + string.Join(", ", AllowedFileExtensions));//to show error calidation message
+                        ContentResult.Add("0");                           //to show response of stored procedure has not executed
+                        goto Exitlabel;
+
+                    }
+                    else if (UploadedFile.ContentLength > MaxContentLength)
+                    {
+                        ContentResult.Add("Your file is too large, maximum allowed size is: " + MaxContentLength + " MB");//to show error calidation message
+                        ContentResult.Add("0");                           //to show response of stored procedure has not executed
+                        goto Exitlabel;
+                    }
+                    fileName = Path.GetFileName(UploadedFile.FileName);
+                    newPath = DateTime.Now.ToString("yyyyMMddHHmmss") + '_' + fileName;
+                    FileExtension = (UploadedFile.FileName.Substring(UploadedFile.FileName.LastIndexOf('.')));
+                }
+            }
+            ExcelImagePath = "/ExcelFiles/" + newPath;
+            if (fc["hdnIdenType"].ToUpper() == "KEYPLAN")
+            {
+                var path = Path.Combine(Server.MapPath("~/ExcelFiles/"), newPath);
+                if (System.IO.File.Exists(path))
+                {
+                    System.IO.File.Delete(path);
+                }
+                UploadedFile.SaveAs(path);
+                string excelConnectionString = string.Empty;
+                excelConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + path + ";Extended Properties=\"Excel 12.0;HDR=Yes;IMEX=2\"";
+                //connection String for xls file format.
+                if (FileExtension == ".xls")
+                {
+                    excelConnectionString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + path + ";Extended Properties=\"Excel 8.0;HDR=Yes;IMEX=2\"";
+                }
+                //connection String for xlsx file format.
+                else if (FileExtension == ".xlsx")
+                {
+                    excelConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + path + ";Extended Properties=\"Excel 12.0;HDR=Yes;IMEX=2\"";
+                }
+                //Create Connection to Excel work book and add oledb namespace
+                OleDbConnection excelConnection = new OleDbConnection(excelConnectionString);
+                excelConnection.Open();
+                DataTable dt = new DataTable();
+
+                dt = excelConnection.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, null);
+                if (dt == null)
+                {
+                    return null;
+                }
+                String[] excelSheets = new String[dt.Rows.Count];
+                int t = 0;
+                int mailuid = 0;
+                //excel data saves in temp file here.
+                foreach (DataRow row in dt.Rows)
+                {
+                    excelSheets[t] = row["TABLE_NAME"].ToString();
+                    t++;
+                }
+                OleDbConnection excelConnection1 = new OleDbConnection(excelConnectionString);
+
+                string query = string.Format("Select * from [{0}]", excelSheets[0]);
+                using (OleDbDataAdapter dataAdapter = new OleDbDataAdapter(query, excelConnection1))
+                {
+                    dataAdapter.Fill(ds);
+                }
+                List<string> TempContentResult = new List<string>();
+                List<string> InCorrectRows = new List<string>();
+                int unsuccessfulCount = 0;
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                {
+                    KeyDtl.KeywordName = ds.Tables[0].Rows[i]["Keyword Name"].ToString().Trim();
+                    KeyDtl.KeywordSuggestBid = ds.Tables[0].Rows[i]["Bid"].ToString();
+                    TempContentResult = CheckValidKeyword(Convert.ToInt32(fc["hdnexcelCampaignValue"]), Convert.ToInt32(fc["hdnexcelAdGroupValue"]));
+                    if (TempContentResult[0] == "1")
+                    {
+                        var ghg = TempContentResult[1];
+                        var ghg1 = TempContentResult[2];
+                        if(TempContentResult[2] == "0")
+                        {
+                            //Insert New Row into MappedKeywordsAg Table
+                            objDBentity.prcCreateMappedKeywords("", TempContentResult[1], fc["hdnexcelCampaignValue"].ToString(), fc["hdnexcelAdGroupValue"].ToString(), KeyDtl.KeywordSuggestBid, Convert.ToString(objUserInfo.UserID),1);
+                        }
+                        if (TempContentResult[2] != "0")
+                        {
+                            //Update  Row into MappedKeywordsAg Table
+                            objDBentity.prcUpdateMappedKeywords("", TempContentResult[1], fc["hdnexcelCampaignValue"].ToString(), fc["hdnexcelAdGroupValue"], KeyDtl.KeywordSuggestBid, Convert.ToString(objUserInfo.UserID),1, "UPDATEKEYPLAN");
+                        }
+                        //objDBentity.prcCreateTrainer(stdtDtl.FirstName, stdtDtl.MiddleName, stdtDtl.LastName, stdtDtl.Location, stdtDtl.Email, stdtDtl.Contact, stdtDtl.LocationCode, null, "INSERT");
+                    }
+                    if (TempContentResult[0] == "0")
+                    {
+                        InCorrectRows.Add((i + 1).ToString());
+                        unsuccessfulCount++;
+                    }
+                }
+                ContentResult.Add("1");
+                ContentResult.Add("Total rows " + ds.Tables[0].Rows.Count);
+                ContentResult.Add("Successful rows " + (Convert.ToInt32(ds.Tables[0].Rows.Count) - unsuccessfulCount).ToString());
+                ContentResult.Add("Unsuccessful rows " + InCorrectRows.Count);
+                if (InCorrectRows.Count > 0)
+                {
+                    ContentResult.Add("Incorrect rows index are  " + string.Join(", ", InCorrectRows));
+                }
+                else
+                {
+                    ContentResult.Add("");
+                }
+                excelConnection.Close();
+                // objDBentity.prcCreateAccount(accDtl.AccountName, accDtl.ImagePath, accDtl.AccountDescription, null, "INSERT");
+                // ContentResult.Add("0");//to show response of create message
+                //  ContentResult.Add("1");//to show response of stored procedure working correctly
+            }
+        Exitlabel:
+            return Json(ContentResult, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public ActionResult GetKeyPlanExcel(FormCollection fc, IEnumerable<HttpPostedFileBase> excelfile1)
+        {
+            objUserInfo = (UserLoginInfo)Session["LoginInfo"];
+            var ExcelImagePath = "";
+            var FileExtension = "";
+            var fileName = "";
+            var newPath = "";
+            DataTable dt = new DataTable();
+            KeyDtl = new Whisker.Areas.Admin.Models.Keyword();
+            HttpPostedFileBase UploadedFile = excelfile1.FirstOrDefault();
+            List<string> ContentResult = new List<string>();
+            if (UploadedFile == null || fc["hdnIdenType1"].ToUpper() != "GET_KEYPLAN")
+            {
+                ContentResult.Add("Excel file is required");//to show error calidation message
+                ContentResult.Add("0");                     //to show response of stored procedure has not executed
+                goto Exitlabel;
+            }
+            if (UploadedFile != null)
+            {
+                if (UploadedFile.ContentLength > 0)
+                {
+                    int MaxContentLength = 1024 * 1024 * 4; //Size = 4 MB
+                    string[] AllowedFileExtensions = new string[] { ".xls", ".xlsx", ".csv" };
+                    if (!AllowedFileExtensions.Contains
+                       (UploadedFile.FileName.Substring(UploadedFile.FileName.LastIndexOf('.'))))
+                    {
+                        ContentResult.Add("Choose valid file types are: " + string.Join(", ", AllowedFileExtensions));//to show error calidation message
+                        ContentResult.Add("0");                           //to show response of stored procedure has not executed
+                        goto Exitlabel;
+
+                    }
+                    else if (UploadedFile.ContentLength > MaxContentLength)
+                    {
+                        ContentResult.Add("Your file is too large, maximum allowed size is: " + MaxContentLength + " MB");//to show error calidation message
+                        ContentResult.Add("0");                           //to show response of stored procedure has not executed
+                        goto Exitlabel;
+                    }
+                    fileName = Path.GetFileName(UploadedFile.FileName);
+                    newPath = DateTime.Now.ToString("yyyyMMddHHmmss") + '_' + fileName;
+                    FileExtension = (UploadedFile.FileName.Substring(UploadedFile.FileName.LastIndexOf('.')));
+                }
+            }
+            ExcelImagePath = "/ExcelFiles/" + newPath;
+            if (fc["hdnIdenType1"].ToUpper() == "GET_KEYPLAN")
+            {
+                var path = Path.Combine(Server.MapPath("~/ExcelFiles/"), newPath);
+                if (System.IO.File.Exists(path))
+                {
+                    System.IO.File.Delete(path);
+                }
+                UploadedFile.SaveAs(path);
+                string excelConnectionString = string.Empty;
+                excelConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + path + ";Extended Properties=\"Excel 12.0;HDR=Yes;IMEX=2\"";
+                //connection String for xls file format.
+                if (FileExtension == ".xls")
+                {
+                    excelConnectionString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + path + ";Extended Properties=\"Excel 8.0;HDR=Yes;IMEX=2\"";
+                }
+                //connection String for xlsx file format.
+                else if (FileExtension == ".xlsx")
+                {
+                    excelConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + path + ";Extended Properties=\"Excel 12.0;HDR=Yes;IMEX=2\"";
+                }
+                //Create Connection to Excel work book and add oledb namespace
+                OleDbConnection excelConnection = new OleDbConnection(excelConnectionString);
+
+                excelConnection.Open();
+                
+                DataTable dt2 = new DataTable();
+
+                dt2 = excelConnection.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, null);
+                if (dt2 == null)
+                {
+                    return null;
+                }
+                String[] excelSheets = new String[dt2.Rows.Count];
+                int t = 0;
+                int mailuid = 0;
+                //excel data saves in temp file here.
+                foreach (DataRow row in dt2.Rows)
+                {
+                    excelSheets[t] = row["TABLE_NAME"].ToString();
+                    t++;
+                }
+                OleDbConnection excelConnection1 = new OleDbConnection(excelConnectionString);
+
+                string query = string.Format("Select * from [{0}]", excelSheets[0]);
+                using (OleDbDataAdapter dataAdapter = new OleDbDataAdapter(query, excelConnection1))
+                {
+                    dataAdapter.Fill(dt);
+                }
+                List<string> TempContentResult = new List<string>();
+                List<string> InCorrectRows = new List<string>();
+                int unsuccessfulCount = 0;
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    KeyDtl.KeywordName = dt.Rows[i]["Keyword Name"].ToString().Trim();
+                    if (string.IsNullOrEmpty(KeyDtl.KeywordName) == true)
+                    {
+                        InCorrectRows.Add((i + 1).ToString());
+                        unsuccessfulCount++;
+                    }
+                }
+                DataTable dt1 = new DataTable();
+                var getKeywords = objDBentity.KeywordMasters.Where(x => x.IsActive == true).OrderByDescending(x => x.KeyCode).ToList();
+                
+
+                // Create a table from the query.
+
+                dt1.Columns.Add("KeyCode");
+                dt1.Columns.Add("Keyword Name");
+                dt1.Columns.Add("SuggestedBid");
+                foreach (var item in getKeywords)
+                {
+                    var row = dt1.NewRow();
+                    row["KeyCode"] = item.KeyCode;
+                    row["Keyword Name"] = item.KeyName;
+                    row["SuggestedBid"] = item.SuggestedBid;
+
+                    dt1.Rows.Add(row);
+                }
+
+                DataTable resultTable = new DataTable();
+                resultTable.Clear();
+                resultTable.Columns.Add("UploadedKeyName"); //coming from excel by the user
+                resultTable.Columns.Add("KeyCode");
+                resultTable.Columns.Add("DBKeyName"); // from database
+                resultTable.Columns.Add("SuggestedBid");
+                resultTable.Columns.Add("MatchCount");
+
+                double perMatch = 0.0;
+
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    for (int j = 0; j < dt1.Rows.Count; j++)
+                    {
+                        
+
+                        perMatch = PercentMatchNew(dt1.Rows[j]["Keyword Name"].ToString(), dt.Rows[i]["Keyword Name"].ToString());
+                        if (perMatch > 0)
+                        {
+                            DataRow dr = resultTable.NewRow();
+                            dr["UploadedKeyName"] = dt.Rows[i]["Keyword Name"];
+                            dr["KeyCode"] = dt1.Rows[j]["KeyCode"];
+                            dr["DBKeyName"] = dt1.Rows[j]["Keyword Name"];
+                            dr["SuggestedBid"] = dt1.Rows[j]["SuggestedBid"];
+                            dr["MatchCount"] = perMatch;
+                            resultTable.Rows.Add(dr);
+                        }
+                    }
+                }
+
+
+
+
+
+
+
+
+
+                ContentResult.Add("1");
+                ContentResult.Add("Total rows " + dt.Rows.Count);
+                ContentResult.Add("Successful rows " + (Convert.ToInt32(dt.Rows.Count) - unsuccessfulCount).ToString());
+                ContentResult.Add("Unsuccessful rows " + InCorrectRows.Count);
+                if (InCorrectRows.Count > 0)
+                {
+                    ContentResult.Add("Incorrect rows index are  " + string.Join(", ", InCorrectRows));
+                }
+                else
+                {
+                    ContentResult.Add("");
+                }
+                excelConnection.Close();
+                // objDBentity.prcCreateAccount(accDtl.AccountName, accDtl.ImagePath, accDtl.AccountDescription, null, "INSERT");
+                // ContentResult.Add("0");//to show response of create message
+                //  ContentResult.Add("1");//to show response of stored procedure working correctly
+            }
+        Exitlabel:
+            return Json(ContentResult, JsonRequestBehavior.AllowGet);
+        }
+        private double PercentMatchNew(string source, string target)
+        {
+            if ((source == null) || (target == null)) return 0.0;
+            if ((source.Length == 0) || (target.Length == 0)) return 0.0;
+            if (source == target) return 1.0;
+
+            double matchcount = 0.0;
+            double tempCount = 0.0;
+            string[] sourceArr = source.Split(' ');
+            string[] targetArr = target.Split(' ');
+            for (int i = 0; i < targetArr.Length; i++)
+            {
+                if (source.ToLower().IndexOf(targetArr[i].ToLower()) != -1)
+                {
+
+                    //double r = ((double)targetArr[i].Length / (double)source.Length);
+                    //tempCount = tempCount + r;
+
+                    tempCount = 0.0;
+                    for (int j = 0; j < sourceArr.Length; j++)
+                    {
+                        if (sourceArr[j].ToLower().IndexOf(targetArr[i].ToLower()) != -1)
+                        {
+                            double r = ((double)targetArr[i].Length / (double)sourceArr[j].Length);
+                            tempCount = tempCount + r;
+                        }
+                    }
+                }
+
+                else
+                {
+
+                    for (int j = 0; j < sourceArr.Length; j++)
+                    {
+
+
+                        if (targetArr[i].ToLower().IndexOf(sourceArr[j].ToLower()) != -1)
+                        {
+                            double r = ((double)sourceArr[j].Length / (double)targetArr[i].Length);
+                            tempCount = tempCount + r;
+                        }
+
+
+                    }
+                }
+                if (tempCount > 0)
+                {
+                    matchcount = matchcount + tempCount;
+                }
+            }
+
+            if (sourceArr.Length > targetArr.Length)
+            {
+                return matchcount / (double)sourceArr.Length;
+            }
+            else
+            {
+                return matchcount / (double)targetArr.Length;
+            }
+
+
+        }
+        public List<string> CheckValidKeyword(Int32 CampaignCode, Int32 AdGroupCode)
+        {
+            //1 means true and zero means false
+            List<string> ContentResult = new List<string>();
+            if (string.IsNullOrEmpty(KeyDtl.KeywordName) == true)
+            {
+                ContentResult.Add("0");
+                ContentResult.Add("");
+                goto Exitlabel;
+            }
+            if (string.IsNullOrEmpty(KeyDtl.KeywordSuggestBid) == true)
+            {
+                ContentResult.Add("0");
+                ContentResult.Add("");
+                goto Exitlabel;
+            }
+            int value = 0;
+            if (!int.TryParse(KeyDtl.KeywordSuggestBid, out value))
+            {
+                ContentResult.Add("0");
+                ContentResult.Add("");
+                goto Exitlabel;
+            }
+            var TempResult1 = cmnF.GetIntegerPrimaryKeyOnDataExist("KeywordMaster", "KeyName", KeyDtl.KeywordName, "KeyCode");
+            if (string.IsNullOrEmpty(TempResult1) == true)
+            {
+                ContentResult.Add("0");
+                ContentResult.Add("");
+                goto Exitlabel;
+            }
+            KeyDtl.KeywordCode = TempResult1;
+            var TempResult2 = cmnF.GetPrimaryKeyOnDataExistInMappedKeywordsAg(CampaignCode, AdGroupCode, Convert.ToInt32(KeyDtl.KeywordCode));
+
+            KeyDtl.FromMappedKeywordAg = TempResult2;
+            ContentResult.Add("1");
+            ContentResult.Add(KeyDtl.KeywordCode);
+            ContentResult.Add(KeyDtl.FromMappedKeywordAg);
+        Exitlabel:
+            return ContentResult;
+        }
+        #endregion
+        private ActionResult GetAccountDetails()
+        {
+            if (Session["LoginInfo"] == null)
+            {
+                return RedirectToRoute("default");
+            }
+            else
+            {
+                objUserInfo = (UserLoginInfo)Session["LoginInfo"];
+                string unicornName = objUserInfo.EMAILID;
+                var userInfo = objDBentity.prcGetUserDetails(unicornName).FirstOrDefault();
+                ViewBag.FName = userInfo.FirstName;
+                ViewBag.AccCode = userInfo.AccCode;
+                ViewBag.AccName = userInfo.AccName;
+                ViewBag.ImagePath = userInfo.ImagePath;
+                ViewBag.Description = userInfo.Description;
+                ViewBag.AccFullName = userInfo.AccFullName;
+                ViewBag.UserID = userInfo.UserID;
+                return null;
+            }
+        }
+        [HttpPost]
+        public ActionResult GoForAuction(string Status)
+        {
+            objUserInfo = (UserLoginInfo)Session["LoginInfo"];
+            bool status = false;
+            var RFAStatus = objDBentity.CheckRFAStatus(Convert.ToString(objUserInfo.AccCode), Convert.ToString(objUserInfo.UserID)).ToList();
+            if (RFAStatus.Count <= 0)
+            {
+                status = true;
+                if (Status == "INSERT")
+                {
+                    var nvdehj = objDBentity.RFAIniateByStudent(Convert.ToString(objUserInfo.AccCode), Convert.ToString(objUserInfo.UserID));
+                }
+            }
+            if (RFAStatus.Count > 0)
+            {
+                objUserInfo.Status = "YSRFA"; //YSRFA means Yes Student RFA (Go For Auction has been done)
+                Session["LoginInfo"] = objUserInfo;
+            }
+            return Json(status, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+
+
+    }
+}

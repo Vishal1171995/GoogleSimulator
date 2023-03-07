@@ -1,0 +1,146 @@
+﻿@{
+    Layout = "~/Areas/Admin/Views/Shared/Admin_Layout.cshtml";
+}
+<html>
+<body>
+    <div class="admin">
+
+        <div class="container">
+
+            <div class="row">
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+
+                    <p>
+                        Lorem ipsum dolor sit amet, omnes noster atomorum ius id, omnis integre an pro. Liber bonorum deserunt vim no. Iriure regione ut quo. His utamur denique vituperatoribus in. Est ut fierent
+                        splendide incorrupte, pro an unum partiendo contentiones.His utamur denique vituperatoribus in. Est ut fierent
+                        splendide incorrupte, pro an unum partiendo contentiones.
+                    </p>
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+    <div class="admin-tab">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <ul class="nav nav-tabs">
+                        <li id="Batches2"><a href="/Admin/Manage/Batches">Batches </a> <img class="arrow" src="~/Content/images/arrow.png" alt="arrow" /></li>
+                        <li id="Trainers2"><a href="/Admin/Manage/Trainers">Trainers</a> <img class="arrow" src="~/Content/images/arrow.png" alt="arrow" /></li>
+                        <li id="students2"><a href="/Admin/Manage/Students">Students</a> <img class="arrow" src="~/Content/images/arrow.png" alt="arrow" /></li>
+                        <li id="keywords2"><a href="/Admin/Manage/Keywords">Keywords</a> <img class="arrow" src="~/Content/images/arrow.png" alt="arrow" /></li>
+                        <li id="Phrase2"><a href="/Admin/Manage/Phrases">Phrases</a>  <img class="arrow" src="~/Content/images/arrow.png" alt="arrow" /></li>
+                        <li id="accounts2"><a href="/Admin/Manage/Accounts">Accounts</a> <img class="arrow" src="~/Content/images/arrow.png" alt="arrow" /></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--import to excel-->
+    <div class="modal fade in" id="ModalExcelUpload" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h4 id="TitlePopupExcel" class="modal-title">Import From Excel</h4>
+                </div>
+                <form enctype="multipart/form-data" id="excelUpload">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="form-group">
+
+                                <div class="col-xs-12 col-md-12">
+                                    <div class="form-group">
+
+                                        <div class="fileinput-button">
+                                            <input type="file" name="excelfile" id="excelfile" class="">
+                                            <div class="error-green">Accepted file types are: .xls, .xlsx, .csv</div>
+                                            @*<label for="imageUpload" class="file-btn">  Upload Excel</label>*@
+                                            @*<input type="button" class="uplaod-button" value="Upload">*@
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+
+
+
+                        </div>
+
+                        <div class="clearfix"></div>
+                        <div id="divExcelNotify" class="error-red erroor-boder">Upload valid file</div>
+                        <input type="hidden" id="hdnIdenType" value="0" name="hdnIdenType" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default cancel" data-dismiss="modal">Cancel</button>
+                        <button type="submit" id="btnUploadExcel" name="btnUploadExcel" value="" class="btn btn-default save" onclick="return ExcelValidation();">Save</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="ModalExcelSuccess" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="success-message"> <i class="fa fa-smile-o" aria-hidden="true"></i> File Successfully upload</div>
+                    <br />
+                    <h5 id="ExcelSuccessHead1" class="modal-title"></h5>
+                    <h5 id="ExcelSuccessHead2" class="modal-title"></h5>
+                    <h5 id="ExcelSuccessHead3" class="modal-title"></h5>
+                    <h5 id="ExcelSuccessHead4" class="modal-title"></h5>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" style="width:100% !important" class="btn btn-default cancel" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @RenderBody()
+</body>
+</html>
+<script>
+    function ClearExcelPopup() {
+        $('#excelfile').val('');
+        $('#divExcelNotify').text('Upload valid file');
+        $('#divExcelNotify').hide();
+    }
+    function ShowPopup() {
+        $('#ModalExcelUpload').modal('show');
+    }
+    function HidePopup() {
+        $('#ModalExcelUpload').modal('hide');
+    }
+    function EmptyHiddenField() {
+        $('#hdnIdenType').val('0');
+    }
+    function CloseExcelPopup(data) {
+        debugger;
+        var JsonObj = data[0];
+        $('#divExcelNotify').text(data[0]);
+        $('#divExcelNotify').show();
+        fadeOut("divExcelNotify");
+        if (data[0] == "1") {
+            $('#ExcelSuccessHead1').text(data[1]);
+            $('#ExcelSuccessHead2').text(data[2]);
+            $('#ExcelSuccessHead3').text(data[3]);
+            $('#ExcelSuccessHead4').text(data[4]);
+            ClearExcelPopup();
+            $('#divExcelNotify').hide();
+            $('#ModalExcelSuccess').modal('show');
+            HidePopup();
+            $('#hdnIdenType').val('0');
+        }
+    }
+</script>

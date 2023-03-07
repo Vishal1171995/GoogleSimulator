@@ -1,0 +1,317 @@
+﻿@{
+    Layout = "~/Areas/Admin/Views/Shared/Admin_Layout.cshtml";
+
+}
+<div class="admin">
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+
+                <p>
+                    Lorem ipsum dolor sit amet, omnes noster atomorum ius id, omnis integre an pro. Liber bonorum deserunt vim no. Iriure regione ut quo. His utamur denique vituperatoribus in. Est ut fierent
+                    splendide incorrupte, pro an unum partiendo contentiones.His utamur denique vituperatoribus in. Est ut fierent
+                    splendide incorrupte, pro an unum partiendo contentiones.
+                </p>
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+<div class="admin-tab">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="/Admin/Manage/Index">Batches </a> <img class="arrow" src="~/Content/images/arrow.png" alt="arrow" /></li>
+                    <li><a href="/Admin/Manage/ShowTrainers">Trainers</a> <img class="arrow" src="~/Content/images/arrow.png" alt="arrow" /></li>
+                    <li><a href="#students2">Students</a> <img class="arrow" src="~/Content/images/arrow.png" alt="arrow" /></li>
+                    <li><a href="#keywords2">Keywords</a> <img class="arrow" src="~/Content/images/arrow.png" alt="arrow" /></li>
+                    <li><a href="#phrases2">Phrases</a>  <img class="arrow" src="~/Content/images/arrow.png" alt="arrow" /></li>
+                    <li><a href="#accounts2">Accounts</a> <img class="arrow" src="~/Content/images/arrow.png" alt="arrow" /></li>
+                </ul>
+
+                <div class="tab-content">
+
+                    <div id="batches2" class="tab-pane fade in active">
+                        <div class="admin-manage-header">
+                            <div class="row">
+                                <div class="col-md-4"><h3>Current Batches</h3></div>
+
+                                <div class="col-md-8 text-right campaings-nav">
+                                    <select>
+                                        <option>Current Batches</option>
+                                    </select>
+                                    <select>
+                                        <option>Trainer</option>
+                                    </select>
+
+                                    <select>
+                                        <option>Location</option>
+                                    </select>
+
+                                    <a href="#" class="popup-btn" data-toggle="modal" data-target="#myModal"><img src="/content/images/plus-icon.png" alt="icon" />Add new Batch</a>
+
+
+
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+
+                                    <div class="campaings-table-border table-responsive">
+
+                                        <table>
+
+                                            <thead>
+
+                                                <tr>
+
+                                                    <th>Batches</th>
+                                                    <th>Trainers</th>
+                                                    <th>Students</th>
+                                                    <th>Locations</th>
+                                                    <th>Address</th>
+                                                    <th>Dates</th>
+                                                    <th>Time</th>
+                                                    <th colspan="2"></th>
+
+
+                                                </tr>
+
+
+                                            </thead>
+
+
+                                            <tbody>
+
+                                                <tr>
+
+                                                    <td><a href="#">Batch 1</a></td>
+                                                    <td>Ajay R Nair</td>
+                                                    <td>54</td>
+                                                    <td>Microsoft</td>
+                                                    <td>DLF Pahse 2, Gurgoan</td>
+                                                    <td>15-02-2016</td>
+                                                    <td>11:30 AM</td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+
+
+                                                </tr>
+                                                <tr>
+
+                                                    <td><a href="#">Batch 2</a></td>
+                                                    <td>-</td>
+                                                    <td>-</td>
+                                                    <td>Microsoft</td>
+                                                    <td>DLF Pahse 2, Gurgoan</td>
+                                                    <td>15-02-2016</td>
+                                                    <td>11:30 AM</td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+
+
+                                                </tr>
+                                                <tr>
+
+                                                    <td><a href="#">Batch 3</a></td>
+                                                    <td>Rajeev Ranjan</td>
+                                                    <td>-</td>
+                                                    <td>Microsoft</td>
+                                                    <td>DLF Pahse 2, Gurgoan</td>
+                                                    <td>15-02-2016</td>
+                                                    <td>11:30 AM</td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+
+
+                                                </tr>
+                                                <tr>
+
+                                                    <td><a href="#">Batch 4</a></td>
+                                                    <td>Amit</td>
+                                                    <td>40</td>
+                                                    <td>Microsoft</td>
+                                                    <td>DLF Pahse 2, Gurgoan</td>
+                                                    <td>15-02-2016</td>
+                                                    <td>11:30 AM</td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+
+
+                                                </tr>
+                                                <tr>
+
+                                                    <td><a href="#">Batch 5</a></td>
+                                                    <td>Vibhesh</td>
+                                                    <td>-</td>
+                                                    <td>Microsoft</td>
+                                                    <td>DLF Pahse 2, Gurgoan</td>
+                                                    <td>15-02-2016</td>
+                                                    <td>11:30 AM</td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+
+
+                                                </tr>
+                                                <tr>
+
+                                                    <td><a href="#">Batch 6</a></td>
+                                                    <td>-</td>
+                                                    <td>25</td>
+                                                    <td>Microsoft</td>
+                                                    <td>DLF Pahse 2, Gurgoan</td>
+                                                    <td>15-02-2016</td>
+                                                    <td>11:30 AM</td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+
+                                                </tr>
+                                                <tr>
+
+                                                    <td><a href="#">Batch 7</a></td>
+                                                    <td>Ajay R Nair</td>
+                                                    <td>12</td>
+                                                    <td>Microsoft</td>
+                                                    <td>DLF Pahse 2, Gurgoan</td>
+                                                    <td>15-02-2016</td>
+                                                    <td>11:30 AM</td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+                                                </tr>
+
+
+                                            </tbody>
+
+                                        </table>
+
+
+
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+</div>
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Add New Batch</h4>
+            </div>
+            <form action="" method="post">
+                <div class="modal-body">
+
+                    <table>
+
+                        <tr>
+
+                            <td>Batch Name</td>
+                            <td>
+                                <div class="form-group">
+                                    <input type="text" class="form-control">
+
+                                </div>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>Place </td>
+                            <td>
+                                <div class="form-group">
+                                    <input type="text" class="form-control">
+
+                                </div>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>Address</td>
+                            <td>
+                                <div class="form-group">
+                                    <input type="text" class="form-control">
+
+                                </div>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td>Date</td>
+                            <td>
+                                <div class="date-box">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control"> <i class="fa fa-calendar" aria-hidden="true"></i>
+
+                                        <span>Start</span>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <input type="text" class="form-control"> <i class="fa fa-calendar" aria-hidden="true"></i>
+                                        <span>End</span>
+
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <select class="form-control">
+
+                                            <option></option>
+                                        </select>
+                                        <span>Date</span>
+
+                                    </div>
+
+
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                    </table>
+
+                    <div class="error-red erroor-boder"> Error Message Here</div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default cancel" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-default save" data-dismiss="modal">Save</button>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+</div>

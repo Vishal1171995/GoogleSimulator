@@ -1,0 +1,1901 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/Admin_Layout.cshtml";
+}
+<!---------------------  Content start  --------------------->
+<div class="admin">
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+
+                <p>
+                    Lorem ipsum dolor sit amet, omnes noster atomorum ius id, omnis integre an pro. Liber bonorum deserunt vim no. Iriure regione ut quo. His utamur denique vituperatoribus in. Est ut fierent
+                    splendide incorrupte, pro an unum partiendo contentiones.His utamur denique vituperatoribus in. Est ut fierent
+                    splendide incorrupte, pro an unum partiendo contentiones.
+                </p>
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="admin-tab">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#batches2">Batches </a> <img class="arrow" src="~/Content/images/arrow.png" alt="arrow" /></li>
+                    <li><a href="#trainers2">Trainers </a> <img class="arrow" src="~/Content/images/arrow.png" alt="arrow" /></li>
+                    <li><a href="#students2">Students</a> <img class="arrow" src="~/Content/images/arrow.png" alt="arrow" /></li>
+                    <li><a href="#keywords2">Keywords</a> <img class="arrow" src="~/Content/images/arrow.png" alt="arrow" /></li>
+                    <li><a href="#phrases2">Phrases</a>  <img class="arrow" src="~/Content/images/arrow.png" alt="arrow" /></li>
+                    <li><a href="#accounts2">Accounts</a> <img class="arrow" src="~/Content/images/arrow.png" alt="arrow" /></li>
+                </ul>
+
+                <div class="tab-content">
+
+                    <div id="batches2" class="tab-pane fade in active">
+                        <div class="admin-manage-header">
+                            <div class="row">
+                                <div class="col-md-3"><h3>Current Batches</h3></div>
+
+                                <div class="col-md-9 text-right campaings-nav">
+                                    <select id="dropBatchTime" onchange="getBatchesOnDemand();">
+                                        <option value="0">All Batches</option>
+                                        <option value="1">Current Batches</option>
+                                        <option value="2">Future Batches</option>
+                                    </select>
+                                    <select id="dropTrainerCode" onchange="getBatchesOnDemand();">
+                                        @foreach (var item in @ViewBag.TrainerDetails)
+                                        {
+                                            <option value="@item.UserID">@item.FullName</option>
+                                        }
+                                    </select>
+
+                                    <select id="dropLocationCode" onchange="getBatchesOnDemand();">
+                                        @foreach (var item in @ViewBag.Location)
+                                        {
+                                            <option value="@item.LocationCode">@item.LocationName</option>
+                                        }
+                                    </select>
+
+                                    <a href="#" class="popup-btn" data-toggle="modal" data-target="#myModal"><img src="/content/images/plus-icon.png" alt="icon" />Add new Batch</a>
+
+
+
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+
+                                    <div class="campaings-table-border table-responsive">
+
+                                        <table>
+
+                                            <thead>
+
+                                                <tr>
+
+                                                    <th>Batches</th>
+                                                    <th>Trainers</th>
+                                                    <th>Students</th>
+                                                    <th>Locations</th>
+                                                    <th>Address</th>
+                                                    <th>Dates</th>
+                                                    <th>Time</th>
+                                                    <th colspan="2"></th>
+
+
+                                                </tr>
+
+
+                                            </thead>
+
+
+                                            <tbody>
+
+                                                <tr>
+
+                                                    <td><a href="#">Batch 1</a></td>
+                                                    <td>Ajay R Nair</td>
+                                                    <td>54</td>
+                                                    <td>Microsoft</td>
+                                                    <td>DLF Pahse 2, Gurgoan</td>
+                                                    <td>15-02-2016</td>
+                                                    <td>11:30 AM</td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+
+
+                                                </tr>
+                                                <tr>
+
+                                                    <td><a href="#">Batch 2</a></td>
+                                                    <td>-</td>
+                                                    <td>-</td>
+                                                    <td>Microsoft</td>
+                                                    <td>DLF Pahse 2, Gurgoan</td>
+                                                    <td>15-02-2016</td>
+                                                    <td>11:30 AM</td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+
+
+                                                </tr>
+                                                <tr>
+
+                                                    <td><a href="#">Batch 3</a></td>
+                                                    <td>Rajeev Ranjan</td>
+                                                    <td>-</td>
+                                                    <td>Microsoft</td>
+                                                    <td>DLF Pahse 2, Gurgoan</td>
+                                                    <td>15-02-2016</td>
+                                                    <td>11:30 AM</td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+
+
+                                                </tr>
+                                                <tr>
+
+                                                    <td><a href="#">Batch 4</a></td>
+                                                    <td>Amit</td>
+                                                    <td>40</td>
+                                                    <td>Microsoft</td>
+                                                    <td>DLF Pahse 2, Gurgoan</td>
+                                                    <td>15-02-2016</td>
+                                                    <td>11:30 AM</td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+
+
+                                                </tr>
+                                                <tr>
+
+                                                    <td><a href="#">Batch 5</a></td>
+                                                    <td>Vibhesh</td>
+                                                    <td>-</td>
+                                                    <td>Microsoft</td>
+                                                    <td>DLF Pahse 2, Gurgoan</td>
+                                                    <td>15-02-2016</td>
+                                                    <td>11:30 AM</td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+
+
+                                                </tr>
+                                                <tr>
+
+                                                    <td><a href="#">Batch 6</a></td>
+                                                    <td>-</td>
+                                                    <td>25</td>
+                                                    <td>Microsoft</td>
+                                                    <td>DLF Pahse 2, Gurgoan</td>
+                                                    <td>15-02-2016</td>
+                                                    <td>11:30 AM</td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+
+                                                </tr>
+                                                <tr>
+
+                                                    <td><a href="#">Batch 7</a></td>
+                                                    <td>Ajay R Nair</td>
+                                                    <td>12</td>
+                                                    <td>Microsoft</td>
+                                                    <td>DLF Pahse 2, Gurgoan</td>
+                                                    <td>15-02-2016</td>
+                                                    <td>11:30 AM</td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+                                                </tr>
+
+
+                                            </tbody>
+
+                                        </table>
+
+
+
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal fade" id="myModal" role="dialog">
+                            <div class="modal-dialog">
+
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Add New Batch</h4>
+                                    </div>
+                                    <form action="" method="post">
+                                        <div class="modal-body">
+
+                                            <table>
+
+                                                <tr>
+
+                                                    <td>Batch Name</td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <input type="text" class="form-control">
+
+                                                        </div>
+                                                    </td>
+
+                                                </tr>
+
+                                                <tr>
+
+                                                    <td>Place </td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <input type="text" class="form-control">
+
+                                                        </div>
+                                                    </td>
+
+                                                </tr>
+
+                                                <tr>
+
+                                                    <td>Address</td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <input type="text" class="form-control">
+
+                                                        </div>
+                                                    </td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td>Date</td>
+                                                    <td>
+                                                        <div class="date-box">
+                                                            <div class="form-group">
+                                                                <input type="text" class="form-control"> <i class="fa fa-calendar" aria-hidden="true"></i>
+
+                                                                <span>Start</span>
+                                                            </div>
+
+
+                                                            <div class="form-group">
+                                                                <input type="text" class="form-control"> <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                                <span>End</span>
+
+                                                            </div>
+
+
+                                                            <div class="form-group">
+                                                                <select class="form-control">
+
+                                                                    <option></option>
+                                                                </select>
+                                                                <span>Date</span>
+
+                                                            </div>
+
+
+
+                                                        </div>
+
+                                                    </td>
+
+                                                </tr>
+
+                                            </table>
+
+                                            <div class="error-red erroor-boder"> Error Message Here</div>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default cancel" data-dismiss="modal">Cancel</button>
+                                            <button type="button" class="btn btn-default save" data-dismiss="modal">Save</button>
+                                        </div>
+
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div id="trainers2" class="tab-pane fade">
+                        <div class="admin-manage-header">
+                            <div class="row">
+                                <div class="col-md-2"><h3>All Trainers</h3></div>
+
+
+                                <div class="col-md-10 text-right">
+
+                                    <ul class="campaings-nav pull-right">
+
+                                        <li class="dropdown">
+                                            <img src="/content/images/admin/excel.png" /> <a href="#" class="dropdown-toggle" data-toggle="modal" data-target="#myModal28"> Emport From Excel</a>
+
+                                        </li>
+
+                                        <li><a href="#" data-toggle="modal" data-target="#myModal27"><img src="/content/images/plus-icon.png" alt="icon">Add New Trainer</a></li>
+
+                                    </ul>
+
+
+                                    <div class="campaings-nav pull-right">
+                                        <select><option>Name</option></select>
+                                        <select><option>Batche</option></select>
+                                        <select><option>Location</option></select>
+                                    </div>
+
+
+
+
+
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+
+                                    <div class="campaings-table-border table-responsive">
+
+                                        <table>
+
+                                            <thead>
+
+                                                <tr>
+
+                                                    <th>ID</th>
+                                                    <th>Trainers</th>
+                                                    <th>Locations</th>
+                                                    <th>Email Id</th>
+                                                    <th>Contact</th>
+                                                    <th>Batches</th>
+                                                    <th colspan="2"></th>
+
+
+                                                </tr>
+
+
+                                            </thead>
+
+
+                                            <tbody>
+
+                                                <tr>
+                                                    <td>#002578</td>
+                                                    <td>Ajay R Nair</td>
+                                                    <td>New Delhi</td>
+                                                    <td>info@wisskers.in</td>
+                                                    <td>985400367</td>
+                                                    <td>Batch 1</td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+
+
+                                                </tr>
+
+                                                <tr>
+                                                    <td>#002578</td>
+                                                    <td>Ajay R Nair</td>
+                                                    <td>New Delhi</td>
+                                                    <td>info@wisskers.in</td>
+                                                    <td>985400367</td>
+                                                    <td>Batch 1</td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+
+
+                                                </tr>
+
+
+                                                <tr>
+                                                    <td>#002578</td>
+                                                    <td>Ajay R Nair</td>
+                                                    <td>New Delhi</td>
+                                                    <td>info@wisskers.in</td>
+                                                    <td>985400367</td>
+                                                    <td>Batch 1</td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+
+
+                                                </tr>
+
+
+                                                <tr>
+                                                    <td>#002578</td>
+                                                    <td>Ajay R Nair</td>
+                                                    <td>New Delhi</td>
+                                                    <td>info@wisskers.in</td>
+                                                    <td>985400367</td>
+                                                    <td>Batch 1</td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+
+
+                                                </tr>
+
+                                                <tr>
+                                                    <td>#002578</td>
+                                                    <td>Ajay R Nair</td>
+                                                    <td>New Delhi</td>
+                                                    <td>info@wisskers.in</td>
+                                                    <td>985400367</td>
+                                                    <td>Batch 1</td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+
+
+                                                </tr>
+
+
+                                                <tr>
+                                                    <td>#002578</td>
+                                                    <td>Ajay R Nair</td>
+                                                    <td>New Delhi</td>
+                                                    <td>info@wisskers.in</td>
+                                                    <td>985400367</td>
+                                                    <td>Batch 1</td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+
+
+                                                </tr>
+
+
+                                            </tbody>
+
+                                        </table>
+
+
+
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+
+                    <div id="students2" class="tab-pane fade">
+                        <div class="admin-manage-header">
+                            <div class="row">
+                                <div class="col-md-3"><h3>All Students</h3></div>
+
+
+                                <div class="col-md-9 text-right">
+
+
+                                    <ul class="campaings-nav pull-right">
+
+                                        <li class="dropdown">
+                                            <img src="/content/images/admin/excel.png" /> <a href="#" class="dropdown-toggle" data-toggle="modal" data-target="#myModal28"> Emport From Excel</a>
+
+                                        </li>
+
+                                        <li><a href="#" data-toggle="modal" data-target="#myModal27"><img src="/content/images/plus-icon.png" alt="icon">Add New Trainer</a></li>
+
+                                    </ul>
+                                    <div class="campaings-nav pull-right">
+                                        <select><option>Batche</option></select>
+                                        <select><option>Location</option></select>
+                                    </div>
+
+
+
+
+
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+
+                                    <div class="campaings-table-border table-responsive">
+
+                                        <table>
+
+                                            <thead>
+
+                                                <tr>
+
+                                                    <th></th>
+                                                    <th>Students</th>
+                                                    <th>Locations</th>
+                                                    <th>Email Id</th>
+                                                    <th>Contact</th>
+                                                    <th>Batch</th>
+                                                    <th colspan="2"></th>
+
+
+                                                </tr>
+
+
+                                            </thead>
+
+
+                                            <tbody>
+
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>Ajay R Nair</td>
+                                                    <td>New Delhi</td>
+                                                    <td>info@wisskers.in</td>
+                                                    <td>985400367</td>
+                                                    <td>Batch 1</td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+
+
+                                                </tr>
+
+
+
+                                                <tr>
+                                                    <td>2</td>
+                                                    <td>Ajay R Nair</td>
+                                                    <td>New Delhi</td>
+                                                    <td>info@wisskers.in</td>
+                                                    <td>985400367</td>
+                                                    <td>Batch 1</td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+
+
+                                                </tr>
+
+
+
+                                                <tr>
+                                                    <td>3</td>
+                                                    <td>Ajay R Nair</td>
+                                                    <td>New Delhi</td>
+                                                    <td>info@wisskers.in</td>
+                                                    <td>985400367</td>
+                                                    <td>Batch 1</td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+
+
+                                                </tr>
+
+
+                                                <tr>
+                                                    <td>4</td>
+                                                    <td>Ajay R Nair</td>
+                                                    <td>New Delhi</td>
+                                                    <td>info@wisskers.in</td>
+                                                    <td>985400367</td>
+                                                    <td>Batch 1</td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+
+
+                                                </tr>
+
+
+
+                                                <tr>
+                                                    <td>5</td>
+                                                    <td>Ajay R Nair</td>
+                                                    <td>New Delhi</td>
+                                                    <td>info@wisskers.in</td>
+                                                    <td>985400367</td>
+                                                    <td>Batch 1</td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+
+
+                                                </tr>
+
+
+
+                                            </tbody>
+
+                                        </table>
+
+
+
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+
+                    <div id="keywords2" class="tab-pane fade">
+                        <div class="admin-manage-header">
+                            <div class="row">
+                                <div class="col-md-3"><h3>All Keywords</h3></div>
+
+
+                                <div class="col-md-9 text-right">
+
+
+                                    <ul class="campaings-nav pull-right">
+
+                                        <li><a href="#" data-toggle="modal" data-target="#myModal27"><i class="fa fa-download" area-hidden="true"></i>  Download</a></li>
+                                        <li class="dropdown">
+                                            <img src="/content/images/admin/excel.png" /> <a href="#" class="dropdown-toggle" data-toggle="modal" data-target="#myModal28"> Emport From Excel</a>
+
+                                        </li>
+                                        <li><a href="#" data-toggle="modal" data-target="#myModal29"><img src="/content/images/plus-icon.png" alt="icon">Add Keyword</a></li>
+
+
+
+                                    </ul>
+
+
+
+
+
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+
+                                    <div class="campaings-table-border table-responsive">
+
+                                        <table>
+
+                                            <thead>
+
+                                                <tr>
+
+                                                    <th></th>
+                                                    <th>Keywords</th>
+                                                    <th>Avg Monthely Searches</th>
+                                                    <th>Competition</th>
+                                                    <th>Suggested Bid</th>
+                                                    <th>CTR</th>
+                                                    <th colspan="2"></th>
+
+
+                                                </tr>
+
+
+                                            </thead>
+
+
+                                            <tbody>
+
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>Keywords 1</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+
+                                                </tr>
+
+
+                                                <tr>
+                                                    <td>2</td>
+                                                    <td>Keywords 1</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+
+                                                </tr>
+
+
+                                                <tr>
+                                                    <td>3</td>
+                                                    <td>Keywords 1</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+
+                                                </tr>
+
+
+                                                <tr>
+                                                    <td>4</td>
+                                                    <td>Keywords 1</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+
+                                                </tr>
+
+
+                                                <tr>
+                                                    <td>5</td>
+                                                    <td>Keywords 1</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+
+                                                </tr>
+
+                                                <tr>
+                                                    <td>6</td>
+                                                    <td>Keywords 1</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+
+                                                </tr>
+
+                                                <tr>
+                                                    <td>7</td>
+                                                    <td>Keywords 1</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+
+                                                </tr>
+
+
+                                            </tbody>
+
+                                        </table>
+
+
+
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+
+                    <div id="phrases2" class="tab-pane fade">
+                        <div class="admin-manage-header">
+                            <div class="row">
+                                <div class="col-md-3"><h3>All Search Phrases</h3></div>
+
+
+                                <div class="col-md-9 text-right">
+
+
+                                    <ul class="campaings-nav pull-right">
+
+                                        <li><a href="#" data-toggle="modal" data-target="#myModal27"><i class="fa fa-download" area-hidden="true"></i>  Download</a></li>
+                                        <li class="dropdown">
+                                            <img src="/content/images/admin/excel.png" /> <a href="#" class="dropdown-toggle" data-toggle="modal" data-target="#myModal28"> Emport From Excel</a>
+
+                                        </li>
+                                        <li><a href="#" data-toggle="modal" data-target="#myModal29"><img src="/content/images/plus-icon.png" alt="icon">Add Phrases</a></li>
+
+
+
+                                    </ul>
+
+
+
+
+
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+
+                                    <div class="campaings-table-border table-responsive">
+
+                                        <table>
+
+                                            <thead>
+
+                                                <tr>
+
+                                                    <th></th>
+                                                    <th>Phrases</th>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th colspan="2"></th>
+
+
+                                                </tr>
+
+
+                                            </thead>
+
+
+                                            <tbody>
+
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>Phrases 1</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+
+                                                </tr>
+
+
+                                                <tr>
+                                                    <td>2</td>
+                                                    <td>Phrases 2</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+
+                                                </tr>
+
+
+                                                <tr>
+                                                    <td>3</td>
+                                                    <td>Phrases 3</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+
+                                                </tr>
+
+
+                                                <tr>
+                                                    <td>4</td>
+                                                    <td>Phrases 4</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+
+                                                </tr>
+
+
+                                                <tr>
+                                                    <td>5</td>
+                                                    <td>Phrases 5</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+
+                                                </tr>
+
+                                                <tr>
+                                                    <td>6</td>
+                                                    <td>Phrases 6</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+
+                                                </tr>
+
+                                                <tr>
+                                                    <td>7</td>
+                                                    <td>Phrases 7</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
+                                                    <td class="text-center"><a href="#"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+
+
+                    <div id="accounts2" class="tab-pane fade">
+                        <div class="admin-manage-header">
+                            <div class="row">
+                                <div class="col-md-3"><h3>All Search Phrases</h3></div>
+
+
+                                <div class="col-md-9 text-right">
+
+
+                                    <ul class="campaings-nav pull-right">
+
+                                        <li><a href="#" data-toggle="modal" data-target="#myModal30"><img src="/content/images/plus-icon.png" alt="icon">Add Account</a></li>
+
+
+
+                                    </ul>
+
+
+
+
+
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+
+                                    <div class="account-report">
+
+                                        <div class="item-row">
+                                            <div class="list-item">
+                                                <div>
+
+                                                    <img src="/content/images/admin/flipkart-icon.png" class="img-box">
+                                                    <div class="brand-details">
+                                                        <h4><a href="#a">Flipkart</a></h4>
+                                                        <div class="ibox-tools">
+                                                            <a href="#">
+                                                                <i class="fa fa-pencil" aria-hidden="true"></i>
+                                                            </a>
+                                                            <a href="#"><i class="fa fa-trash" aria-hidden="true"></i></a>
+
+                                                        </div>
+                                                        <span>e-Commerce</span>
+
+                                                    </div>
+
+
+
+                                                </div>
+
+                                                <p>Lorem ipsum dolor sit amet, omnes noster atomorum ius id, omnis integre an pro. Liber bonorum deserunt vim no. Iriure regione ut quo. His utamur denique vituperatoribus in. Est ut fierent splendide incorrupte,</p>
+
+
+                                            </div>
+                                            <div class="list-item left_minus-padding">
+
+
+                                                <div>
+                                                    <img src="/content/images/admin/snapdeal-icon.png" class="img-box">
+                                                    <div class="brand-details">
+                                                        <h4><a href="#a">Snapdeal</a></h4>
+                                                        <div class="ibox-tools">
+                                                            <a href="#">
+                                                                <i class="fa fa-pencil" aria-hidden="true"></i>
+                                                            </a>
+                                                            <a href="#"><i class="fa fa-trash" aria-hidden="true"></i></a>
+
+                                                        </div>
+                                                        <span>e-Commerce</span>
+
+                                                    </div>
+
+
+
+                                                </div>
+
+                                                <p>Lorem ipsum dolor sit amet, omnes noster atomorum ius id, omnis integre an pro. Liber bonorum deserunt vim no. Iriure regione ut quo. His utamur denique vituperatoribus in. Est ut fierent splendide incorrupte,</p>
+
+
+
+
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="item-row top_minus-padding">
+                                            <div class="list-item">
+                                                <div>
+
+                                                    <img src="/content/images/admin/ebay-icon.png" class="img-box">
+                                                    <div class="brand-details">
+                                                        <h4><a href="#a">ebay</a></h4>
+                                                        <div class="ibox-tools">
+                                                            <a href="#">
+                                                                <i class="fa fa-pencil" aria-hidden="true"></i>
+                                                            </a>
+                                                            <a href="#"><i class="fa fa-trash" aria-hidden="true"></i></a>
+
+                                                        </div>
+                                                        <span>e-Commerce</span>
+
+                                                    </div>
+
+
+
+                                                </div>
+
+                                                <p>Lorem ipsum dolor sit amet, omnes noster atomorum ius id, omnis integre an pro. Liber bonorum deserunt vim no. Iriure regione ut quo. His utamur denique vituperatoribus in. Est ut fierent splendide incorrupte,</p>
+
+
+                                            </div>
+
+                                            <div class="list-item left_minus-padding">
+
+
+                                                <div>
+                                                    <img src="/content/images/admin/mintra-icon.png" class="img-box">
+                                                    <div class="brand-details">
+                                                        <h4><a href="#a">Myntra</a></h4>
+                                                        <div class="ibox-tools">
+                                                            <a href="#">
+                                                                <i class="fa fa-pencil" aria-hidden="true"></i>
+                                                            </a>
+                                                            <a href="#"><i class="fa fa-trash" aria-hidden="true"></i></a>
+
+                                                        </div>
+                                                        <span>e-Commerce</span>
+
+                                                    </div>
+
+
+                                                </div>
+
+                                                <p>Lorem ipsum dolor sit amet, omnes noster atomorum ius id, omnis integre an pro. Liber bonorum deserunt vim no. Iriure regione ut quo. His utamur denique vituperatoribus in. Est ut fierent splendide incorrupte,</p>
+
+
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+</div>
+
+<!---------------------  Content End  --------------------->
+<div class="modal fade" id="myModal2" role="dialog">
+    <div class="modal-dialog modal-dialog1">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close close1" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Ad Group</h4>
+            </div>
+            <form action="" method="post">
+                <div class="modal-body create-adgroup-modal-body">
+
+                    <table>
+
+                        <tr>
+
+                            <td>Campaign</td>
+                            <td>
+                                <div class="form-group">
+                                    <select class="form-control"> <option>Campaign 2</option>	</select>
+
+                                </div>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>Ad Group Name</td>
+                            <td>
+                                <div class="form-group">
+                                    <select class="form-control"> <option>Select Ad Group</option>	</select>
+
+
+                                </div>
+                            </td>
+
+                        </tr>
+
+
+
+                    </table>
+                </div>
+                <div class="model-heading">Ad Details</div>
+
+                <div class="modal-body">
+
+                    <table>
+
+                        <tr>
+
+                            <td>Create Text Ad</td>
+                            <td>
+                                <div class="form-group">
+                                    <input type="text" class="form-control">
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>Headline</td>
+                            <td>
+                                <div class="form-group">
+                                    <input type="text" class="form-control">
+
+                                </div>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>Description Line 1</td>
+                            <td>
+                                <div class="form-group">
+                                    <input type="text" class="form-control">
+
+                                </div>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>Description Line 2</td>
+                            <td>
+                                <div class="form-group">
+                                    <input type="text" class="form-control">
+
+                                </div>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>Display URL</td>
+                            <td>
+                                <div class="form-group">
+                                    <input type="text" class="form-control">
+
+                                </div>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>Final URL</td>
+                            <td>
+                                <div class="form-group">
+                                    <input type="text" class="form-control">
+
+                                </div>
+                            </td>
+
+                        </tr>
+
+
+                    </table>
+                </div>
+
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default cancel" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-default save" data-dismiss="modal">Save</button>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<!--add new trainer-->
+
+<div class="modal fade in" id="myModal27" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <h4 class="modal-title">Add New Trainer</h4>
+            </div>
+            <form action="" method="post">
+
+
+                <div class="modal-body">
+
+                    <div class="form-details">
+
+                        <div class="row">
+
+
+                            <div class="form-group">
+
+                                <div class="col-xs-12 col-md-3">
+                                    <label class="lab_01">Trainer Name</label>
+                                </div>
+                                <div class="col-xs-12 col-md-9">
+                                    <div class="col-form-box">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control">
+
+                                            <span>First</span>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-form-box">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control">
+
+                                            <span>Middle</span>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-form-box">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control">
+
+                                            <span>Last</span>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-xs-12 col-md-3"> <label class="lab_01">Location</label>   </div>
+                                <div class="col-xs-12 col-md-9">
+                                    <div class="form-group"> <input type="text" class="form-control"> </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-xs-12 col-md-3"> <label class="lab_01">Email Id</label>   </div>
+                                <div class="col-xs-12 col-md-9">
+                                    <div class="form-group"> <input type="text" class="form-control"> </div>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <div class="col-xs-12 col-md-3"> <label class="lab_01">Contact</label>   </div>
+                                <div class="col-xs-12 col-md-9">
+                                    <div class="form-group"> <input type="text" class="form-control"> </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="clearfix"></div>
+
+
+                        <div class="form-group">
+
+
+                            <div class="error-red erroor-boder"> Error Message Here</div>
+
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default cancel" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-default save" data-dismiss="modal">Save</button>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+</div>
+
+
+<!--add new Students-->
+
+<div class="modal fade in" id="myModal32" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <h4 class="modal-title">Add New Student</h4>
+            </div>
+            <form action="" method="post">
+
+
+                <div class="modal-body">
+
+                    <div class="form-details">
+
+                        <div class="row">
+
+
+                            <div class="form-group">
+
+                                <div class="col-xs-12 col-md-3">
+                                    <label class="lab_01">Student Name</label>
+                                </div>
+                                <div class="col-xs-12 col-md-9">
+                                    <div class="col-form-box">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control">
+
+                                            <span>First</span>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-form-box">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control">
+
+                                            <span>Middle</span>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-form-box">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control">
+
+                                            <span>Last</span>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-xs-12 col-md-3"> <label class="lab_01">Location</label>   </div>
+                                <div class="col-xs-12 col-md-9">
+                                    <div class="form-group"> <input type="text" class="form-control"> </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-xs-12 col-md-3"> <label class="lab_01">Email Id</label>   </div>
+                                <div class="col-xs-12 col-md-9">
+                                    <div class="form-group"> <input type="text" class="form-control"> </div>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <div class="col-xs-12 col-md-3"> <label class="lab_01">Contact</label>   </div>
+                                <div class="col-xs-12 col-md-9">
+                                    <div class="form-group"> <input type="text" class="form-control"> </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="clearfix"></div>
+
+
+                        <div class="form-group">
+
+
+                            <div class="error-red erroor-boder"> Error Message Here</div>
+
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default cancel" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-default save" data-dismiss="modal">Save</button>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+</div>
+
+
+<!--import to excel-->
+
+<div class="modal fade in" id="myModal28" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <h4 class="modal-title">Import From Excel</h4>
+            </div>
+            <form action="" method="post">
+
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group">
+
+                            <div class="col-xs-12 col-md-12">
+                                <div class="form-group">
+
+                                    <div class="fileinput-button">
+                                        <input type="file" name="imageUpload" id="imageUpload" class="hide">
+                                        <label for="imageUpload" class="file-btn">  Upload Excel</label>
+                                        <input type="button" class="uplaod-button" value="Upload">
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+
+
+
+                    </div>
+
+                    <div class="clearfix"></div>
+
+
+                    <div class="form-group">
+
+
+                        <div class="success-message"> <i class="fa fa-smile-o" aria-hidden="true"></i> File Successfully upload</div>
+
+
+                    </div>
+
+
+
+
+                    <div class="form-group">
+
+
+                        <div class="error-red erroor-boder"> Error Message Here</div>
+
+
+                    </div>
+
+
+
+
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default cancel" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-default save" data-dismiss="modal">Save</button>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+</div>
+
+
+<!--add keywords-->
+
+<div class="modal fade in" id="myModal29" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <h4 class="modal-title">Add Keywords</h4>
+            </div>
+            <form action="" method="post">
+
+
+                <div class="modal-body">
+
+                    <div class="form-details">
+
+                        <div class="row">
+
+
+                            <div class="form-group">
+                                <div class="col-xs-12 col-md-3"> <label class="lab_01">Keywords</label>   </div>
+                                <div class="col-xs-12 col-md-9">
+                                    <div class="form-group"> <input type="text" class="form-control"> </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-xs-12 col-md-3"> <label class="lab_01">Avg Monthely Searches</label>   </div>
+                                <div class="col-xs-12 col-md-9">
+                                    <div class="form-group"> <input type="text" class="form-control"> </div>
+                                </div>
+                            </div>
+
+                            <div class="clearfix"></div>
+
+
+                            <div class="form-group">
+                                <div class="col-xs-12 col-md-3"> <label class="lab_01">Competition</label>   </div>
+                                <div class="col-xs-12 col-md-9">
+                                    <div class="form-group"> <input type="text" class="form-control"> </div>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <div class="col-xs-12 col-md-3"> <label class="lab_01">Suggested Bid</label>   </div>
+                                <div class="col-xs-12 col-md-9">
+                                    <div class="form-group"> <input type="text" class="form-control"> </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-xs-12 col-md-3"> <label class="lab_01">CTR</label>   </div>
+                                <div class="col-xs-12 col-md-9">
+                                    <div class="form-group"> <input type="text" class="form-control"> </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="clearfix"></div>
+
+
+                        <div class="form-group">
+
+
+                            <div class="error-red erroor-boder"> Error Message Here</div>
+
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default cancel" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-default save" data-dismiss="modal">Save</button>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<!--add account-->
+
+<div class="modal fade in" id="myModal30" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <h4 class="modal-title">Add Account</h4>
+            </div>
+            <form action="" method="post">
+
+
+                <div class="modal-body">
+
+                    <div class="form-details">
+
+                        <div class="row">
+
+
+                            <div class="form-group">
+                                <div class="col-xs-12 col-md-3"> <label class="lab_01">Account Name</label>   </div>
+                                <div class="col-xs-12 col-md-9">
+                                    <div class="form-group"> <input type="text" class="form-control"> </div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="form-group">
+                                <div class="col-xs-12 col-md-3"> <label class="lab_01">Upload Logo</label>   </div>
+                                <div class="col-xs-12 col-md-9">
+                                    <div class="form-group">
+
+                                        <div class="fileinput-button">
+                                            <input type="file" name="imageUpload" id="imageUpload" class="hide">
+                                            <label for="imageUpload" class="file-btn">  Upload Excel</label>
+                                            <input type="button" class="uplaod-button" value="Upload">
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-xs-12 col-md-3"> <label class="lab_01">Description</label>   </div>
+                                <div class="col-xs-12 col-md-9">
+                                    <div class="form-group"> <input type="text" class="form-control"> </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="clearfix"></div>
+
+
+                        <div class="form-group">
+
+
+                            <div class="error-red erroor-boder"> Error Message Here</div>
+
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default cancel" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-default save" data-dismiss="modal">Save</button>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="modal fade" id="myModal1" role="dialog">
+    <div class="modal-dialog modal-dialog1">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close close1" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Create Ad Group</h4>
+            </div>
+            <form action="" method="post">
+                <div class="modal-body create-adgroup-modal-body">
+
+                    <table>
+
+                        <tr>
+
+                            <td>Campaign</td>
+                            <td>
+                                <div class="form-group">
+                                    <select class="form-control"> <option>Select Campaign</option>	</select>
+
+                                </div>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>Ad Group Name</td>
+                            <td>
+                                <div class="form-group">
+                                    <input type="text" class="form-control">
+
+                                </div>
+                            </td>
+
+                        </tr>
+
+                    </table>
+                </div>
+                <div class="model-heading">Ad Details</div>
+
+                <div class="modal-body">
+
+                    <table>
+
+                        <tr>
+
+                            <td>Create Text Ad</td>
+                            <td>
+                                <div class="form-group">
+                                    <input type="text" class="form-control">
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>Headline</td>
+                            <td>
+                                <div class="form-group">
+                                    <input type="text" class="form-control">
+
+                                </div>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>Description Line 1</td>
+                            <td>
+                                <div class="form-group">
+                                    <input type="text" class="form-control">
+
+                                </div>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>Description Line 2</td>
+                            <td>
+                                <div class="form-group">
+                                    <input type="text" class="form-control">
+
+                                </div>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>Display URL</td>
+                            <td>
+                                <div class="form-group">
+                                    <input type="text" class="form-control">
+
+                                </div>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>Final URL</td>
+                            <td>
+                                <div class="form-group">
+                                    <input type="text" class="form-control">
+
+                                </div>
+                            </td>
+
+                        </tr>
+
+
+                    </table>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default cancel" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-default save" data-dismiss="modal">Save</button>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+</div>
+<div class="Loader" style="display:none;">
+    <div class="LoaderCentre">
+        <img alt="" src="~/Content/images/logo.jpg" />
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $(".nav-tabs a").click(function () {
+            $(this).tab('show');
+        });
+        $('.nav-tabs a').on('shown.bs.tab', function (event) {
+            var x = $(event.target).text();         // active tab
+            var y = $(event.relatedTarget).text();  // previous tab
+            $(".act span").text(x);
+            $(".prev span").text(y);
+        });
+
+
+        // data table shorting
+
+
+
+
+    });
+</script>
+@*<script src="~/Scripts/admin.js"></script>*@
+<script>
+    $(document).ready(function () {
+        getCurrentBatches('c');
+        var today = new Date();
+        var tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
+        console.log(tomorrow);
+        $('#txtBxBatchStartDate').datepicker({
+            minDate: today,
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: 'dd-M-yy',
+            onSelect: function (dat, inst) {
+                $('#txtBxBatchEndDate').datepicker('option', 'minDate', dat);
+                //$('#AssessmentDate').datepicker('option', 'minDate', dat);
+            }
+        });
+        $('#txtBxBatchEndDate').datepicker({
+            dateFormat: 'dd-M-yy'
+        });
+    });
+</script>
+
+
+

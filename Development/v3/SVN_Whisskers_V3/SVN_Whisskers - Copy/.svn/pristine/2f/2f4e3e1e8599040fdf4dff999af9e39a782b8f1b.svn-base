@@ -1,0 +1,229 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Trainers/Views/Shared/Trainer_Layout.cshtml";
+}
+
+@*<h2>Index</h2>
+<div>Traners Home</div>*@
+
+<!---------------------  Content start  --------------------->
+<div class="manage-batch">
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class=" col-md-push-8 col-md-4 col-sm-12 col-xs-12 text-right">
+
+                <div class="radio radio-inline radio-danger">
+                    <input id="inlineRadio1" type="radio" onclick="getCurrentBatches('c')" checked="" name="radioInline" value="option1">
+                    <label for="inlineRadio1"> Current Batches </label>
+                </div>
+                <div class="radio radio-inline radio-danger">
+                    <input id="inlineRadio2" type="radio" onclick="getCurrentBatches('f')" name="radioInline" value="option1">
+                    <label for="inlineRadio2"> Future Batches </label>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="row top-margin">
+            <div class="col-md-8"><h1 id="h1Batch"></h1></div>
+            <div class="col-md-4 text-right">
+                @*@Html.ActionLink("Create Account", "CreateAccount", new { id = @
+                    .BatchCode }, new { @class = "button" })*@
+
+                @*@Html.ActionLink("Create Account", "CreateAccount", new { id = @ViewBag.Batches.BatchCode }, new { @class = "button hidden" })*@
+
+                @*@Html.ActionLink("RFA", "RFA", new { BatchCode = @ViewBag.Batches.BatchCode, AccCode = "" }, new { @class = "button" })*@
+            </div>
+            <div class="clearfix"></div>
+        </div>
+
+
+
+    </div>
+
+</div>
+
+<div id="div_result1">
+
+
+
+</div>
+
+
+<div class="modal fade" id="myModal2" role="dialog">
+    <div class="modal-dialog modal-dialog1">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close close1" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Ad Group</h4>
+            </div>
+            <form action="" method="post">
+                <div class="modal-body create-adgroup-modal-body">
+
+                    <table>
+
+                        <tr>
+
+                            <td>Campaign</td>
+                            <td>
+                                <div class="form-group">
+                                    <select class="form-control"> <option>Campaign 2</option>	</select>
+
+                                </div>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>Ad Group Name</td>
+                            <td>
+                                <div class="form-group">
+                                    <select class="form-control"> <option>Select Ad Group</option>	</select>
+
+
+                                </div>
+                            </td>
+
+                        </tr>
+
+
+
+                    </table>
+                </div>
+                <div class="model-heading">Ad Details</div>
+
+                <div class="modal-body">
+
+                    <table>
+
+                        <tr>
+
+                            <td>Create Text Ad</td>
+                            <td>
+                                <div class="form-group">
+                                    <input type="text" class="form-control">
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>Headline</td>
+                            <td>
+                                <div class="form-group">
+                                    <input type="text" class="form-control">
+
+                                </div>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>Description Line 1</td>
+                            <td>
+                                <div class="form-group">
+                                    <input type="text" class="form-control">
+
+                                </div>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>Description Line 2</td>
+                            <td>
+                                <div class="form-group">
+                                    <input type="text" class="form-control">
+
+                                </div>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>Display URL</td>
+                            <td>
+                                <div class="form-group">
+                                    <input type="text" class="form-control">
+
+                                </div>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>Final URL</td>
+                            <td>
+                                <div class="form-group">
+                                    <input type="text" class="form-control">
+
+                                </div>
+                            </td>
+
+                        </tr>
+
+
+                    </table>
+                </div>
+
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default cancel" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-default save" data-dismiss="modal">Save</button>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+</div>
+@*<script src="~/Scripts/Whiskers.validations.js"></script>*@
+<script src="~/Scripts/trainer.js"></script>
+<script>
+    $(document).ready(function () {
+        getCurrentBatches('c');
+        
+    });
+    function BatchDataTable()
+    {
+        //check admin.css DataTable section if you want to hide header paging
+        $('#tableBatch').dataTable({
+            "searching": false,
+            scrollY: '50vh',
+            scrollCollapse: true,
+            scrollY: '50vh',
+            scrollCollapse: true,
+            order: [],
+            //columnDefs: [{ orderable: false, targets: [0] }],
+            "bLengthChange": true
+        });
+    }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

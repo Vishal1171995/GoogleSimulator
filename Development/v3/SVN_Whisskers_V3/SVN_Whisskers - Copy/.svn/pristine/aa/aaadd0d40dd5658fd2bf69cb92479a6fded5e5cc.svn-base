@@ -1,0 +1,386 @@
+﻿@{
+    ViewBag.Title = "Student_Layout";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Digital Marketing Tool</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/plug-ins/9dcbecd42ad/integration/jqueryui/dataTables.jqueryui.css">
+
+    <link href="~/Content/css/style.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="~/Scripts/jquery-ui.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+
+
+
+    <script src="https://cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/plug-ins/9dcbecd42ad/integration/jqueryui/dataTables.jqueryui.js"></script>
+    <script src="~/Scripts/Whiskers.validations.js"></script>
+</head>
+<body style="padding: 0px !important;">
+
+    <!---------------------  Header Start  --------------------->
+
+    <div class="header">
+
+        <div class="container">
+
+            <div class="row">
+
+                <div class="col-md-2 col-sm-2 col-xs-4">
+
+                    <div class="logo"><a href="#"> <img src="~/Content/images/logo-inner.jpg" class="img-responsive" alt="logo" /></a></div>
+
+                </div>
+
+                <div class="col-md-10 col-sm-10 col-xs-8 right">
+                    <div class="top-bar">
+
+                        <div class="top-heading">
+                            Digital <span>Marketing</span> Tool
+                        </div>
+
+                        <div class="top-right-nav">
+
+                            Welcome  @ViewBag.FName ( @ViewBag.AccName )
+                            <div class="arrow-i">
+                                <i class="fa fa-sort-desc"></i>
+                                <ul>
+                                    <li><a href="/Home/changePassword">Change Password</a></li>
+                                    <li><a href="/Home/Logout">Logout</a></li>
+                                </ul>
+
+                            </div>
+                        </div>
+
+
+
+                        <div class="clearfix"></div>
+
+                    </div>
+                    @*<div class="top-bar">
+
+                            <div class="top-heading">Digital <span>Marketing</span> Tool</div>
+
+                            <div class="top-right-nav"> <a href="~/">Welcome @ViewBag.FName (@ViewBag.AccName)<i class="fa fa-sort-desc"></i></a></div>
+
+                            <div class="clearfix"></div>
+
+                        </div>*@
+
+                    <!------------  Nav Start  ------------>
+
+                    <div class="nav-main">
+
+                        <nav class="navbar navbar-default">
+                            <div class="container-fluid">
+
+                                <div class="navbar-header">
+                                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                                        <span class="sr-only">Toggle navigation</span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                    </button>
+
+                                </div>
+
+
+                                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                                    <ul class="nav navbar-nav">
+                                        <li id="liCampaigns"><a href="~/Students/Home/Index">Campaigns </a></li>
+                                        <li id="liOpportunities"><a href="~/Students/Home/Opportunities">Opportunities</a></li>
+                                        <li id="liTools" class="dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                Tools
+                                                <i class="fa fa-angle-right"></i>
+                                            </a>
+                                            <ul class="dropdown-menu">
+                                                @*<li>@Html.ActionLink("Find Keywords", "DownloadKeyword", "Home")</li>*@
+                                                <li>@Html.ActionLink("Keyword Planner", "Tools", "Home")</li>
+
+                                            </ul>
+                                        </li>
+                                        <li id="liResources"><a href="~/Students/Home/Resources">Resources</a></li>
+                                        <li id="li_Reports" class="dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reports <i class="fa fa-angle-right"></i></a>
+
+                                            <ul class="dropdown-menu">
+                                                <li>@Html.ActionLink("Industry Report", "Industry", "Report")</li>
+                                                @*<li><a href="#">Account Report</a></li>
+                                                    <li><a href="#">Industry Report</a></li>*@
+                                            </ul>
+                                        </li>
+                                        @*<li id="liRFA"><a href="#">RFA</a></li>*@
+                                    </ul>
+
+
+                                </div>
+                            </div>
+                        </nav>
+                    </div>
+
+                    <!------------  Nav End  ------------>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!---------------------  Header End  --------------------->
+    <!--import to excel-->
+    <div class="modal fade in" id="ModalExcelUpload" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h4 id="TitlePopupExcel" class="modal-title">Import From Excel</h4>
+                </div>
+                <form enctype="multipart/form-data" id="excelUpload">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-xs-12 col-md-12">
+                                    <div class="form-group">
+                                        <div class="fileinput-button">
+                                            @*<div>
+                                                    Campaign : <span id="excelCampaignName"></span><br />
+                                                    Ad Group : <span id="excelAdGroupName"></span>
+                                                </div>*@
+                                            <a href="/Students/Home/KeyPlanUploadTemplateCSV" id="KeyPlanUploadTmplate">Download Template</a>
+                                            <input type="file" name="excelfile" id="excelfile" class="">
+                                            <div class="error-green">Accepted file types is: .csv</div>
+                                            <div class="checkbox-input"> <input type="checkbox" name="UpdateBid" id="UpdateBid"> Update bid value</div>
+                                            @*<label for="imageUpload" class="file-btn">  Upload Excel</label>*@
+                                            @*<input type="button" class="uplaod-button" value="Upload">*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div id="divExcelNotify" class="error-red erroor-boder">Upload valid file</div>
+                        <input type="hidden" id="hdnIdenType" value="0" name="hdnIdenType" />
+                        <input type="hidden" id="hdnexcelCampaignValue" value="0" name="hdnexcelCampaignValue" />
+                        <input type="hidden" id="hdnexcelAdGroupValue" value="0" name="hdnexcelAdGroupValue" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default cancel" data-dismiss="modal">Cancel</button>
+                        <button type="submit" id="btnUploadExcel" name="btnUploadExcel" value="" class="btn btn-default save" onclick="return ExcelValidation();">Save</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="ModalSuccess" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    @*<button type="button" class="close" data-dismiss="modal">&times;</button>*@
+                    <h5 id="SuccessHead" class="modal-title"></h5>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="dialog" style="display: none"></div>
+    <div class="modal fade" id="ModalExcelSuccess" role="dialog">
+        <div class="modal-dialog  modal-dialog-keyword">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div id="SuccessUploadDiv" class="success-message"> <i class="fa fa-smile-o" aria-hidden="true"></i> File is uploaded successfully</div>
+                    <div id="FailureUploadDiv" class="Failure-message"> <i class="fa fa-frown-o" aria-hidden="true"></i> File is not uploaded Successfully</div>
+                    <br />
+                    <h5 id="ExcelSuccessHead1" class="modal-title"></h5>
+                    <h5 id="ExcelSuccessHead2" class="modal-title"></h5>
+                    <h5 id="ExcelSuccessHead3" class="modal-title"></h5>
+                    <h5 id="ExcelSuccessHead4" class="modal-title"></h5>
+                    <h5 id="ExcelSuccessHead5" class="modal-title"></h5>
+                    <h5 id="ExcelSuccessHead6" class="modal-title"></h5>
+                    <table id="errorTable">
+                        <thead>
+                            <tr>
+                                <td>
+                                    Index
+                                </td>
+                                <td>
+                                    Error Message
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody id="errorTableBody">
+                            <tr>
+                                <td>
+                                    1
+                                </td>
+                                <td>
+                                    Keyword already exist
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div id="KwrdPlnrImprtErrHist" style="max-height:200px; overflow-x: hidden; overflow-y: scroll;"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" style="width:100% !important" class="btn btn-default cancel" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    @RenderBody()
+
+
+
+    <!---------------------  Footer Start  --------------------->
+    <div class="clearfix"></div>
+    <div class="footer">
+
+        <div class="container">
+
+            <div class="row">
+                <div class=" col-md-6 text-left">
+
+                    <span>&copy; Whisskers 2016-17. All rights reserved.</span>
+
+                </div>
+
+                <div class=" col-md-6 text-right">
+
+                    <span>Powered by <a href="http://convergenttec.com/" class="footer-link" target="_blank">Convergent Technologies</a></span>
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+
+    </div>
+
+    <!---------------------  Footer End  --------------------->
+    <div class="loading Loader" align="center" style="display:none;">
+        Loading. Please wait.<br />
+        <div id="msgDiv"></div>
+        <br />
+        <img src="~/Content/images/progressbar.gif" />
+    </div>
+    <style type="text/css">
+        .loading {
+            font-family: Arial;
+            font-size: 15pt;
+            display: none;
+            position: fixed;
+            background-color: White;
+            z-index: 99999;
+            top: 0;
+            left: 0;
+            opacity: 0.8;
+            filter: alpha(opacity=80);
+            -moz-opacity: 0.8;
+            min-height: 100%;
+            width: 100%;
+        }
+        .loadSectn{
+                background: rgba(0, 0, 0, 0.02);
+    min-height: 200px;
+    background-image: url(/Content/images/progressbar.gif);
+    background-repeat: no-repeat;
+    background-position: 50%;
+        }
+        
+    </style>
+
+
+
+
+
+    <script>
+        $(document).ready(function () {
+
+        });
+        function ClearExcelPopup() {
+            $('#excelfile').val('');
+            $('#UpdateBid').attr('checked', false);
+            $('#divExcelNotify').text('Upload valid file');
+            $('#divExcelNotify').hide();
+        }
+        function ShowPopup() {
+            $('#ModalExcelUpload').modal('show');
+        }
+        function HidePopup() {
+            $('#ModalExcelUpload').modal('hide');
+        }
+        function EmptyHiddenField() {
+            $('#hdnIdenType').val('0');
+        }
+        function CloseExcelPopup(data) {
+            debugger;
+            $('#KwrdPlnrImprtErrHist').empty();
+            var JsonObj = data[0];
+            $('#divExcelNotify').text(data[0]);
+            $('#divExcelNotify').show();
+            fadeOut("divExcelNotify");
+
+
+            if (data[0] == "1") {
+
+
+                if (parseInt(data[(data.length - 1)].split('#')[1]) == 0) {
+                    $('#SuccessUploadDiv').show();
+                    $('#FailureUploadDiv').hide();
+                }
+                else {
+                    $('#SuccessUploadDiv').hide();
+                    $('#FailureUploadDiv').show();
+                }
+                var htmlcontent = "";
+                htmlcontent = '<thead id="errorHead"><tr>' +
+                                   '<th>Error</th>' +
+                                   '<th>Count</th><thead><tbody>';
+                $.each(data, function (i, item) {
+                    debugger;
+                    if (data[i].indexOf('#') != -1 && i != data.length - 1 && data[i].split('#')[1] == "0") {
+                        htmlcontent += '<tr><td>' + data[i].split('#')[0] + '</td>'
+                     + '<td>' + data[i].split('#')[1] + '</td></tr>';
+                    }
+                    if (data[i].indexOf('#') != -1 && i != data.length - 1 && data[i].split('#')[1] != "0") {
+                        htmlcontent += '<tr><td>' + data[i].split('#')[0] + '</td>'
+                        + '<td><a href="#" onclick="getKeywordPlannerImportCount(\'' + i + '\')";>' + data[i].split('#')[1] + '</a></td></tr>';
+                    }
+                    if (data[i].indexOf('#') != -1 && i == data.length - 1) {
+                        htmlcontent += '<tr><td>' + data[i].split('#')[0] + '</td>'
+                        + '<td>' + data[i].split('#')[1] + '</td></tr>';
+                    }
+                });
+                htmlcontent += '</tbody></table>';
+                $('#errorTable').html(htmlcontent);
+                ClearExcelPopup();
+                $('#divExcelNotify').hide();
+                $('#ModalExcelSuccess').modal('show');
+                HidePopup();
+                $('#hdnIdenType').val('0');
+            }
+        }
+    </script>
+
+</body>
+</html>

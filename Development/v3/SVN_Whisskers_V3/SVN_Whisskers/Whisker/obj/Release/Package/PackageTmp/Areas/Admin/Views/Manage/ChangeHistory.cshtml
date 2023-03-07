@@ -1,0 +1,91 @@
+﻿@{
+    Layout = "~/Areas/Admin/Views/Shared/Admin_Layout.cshtml";
+}
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+    <script>
+        (function ($) {
+            $(window).load(function () {
+            });
+        })(jQuery);
+        $(document).ready(function () {
+            //ShowResultStudentCampaignTab();
+            $("#liChangeHistory").addClass("active");
+            $(".nav-tabs a").click(function () {
+                debugger;
+                $(this).tab('show');
+                //alert(this);
+            });
+            //li_ads
+            $('.nav-tabs a').on('shown.bs.tab', function (event) {
+                debugger;
+                var x = $(event.target).text();         // active tab
+                var y = $(event.relatedTarget).text();  // previous tab
+                $(".act span").text(x);
+                $(".prev span").text(y);
+            });
+        });
+    </script>
+</head>
+<body>
+
+    <div class="container">
+
+        
+        <div class="row">
+            <div class="col-md-12">
+                    <h1>
+                        Change History
+                    </h1>
+
+                <div class="campaings-table-border table-responsive">
+                    <table id="changeHistory" border="0" cellspacing="0" cellpadding="0" class="">
+                        <thead>
+                            <tr id="Headrow">
+                                <th>S No</th>
+                                <th>Activity Name</th>
+                                <th>Activity Summary</th>
+                                <th>Activity Description</th>
+                                <th>User</th>
+                                <th>Email</th>
+                                <th>Activity Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (ViewBag.TotalRecord > 0)
+                        {
+                            foreach (var item in ViewBag.Result)
+                            {
+                                    <tr>
+                                        <td></td>
+                                        <td>@item.ActivityName</td>
+                                        <td>@item.ActivitySummary</td>
+                                        <td>@item.ActivityDescription</td>
+                                        <td>@item.User</td>
+                                        <td>@item.EmailID</td>
+                                        <td>@item.ActivityDate</td>
+                                    </tr>
+                            }
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
+<script type="text/javascript">
+    $(document).ready(function () {
+        ApplyAdminDataTable("changeHistory", "0");
+    });
+
+</script>
+
+
+
+

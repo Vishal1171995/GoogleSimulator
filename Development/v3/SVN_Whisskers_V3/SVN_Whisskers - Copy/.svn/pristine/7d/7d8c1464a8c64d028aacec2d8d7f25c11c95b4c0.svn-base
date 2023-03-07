@@ -1,0 +1,256 @@
+﻿@{
+    ViewBag.Title = "CreateAccount";
+    Layout = "~/Areas/Trainers/Views/Shared/Trainer_Layout.cshtml";
+}
+<!---------------------  Content start  --------------------->
+<div class="manage-batch">
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="pull-right goToBack">
+                   @* @Html.ActionLink("Back to batches", "Index", "Home", "pull-right")*@
+                    <a href="/Trainers/Home/Index">
+                        <i class="fa fa-backward" aria-hidden="true"> Back</i>
+
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-7">
+                <h1>Create Account</h1>
+            </div>
+            <h1>@ViewBag.Testing</h1>
+            <div class="col-md-5 text-right">
+
+                <select id="ddlBatch" name="ddlBatch" onchange="GetAllBatches(this.value);" class="select"></select>
+                @*<select class="select" name="ddlBatch1" value="@ViewBag.AllBatches" id="ddlBatch1">
+                        <option value="0">All</option>
+                        @foreach (var item in @ViewBag.AllBatches)
+                        {
+                            <option value="@item.BatchCode">@item.BatchName</option>
+                        }
+                    </select>*@
+
+
+
+            </div>
+            <div class="clearfix"></div>
+
+            <div class="batch-detail">
+
+                <div class="col-md-6">
+
+                    <div class="batch">
+                        <p><span>Batch Name :</span> <span id="spnBatchNam"></span></p>
+
+                        <p><span>Trainer :</span> <span id="spnTrainerNam"></span></p>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="batch">
+                        <p><span>Center :</span><span id="spnLocation"></span></p>
+
+                        <p><span>Date :</span><span id="spnStartDate"></span><span class="hidden" style="color: #898989;">/</span><span id="spnTime" class="hidden"></span></p>
+
+                    </div>
+
+                </div>
+
+                <div>
+                    <div>
+                        <button type="button" class="button btn-float" onclick="StartRfa();">RFA</button>
+                        @*@Html.ActionLink("RFA", "RFA", new { }, new { @class = "button btn-float" })*@
+                    </div>
+                </div>
+
+
+            </div>
+
+
+        </div>
+    </div>
+
+</div>
+
+
+<div class="batch-edit-detail">
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class=" col-md-12">
+                <div class="edit-detail">
+
+                    <div class="col-md-4">Account </div>
+                    <div class="col-md-8">Students</div>
+
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="container">
+
+        <div class="row">
+
+            <div id="SavedAcountDetails">
+
+            </div>
+
+            <div class=" col-md-12">
+                <div class=" col-border-no">
+                    <div class="col-md-4">
+
+                        <div class="select-text">
+                            <i class="fa fa-check"></i> Select One Account
+                        </div>
+
+                        <div class="panel-group" id="scroll">
+
+                            <div id="AllAccounts" class="panel-body">
+                                <div id="AllAccounts1">
+                                    @*<ul>
+                                            <li class="active"><a href="#"><div class="logo-img-scroll"><img src="~/Content/images/trainer/amazon.png" alt="amazone" /> <span>Amazon</span></div> <div class="clearfix"></div></a></li>
+                                            <li><a href="#"><div class="logo-img-scroll"><img src="~/Content/images/trainer/snapdeal.png" alt="amazone" /> <span>Amazon</span></div> <div class="clearfix"></div></a></li>
+                                            <li><a href="#"><div class="logo-img-scroll"><img src="~/Content/images/trainer/flipcard.png" alt="amazone" /> <span>Amazon</span></div> <div class="clearfix"></div></a></li>
+                                            <li><a href="#"><div class="logo-img-scroll"><img src="~/Content/images/trainer/amazon.png" alt="amazone" /> <span>Amazon</span></div> <div class="clearfix"></div></a></li>
+                                            <li><a href="#"><div class="logo-img-scroll"><img src="~/Content/images/trainer/snapdeal.png" alt="amazone" /> <span>Amazon</span></div> <div class="clearfix"></div></a></li>
+                                            <li><a href="#"><div class="logo-img-scroll"><img src="~/Content/images/trainer/flipcard.png" alt="amazone" /> <span>Amazon</span></div> <div class="clearfix"></div></a></li>
+                                            <li><a href="#"><div class="logo-img-scroll"><img src="~/Content/images/trainer/amazon.png" alt="amazone" /> <span>Amazon</span></div> <div class="clearfix"></div></a></li>
+                                            <li><a href="#"><div class="logo-img-scroll"><img src="~/Content/images/trainer/snapdeal.png" alt="amazone" /> <span>Amazon</span></div> <div class="clearfix"></div></a></li>
+                                            <li><a href="#"><div class="logo-img-scroll"><img src="~/Content/images/trainer/flipcard.png" alt="amazone" /> <span>Amazon</span></div> <div class="clearfix"></div></a></li>
+                                        </ul>*@
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="col-md-8  col-border-left">
+
+                        <div class="select-max-student">
+
+                            <div class="select-text"><i class="fa fa-check"></i> Select max. 5 Students</div>
+
+                            <div class="panel-group" id="scroll">
+
+                                <div id="StudentPerBatch" class="panel-body">
+                                    <div id="StudentPerBatch1">
+                                        @*<ul>
+                                                <li class="active"><a href="#"> Aarti Upadhyay </a></li>
+                                                <li><a href="#">Sumit Taneja</a></li>
+                                                <li class="active"><a href="#">Veer Pratap Singh</a></li>
+                                                <li class="active"><a href="#">Sudeep Thakur</a></li>
+                                                <li class="active"><a href="#">Meera Khanna</a></li>
+                                                <li class="active"><a href="#">Romit Sharma</a></li>
+                                                <li><a href="#">Veer Pratap Singh</a></li>
+                                                <li><a href="#">Sudeep Thakur</a></li>
+                                                <li><a href="#">Meera Khanna</a></li>
+                                                <li><a href="#">Romit Sharma</a></li>
+
+                                            </ul>*@
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button id="btnSaveDraft" class="save-as-student" onclick="SaveAccount(0);">Save as Draft</button>
+                            <a id="aResetAccount" class="save-student" onClick="GetAllBatches($('#hdnResetAccount').val());">Reset</a>
+                            <input id="hdnResetAccount" type="hidden" value="" />
+                            
+                        </div>
+                        <div id="StudentsCount" class="error-red">You have select only 0.</div>
+
+                    </div>
+
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+
+            @*<div class=" col-md-12">
+                    <div class="add-more-btn">
+                        <button>Add More</button>
+                    </div>
+                </div>*@
+
+            <div class="col-md-12">
+                <div class="submit text-right">
+                    @*<button id="btnSaveDraft" class="save-as-btn hidden" onclick="SaveAccount(0);">Save as Draft</button>*@
+                    <button id="btnUpdateDraft" class="save-as-btn" onclick="UpdateAccount(0);">Save as Draft</button>
+                    <button id="btnFinalSubmit" class="final-submit-btn" onclick="FSaveAccount(1);">Final Submit</button>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+</div>
+<!---------------------  Content End  --------------------->
+<script src="~/Scripts/jquery.mCustomScrollbar.concat.min.js"></script>
+@*<script src="~/Scripts/Whiskers.validations.js"></script>*@
+<script src="~/Scripts/trainer.js"></script>
+<script>
+    (function ($) {
+        $(window).load(function () {
+            //GetAllAccountDetails("all");
+            //alert("about to call");
+            var a = '@Html.Raw(ViewBag.id)';
+            if ('@Html.Raw(ViewBag.id)' != null) {
+                GetAllBatches('@Html.Raw(ViewBag.id)');
+            }
+            else {
+                GetAllBatches('');
+            }
+            $("#scroll .modal-body").mCustomScrollbar({
+                setHeight: 260,
+                theme: "minimal-dark"
+            });
+
+            $("#scroll .panel-body").mCustomScrollbar({
+                setHeight: 220,
+                theme: "dark-3"
+            });
+
+            $("#myTab .tab-pane").mCustomScrollbar({
+                setHeight: 200,
+                theme: "inset-2-dark"
+            });
+
+        });
+    })(jQuery);
+</script>
+
+
+
+
+
+<script>
+    $(document).ready(function () {
+        $(".nav-tabs a").click(function () {
+            $(this).tab('show');
+        });
+        $('.nav-tabs a').on('shown.bs.tab', function (event) {
+            var x = $(event.target).text();         // active tab
+            var y = $(event.relatedTarget).text();  // previous tab
+            $(".act span").text(x);
+            $(".prev span").text(y);
+        });
+
+    });
+</script>

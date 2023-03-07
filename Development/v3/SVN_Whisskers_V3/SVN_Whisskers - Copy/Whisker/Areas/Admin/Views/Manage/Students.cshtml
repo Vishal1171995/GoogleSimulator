@@ -1,0 +1,231 @@
+﻿@{
+    Layout = "~/Areas/Admin/Views/Shared/Admin_Manage_Layout.cshtml";
+}
+<div class="admin-tab">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="tab-content">
+                    <div id="students2" class="tab-pane fade in active">
+                        <div class="admin-manage-header">
+                            <div class="row">
+                                <div class="col-md-3"><h3>Students</h3></div>
+                                <div class="col-md-9 text-right">
+                                    <ul class="campaings-nav pull-right">
+                                        <li><a href="/Admin/Manage/StudentDownloadExcel"><i class="fa fa-download" area-hidden="true"></i>  Download</a></li>
+                                        <li class="dropdown">
+                                            <img src="/content/images/excel.png" /> <a href="#" class="dropdown-toggle" onclick="OpenExcelPopup('STUDENT');" data-toggle="modal"> Import From Excel</a>
+                                        </li>
+                                        <li><a href="#" data-toggle="modal" onclick="showStudentPopup();" data-target="#myModal32"><img src="/content/images/plus-icon.png" alt="icon">Add New Students</a></li>
+                                    </ul>
+                                    <div class="campaings-nav pull-right">
+                                        <select id="dropBatchCode" class="width200" onchange="getStudentsOnDemand();">
+                                            <option value="">Batch</option>
+                                            @foreach (var item in @ViewBag.BatchDetails)
+                                            {
+                                                <option value="@item.BatchCode">@item.BatchName</option>
+                                            }
+                                        </select>
+                                        <select id="dropLocationCode" class="width200" onchange="getStudentsOnDemand();">
+                                            <option value="">Location</option>
+                                            @foreach (var item in @ViewBag.Location)
+                                            {
+                                                <option value="@item.LocationCode">@item.LocationName</option>
+                                            }
+                                        </select>
+                                    </div>
+
+
+
+
+
+                                </div>
+                            </div>
+                            <div id="div_result3"></div>
+                        </div>
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--add new Students-->
+
+@using (Ajax.BeginForm("CreateStudent", "Manage", FormMethod.Post, new AjaxOptions { OnSuccess = "closepoup", OnBegin = "AjaxBegin", OnFailure = "OnError" }))
+{
+    <div class="modal fade in" id="myModal32" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h4 id="TitlePopupStudent" class="modal-title">Add New Student</h4>
+                </div>
+                <form>
+                    <div class="modal-body">
+
+                        <div class="form-details">
+
+                            <div class="row">
+
+
+                                <div class="form-group">
+
+                                    <div class="col-xs-12 col-md-3">
+                                        <label class="lab_01">Student Name</label>
+                                    </div>
+                                    <div class="col-xs-12 col-md-9">
+                                        <div class="col-form-box">
+                                            <div class="form-group">
+                                                <input type="text" id="txtFirstName" maxlength="14" name="txtFirstName" class="form-control">
+
+                                                <span class="required">First</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-form-box">
+                                            <div class="form-group">
+                                                <input type="text" id="txtMiddleName" maxlength="14" name="txtMiddleName" class="form-control">
+                                                <span>Middle</span>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-form-box">
+                                            <div class="form-group">
+                                                <input type="text" id="txtLastName" maxlength="14" name="txtLastName" class="form-control">
+
+                                                <span class="required">Last</span>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-xs-12 col-md-3"> <label class="lab_01 required">Location</label>   </div>
+                                    <div class="col-xs-12 col-md-9">
+                                        <div class="form-group"> <input type="text" id="txtLocation" maxlength="19" name="txtLocation" class="form-control"> </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-xs-12 col-md-3"> <label class="lab_01 required">Email Id</label>   </div>
+                                    <div class="col-xs-12 col-md-9">
+                                        <div class="form-group"> <input type="text" id="txtEmail" name="txtEmail" class="form-control"> </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <div class="col-xs-12 col-md-3"> <label class="lab_01 required">Contact</label>   </div>
+                                    <div class="col-xs-12 col-md-9">
+                                        <div class="form-group"> <input type="text" id="txtContact" maxlength="10" name="txtContact" class="form-control"> </div>
+                                    </div>
+                                </div>
+                                <a id="StudentResetPwd" class="BackBtn" href="#" onclick="return StudentResetPwd();">Reset Password</a>
+                            </div>
+
+                            <div class="clearfix"></div>
+                            <div id="divStudentNotify" class="error-red erroor-boder">All Fields are required</div>
+                            <input type="hidden" id="hdnStudentCode" value="0" name="hdnStudentCode" />
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="btnCancelStudent" class="btn btn-default cancel" onclick="ClearStudentPopup();">Cancel</button>
+                        <button type="submit" id="btnCreateStudent" class="btn btn-default save" onclick="return StudentValidation();">Save</button>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+}
+<div class="modal fade" id="ModalStudentSuccess" role="dialog" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                @*<button type="button" class="close" data-dismiss="modal">&times;</button>*@
+                <h5 id="StudentSuccessHead" class="modal-title"></h5>
+                <button type="button" id="btnCloseBatch" class="btn btn-default close-btn" onclick="refreshPage();">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#li_Manage").addClass("active");
+        $('#students2').addClass("active");
+        getStudentsOnDemand();
+    });
+    function closepoup(data) {
+        var JsonObj = data[0];
+        $('#divStudentNotify').text(data[0]);
+        fadeOut("divStudentNotify");
+        if (data[0] == "0") {
+            $('#hdnStudentCode').val('0');
+            $('#StudentSuccessHead').text('New student is added successfully & credentials has been sent to the registered Email ID.');
+        }
+        if (data[0] == "1") {
+            $('#hdnStudentCode').val('0');
+            $('#StudentSuccessHead').text('Student is updated successfully.');
+        }
+        $("#btnCreateStudent").attr("disabled", false);
+        $(".Loader").hide();
+        if (data[1] == "1") {
+            ClearStudentPopup();
+            //getStudentsOnDemand();
+            $('#ModalStudentSuccess').modal('show');
+            $('#hdnStudentCode').val('0');
+        }
+
+    }
+    function Failure() {
+        alert('Some internal error occurs, Please contact to administrator.');
+    }
+    function AjaxBegin() {
+        $("#btnCreateStudent").attr("disabled", true);
+    }
+    function ClearStudentPopup() {
+        $('#txtFirstName').val('');
+        $('#txtMiddleName').val('');
+        $('#txtLastName').val('');
+        $('#txtLocation').val('');
+        $('#txtEmail').val('');
+        $('#txtContact').val('');
+        $('#divStudentNotify').text('All fields are required.');
+        $("#btnCreateStudent").attr("disabled", false);
+        $('#hdnStudentCode').val('0');
+        $('#myModal32').modal('hide');
+        $("#txtEmail").attr('readonly', false);
+        $("#StudentResetPwd").addClass("hidden");
+    }
+    function StudentDataTable() {
+        var t = $('#tableStudent').DataTable({
+            "searching": false,
+            "columnDefs": [{
+                "searchable": false,
+                "orderable": false,
+                "targets": 0
+            }],
+            "order": [[1, 'asc']]
+        });
+
+        t.on('order.dt search.dt', function () {
+            t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+                cell.innerHTML = i + 1;
+            });
+        }).draw();
+    }
+</script>

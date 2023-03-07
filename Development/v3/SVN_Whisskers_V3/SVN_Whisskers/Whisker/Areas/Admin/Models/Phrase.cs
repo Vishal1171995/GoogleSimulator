@@ -1,0 +1,15 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace Whisker.Areas.Admin.Models
+{
+    public class Phrase
+    {
+        public string PhraseName;
+        public string Traffic;
+        public string Category;
+        public DateTime CreatedOn;
+    }
+}

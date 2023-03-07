@@ -1,0 +1,29 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+@{
+    ViewBag.Title = "Error";
+}
+<link href="~/Content/css/error.css" rel="stylesheet" />
+<div class="wrapper">
+    <div class="content-box">
+
+        <div class="logo">
+            <a href="#">
+                <img src="/Content/images/logo-inner.jpg" alt="Whisskers" id="logo">
+            </a>
+        </div>
+
+        <h1>We are sorry, something went wrong!</h1>
+
+        <p style="display:none">I want to go <a href="#a" class="blue">back</a> to where I came from </p>
+        <p>Open the <a href="/Home/Logout" class="blue">Login Page</a> for me</p>
+
+    </div>
+</div>
+<p style="display:none">
+    
+    @*Controller: @Model.ControllerName <br>
+    Action: @Model.ActionName <br>
+    Exception: @Model.Exception.Message <br>
+    StackTrace: @Model.Exception.StackTrace <br>*@
+    
+</p>

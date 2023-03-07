@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+    <script>
+        window.onload = function () {
+            var d = new Date().getTime();
+            document.getElementById("tid").value = d;
+        };
+    </script>
+</head>
+<body>
+    <form method="post" name="customerData" action="ccavRequestHandler" runat="server">
+
+        <table width="40%" height="100" border='1' align="center">
+            <tr>
+                <td>
+                    <input type="hidden" id="tid" />
+                    <input type="hidden" id="merchant_id" value="165356" />
+                    <input type="hidden" id="order_id" value="123654789" />
+                    <input type="hidden" id="currency" value="INR" />
+                    <input type="hidden" id="redirect_url" Value="http://localhost:1044//ccavResponseHandler.aspx" />
+                    <input type="hidden" id="cancel_url" Value="http://localhost:1044//ccavResponseHandler.aspx" />
+                </td>
+            </tr>
+            <tr>
+                <td>Amount</td>
+                <td><input type="text" readonly name="amount" value="@ViewBag.Ammount" /></td>
+            </tr>
+
+
+
+            <tr>
+                <td></td>
+                <td><input type="submit" value="Checkout" /></td>
+            </tr>
+        </table>
+
+    </form>
+</body>
+</html>

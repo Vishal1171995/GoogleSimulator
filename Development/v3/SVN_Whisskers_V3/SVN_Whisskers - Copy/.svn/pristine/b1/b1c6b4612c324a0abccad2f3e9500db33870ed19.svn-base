@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "Tools";
+    Layout = "~/Areas/Students/Views/Shared/Student_Layout.cshtml";
+}
+
+<!---------------------  Content start  --------------------->
+<form id="excelUpload1">
+    <a href="/Students/Home/KeyPlanDownloadTemplateExcel" id="KeyPlanTmplate">Download Template</a>
+    <input type="file" name="excelfile1" id="excelfile1">
+    <input type="hidden" id="hdnIdenType1" value="GET_KEYPLAN" name="hdnIdenType1" />
+    <button type="submit" id="btnKeyPlanUploadExcel" name="btnKeyPlanUploadExcel" value="" class="btn btn-default save" onclick="return getKeyPlanExcel();">Find Keywords</button>
+    <div id="divExcelNotify1" class="error-red erroor-boder">Upload  file</div>
+</form>
+<link href="~/Content/css/admin.css" rel="stylesheet" />
+<script src="~/Scripts/Whiskers.validations.js"></script>
+<!---------------------  Content End  --------------------->
+<script>
+    (function ($) {
+        $(window).load(function () {
+            $("#liTools").addClass("active");
+        });
+    })(jQuery);
+    $(document).ready(function () {
+
+    });
+</script>

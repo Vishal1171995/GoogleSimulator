@@ -1,0 +1,1887 @@
+﻿var nameExp = /^[A-Za-z ]{3,250}$/;
+var ck_email = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+var phoneno = /^\d{10,13}$/;
+var progressTrigger;
+var progressElem = $('span#progressCounter');
+var resultsElem = $('span#results');
+var recordCount = 0;
+
+
+
+//#region Batch 
+function BatchValidation() {
+    if ($('#txtBatchName').val().length == 0) {
+        $('#divBatchNotify').text("Batch name is required");
+        $('#txtBatchName').focus();
+        return false;
+    }
+    if ($('#txtLocation').val().length == 0) {
+        $('#divBatchNotify').text("Location is required");
+        $('#txtLocation').focus();
+        return false;
+    }
+    if ($('#txtAdress').val().length == 0) {
+        $('#divBatchNotify').text("Address is required");
+        $('#txtAdress').focus();
+        return false;
+    }
+    if ($('#txtBxBatchStartDate').val().length == 0) {
+        $('#divBatchNotify').text("Start Date is required");
+        $('#txtBxBatchStartDate').focus();
+        return false;
+    }
+    if ($('#txtBxBatchEndDate').val().length == 0) {
+        $('#divBatchNotify').text("End Date is required");
+        $('#txtBxBatchEndDate').focus();
+        return false;
+    }
+    //if ($("select[id='dropBindTime'] option:selected").index() == 0) {
+    //    var a = $("select[id='dropBindTime'] option:selected").index();
+    //    $('#divBatchNotify').text("Client Time is required");
+    //    $('#dropBindTime').focus();
+    //    return false;
+    //}
+}
+function showBatchPopup() {
+    $('#TitlePopupBatch').text("Add New Batch");
+    ClearBatchPopup();
+}
+function getBatchesOnDemand() {
+
+    var htmlcontent = "";
+    var SelectedData = JSON.stringify({
+        'BatchTime': $('#dropBatchTime').val(),
+        'TrainerCode': $('#dropTrainerCode').val(),
+        'LocationCode': $('#dropLocationCode').val(),
+    });
+    $('#div_result2').empty();
+    $.ajax({
+        //global: false,
+        url: "/Admin/Manage/getBatchesOnDemand",
+        method: 'POST',
+        cache: false,
+        contentType: 'application/json; charset=utf-8',
+        data: SelectedData,
+        dataType: "json",
+        beforeSend: function () {
+            $(".Loader").show();
+            
+        },
+        complete: function () {
+            $(".Loader").hide();
+        },
+        success: function (data) {
+            htmlcontent = '<div class="row">' +
+            '<div class="col-md-12">' +
+                                '<div class="campaings-table-border table-responsive">' +
+                                '<table id="tableBatch"  class="display" width="100%">' +
+                                '<thead><tr>' +
+                                '<th></th>' +
+                                '<th>Batches</th>' +
+                                '<th>Trainers</th>' +
+                                '<th>Students</th>' +
+                                '<th>Locations</th>' +
+                                '<th>Address</th>' +
+                                '<th>Start Date</th>' +
+                                '<th>End Date</th>' +
+                                '<th>Time </th>' +
+                                ' <th ></th>' +
+                                ' <th ></th>' +
+                                ' </thead></tr><tbody>';
+
+            if (data == '') {
+                //htmlcontent += '<tr><td colspan="9" class="dataTables_empty">No Results Found</tr></td>';
+                //htmlcontent += '<tr><td>No Results Found</td><td>No Results Found</td><td>No Results Found</td><td>No Results Found</td><td>No Results Found</td><td>No Results Found</td><td>No Results Found</td><td>No Results Found</td><td>No Results Found</td><td>No Results Found</td></tr>';
+            }
+            $.each(data, function (i, item) {
+                var index = i + 1;
+                htmlcontent += '<tr><td>' + index + '</td>' +
+                    '<td><a id ="' + item.BatchCode + '" href="/Admin/Manage/BatchView/' + item.BatchCode + '">' + item.BatchName + '</a></td>' +
+                                '<td>' + item.TrainerName + '</td>' +
+                                '<td>' + item.StudentCount + '</td>' +
+                                '<td>' + item.Location + '</td>' +
+                                '<td>' + item.Address + '</td>' +
+                                '<td>' + item.StartDate + '</td>' +
+                                '<td>' + item.EndDate + '</td>' +
+                                '<td>' + item.Time + '</td>' +
+                                '<td class="text-center"><a  id ="' + item.BatchCode + '" href="#" onclick="getSingleBatchDetails(' + "'" + item.BatchCode + "'" + ');"><i class="fa fa-pencil" data-toggle="modal" data-target="#myModal" aria-hidden="true"></i></a></td>' +
+                                '<td class="text-center"><a  id ="' + item.BatchCode + '" href="#" onclick="deleteSingleBatch(' + "'" + item.BatchCode + "'" + ');"><i class="fa fa-trash" aria-hidden="true"></i></a></td>';
+
+
+            });
+            htmlcontent += '</tbody></table></div></div></div></div></div>';
+            $('#div_result2').html(htmlcontent);
+            BatchDataTable();
+        }, async: true,
+
+        error: function (data) {
+            alert("Either internet slow or Internal Error");
+        }
+    });
+
+}
+function getSingleBatchDetails(BatchCode) {
+
+    ClearBatchPopup();
+    $('#TitlePopupBatch').text("Edit Batch");
+    $('#hdnBatchCode').val('0');
+    $('#hdnBatchCode').val(BatchCode);
+    var htmlcontent = "";
+    var SelectedData = JSON.stringify({
+        'BatchCode': BatchCode,
+    });
+    $.ajax({
+        url: "/Admin/Manage/getSingleBatchDetails",
+        method: 'POST',
+        cache: false,
+        contentType: 'application/json; charset=utf-8',
+        data: SelectedData,
+        dataType: "json",
+        beforeSend: function () {
+            $(".Loader").show();
+            
+        },
+        complete: function () {
+            $(".Loader").hide();
+        },
+        success: function (data) {
+
+            //Binding Batch Details In Btach Popup
+            $('#txtBatchName').val(data[0][0].BatchName);
+            $('#txtLocation').val(data[0][0].Location);
+            $('#txtAdress').val(data[0][0].Address);
+            var StartDate = $.datepicker.formatDate("dd-M-yy", new Date(data[0][0].StartDate));
+            $("#txtBxBatchStartDate").datepicker('setDate', StartDate);
+            var EndDate = $.datepicker.formatDate("dd-M-yy", new Date(data[0][0].EndDate));
+            $("#txtBxBatchEndDate").datepicker('setDate', EndDate);
+        }, async: true,
+
+        error: function (data) {
+            alert("Error is : " + data);
+        }
+    });
+}
+function deleteSingleBatch(BatchCode) {
+
+    var SelectedData = JSON.stringify({
+        'BatchCode': BatchCode,
+    });
+    $.ajax({
+        url: "/Admin/Manage/deleteSingleBatch",
+        method: 'POST',
+        cache: false,
+        contentType: 'application/json; charset=utf-8',
+        data: SelectedData,
+        dataType: "json",
+        beforeSend: function () {
+            $(".Loader").show();
+            
+        },
+        complete: function () {
+            $(".Loader").hide();
+        },
+        success: function (data)
+        {
+            if (data[0] == "0") {
+                $('#BatchSuccessHead').text('You cant delete, this batch is in use.');
+            }
+            if (data[0] == "1") {
+                $('#BatchSuccessHead').text('You have Deleted batch successfully');
+                getBatchesOnDemand();
+            }
+            //$('#BatchSuccessHead').text('You have deleted batch successfully');
+            $('#ModalBatchSuccess').modal('show');
+            $('#myModal').modal('hide');
+        }, async: true,
+
+        error: function (data) {
+            alert("Error is : " + data);
+        }
+    });
+}
+function CompleteBatchDetails(BatchCode)
+{
+    
+    getOnlySingleBatchDetails(BatchCode);
+    getAssignedStudentsPerBatch(BatchCode);
+    getAssignedTrainersPerBatch(BatchCode);
+}
+
+
+
+//#region BatchView Page ---> This function is use to get batch details by using batch code
+function getOnlySingleBatchDetails(BatchCode) {
+    var SelectedData = JSON.stringify({
+        'BatchCode': BatchCode,
+    });
+    $.ajax({
+        url: "/Admin/Manage/getSingleBatchDetails",
+        method: 'POST',
+        cache: false,
+        contentType: 'application/json; charset=utf-8',
+        data: SelectedData,
+        dataType: "json",
+        beforeSend: function () {
+            $(".Loader").show();
+        },
+        complete: function () {
+            $(".Loader").hide();
+        },
+        success: function (data) {
+            //Binding Batch Details In BtachView Page
+            //alert(data[0][0].BatchName);
+            var tem1p = $('#spnBatchName')[0].innerHTML;
+            $('#spnBatchName').text(data[0][0].BatchName);
+            $('#spnLocation').text(data[0][0].Location);
+            $('#spnAddress').text(data[0][0].Address);
+            var StartDate = $.datepicker.formatDate("dd-M-yy", new Date(data[0][0].StartDate));
+            var EndDate = $.datepicker.formatDate("dd-M-yy", new Date(data[0][0].EndDate));
+            $("#spnDates").text(StartDate + ' To ' + EndDate);
+
+            //$("#txtBxBatchEndDate").datepicker('setDate', EndDate);
+        }, async: true,
+
+        error: function (data) {
+            alert("Error is : " + data);
+        }
+    });
+}
+function AssignStudentsToBatch()
+{
+    
+    var BatchCode = $("#BatchCode").val();
+    var UserID = $("#StudentID").val();
+    if ($("#SelectedStudents").val() == "") {
+        alert("Please select student by typing in student text field")
+        $("#SelectedStudents").focus();
+    }
+    if (UserID == "" && $("#SelectedStudents").val() != "")
+    {
+        alert("Please select students from the given list")
+        $("#SelectedStudents").focus();
+    }
+    if (UserID != "" && BatchCode != "0")
+    {
+        var SelectedData = JSON.stringify({
+            'BatchCode': BatchCode,
+            'UserID': UserID,
+        }) 
+        $.ajax({
+            url: "/Admin/Manage/AssignedStudentPerBatch",
+            method: 'POST',
+            cache: false,
+            contentType: 'application/json; charset=utf-8',
+            data: SelectedData,
+            dataType: "json",
+            beforeSend: function () {
+                //$(".Loader").show();
+            },
+            complete: function () {
+              //  $(".Loader").hide();
+            },
+            success: function (data) {
+                getAssignedStudentsPerBatch(BatchCode);
+                $('#SelectedStudents').val("");
+            }, async: true,
+
+            error: function (data) {
+                alert("Error is : " + data);
+            }
+        });
+    }
+    return false;
+}
+function getAssignedStudentsPerBatch(BatchCode)
+{
+    $("#StudentID").val("");
+    var htmlcontent = "";
+    var SelectedData = JSON.stringify({
+        'BatchCode': BatchCode,
+    });
+    $('#div_AssignedStudent').empty();
+    $.ajax({
+        //global: false,
+        url: "/Admin/Manage/getAssignedStudentsPerBatch",
+        method: 'POST',
+        cache: false,
+        contentType: 'application/json; charset=utf-8',
+        data: SelectedData,
+        dataType: "json",
+        beforeSend: function () {
+            //$(".Loader").show();
+            
+        },
+        complete: function () {
+           // $(".Loader").hide();
+        },
+        success: function (data)
+        {
+            
+            htmlcontent = '<div class="data-table table-responsive">' +
+                                '<table id="tableAssignedStudent"  class="display">' +
+                                '<thead><tr>' +
+                                '<th></th>' +
+                                '<th>Students</th>' +
+                                '<th>Location</th>' +
+                                '<th>Email ID</th>' +
+                                '<th>Contact</th>' +
+                                '<th>Status</th>' +
+                                ' <th ></th>' +
+                                ' </thead></tr><tbody>';
+
+            if (data == '') {
+                //htmlcontent += '<tr><td colspan="9" class="dataTables_empty">No Results Found</tr></td>';
+                //htmlcontent += '<tr><td>No Results Found</td><td>No Results Found</td><td>No Results Found</td><td>No Results Found</td><td>No Results Found</td><td>No Results Found</td><td>No Results Found</td><td>No Results Found</td><td>No Results Found</td><td>No Results Found</td></tr>';
+            }
+            $.each(data, function (i, item) {
+                
+                var index = i + 1;
+                var status = "";
+                var deleterow = "";
+                if (item.isMappingActive == true)
+                {
+                    status = '<td><span class="lblRed">Submitted</span></td>';
+                    deleterow = '<td class="text-center"><a style="pointer-events: none; opacity: 0.6;" id ="' + item.BatchCode + '" href="" onclick="return deleteAssignedStudentPerBatch(' + "'" + item.BatchCode + "','" + item.StudentCode + "'" + ');"><i class="fa fa-trash" aria-hidden="true"></i></a></td>';
+                    
+                }
+                if (item.isMappingActive == false) {
+                    status = '<td><i class="fa fa-save" aria-hidden="true" style="color:#ff975a; font-size:22px;"></i></td>';
+                    deleterow = '<td class="text-center"><a id ="' + item.BatchCode + '" href="" onclick="return deleteAssignedStudentPerBatch(' + "'" + item.BatchCode + "','" + item.StudentCode + "'" + ');"><i class="fa fa-trash" aria-hidden="true"></i></a></td>';
+                }
+                htmlcontent += '<tr><td>' + index + '</td>' +
+                    '<td><a>' + item.FullName + '</a></td>' +
+                                '<td>' + item.LocationName + '</td>' +
+                                '<td>' + item.Email + '</td>' +
+                                '<td>' + item.Contact + '</td>' +
+                                status +
+                                deleterow;
+
+
+            });
+            htmlcontent += '</tbody></table></div></div></div></div></div>';
+            $('#div_AssignedStudent').html(htmlcontent);
+            BatchAssignedStudentDataTable();
+        }, async: true,
+
+        error: function (data) {
+            alert("Either internet slow or Internal Error");
+        }
+    });
+}
+function deleteAssignedStudentPerBatch(BatchCode,UserID) {
+    var htmlcontent = "";
+    var SelectedData = JSON.stringify({
+        'BatchCode': BatchCode,
+        'UserID': UserID,
+    });
+    $.ajax({
+        url: "/Admin/Manage/deleteAssignedStudentPerBatch",
+        method: 'POST',
+        cache: false,
+        contentType: 'application/json; charset=utf-8',
+        data: SelectedData,
+        dataType: "json",
+        beforeSend: function ()
+        {
+           // $(".Loader").show();
+        },
+        complete: function ()
+        {
+           // $(".Loader").hide();
+        },
+        success: function (data)
+        {
+            getAssignedStudentsPerBatch($("#BatchCode").val());
+        }, async: true,
+        error: function (data)
+        {
+            alert("Either internet slow or Internal Error");
+        }
+    });
+    return false;
+}
+
+function AssignTrainersToBatch() {
+    
+    var BatchCode = $("#BatchCode").val();
+    var UserID = $("#TrainerID").val();
+    if ($("#SelectedTrainers").val() == "")
+    {
+        alert("Please select trainer by typing in trainer text field")
+        $("#SelectedTrainers").focus();
+    }
+    if (UserID == "" && $("#SelectedTrainers").val() != "")
+    {
+        alert("Please select trainer from the given list")
+        $("#SelectedTrainers").focus();
+    }
+    if (UserID != "" && BatchCode != "0") {
+        var SelectedData = JSON.stringify({
+            'BatchCode': BatchCode,
+            'UserID': UserID,
+        })
+        $.ajax({
+            url: "/Admin/Manage/AssignedTrainerPerBatch",
+            method: 'POST',
+            cache: false,
+            contentType: 'application/json; charset=utf-8',
+            data: SelectedData,
+            dataType: "json",
+            beforeSend: function () {
+                //$(".Loader").show();
+            },
+            complete: function () {
+                //  $(".Loader").hide();
+            },
+            success: function (data) {
+                getAssignedTrainersPerBatch(BatchCode);
+                $('#SelectedTrainers').val("");
+            }, async: true,
+
+            error: function (data) {
+                alert("Error is : " + data);
+            }
+        });
+    }
+    return false;
+}
+function getAssignedTrainersPerBatch(BatchCode) {
+    $("#TrainerID").val("");
+    var htmlcontent = "";
+    var SelectedData = JSON.stringify({
+        'BatchCode': BatchCode,
+    });
+    $('#div_AssignedTrainer').empty();
+    $.ajax({
+        //global: false,
+        url: "/Admin/Manage/getAssignedTrainersPerBatch",
+        method: 'POST',
+        cache: false,
+        contentType: 'application/json; charset=utf-8',
+        data: SelectedData,
+        dataType: "json",
+        beforeSend: function () {
+            //$(".Loader").show();
+
+        },
+        complete: function () {
+            // $(".Loader").hide();
+        },
+        success: function (data) {
+            htmlcontent = '<div class="data-table table-responsive">' +
+                                '<table id="tableAssignedTrainer"  class="display">' +
+                                '<thead><tr>' +
+                                '<th></th>' +
+                                '<th>Trainers</th>' +
+                                '<th>Location</th>' +
+                                '<th>Email ID</th>' +
+                                '<th>Contact</th>' +
+                                '<th>Status</th>' +
+                                ' <th ></th>' +
+                                ' </thead></tr><tbody>';
+
+            if (data == '') {
+                //htmlcontent += '<tr><td colspan="9" class="dataTables_empty">No Results Found</tr></td>';
+                //htmlcontent += '<tr><td>No Results Found</td><td>No Results Found</td><td>No Results Found</td><td>No Results Found</td><td>No Results Found</td><td>No Results Found</td><td>No Results Found</td><td>No Results Found</td><td>No Results Found</td><td>No Results Found</td></tr>';
+            }
+            $.each(data, function (i, item) {
+                
+                var index = i + 1;
+                var status = "";
+                var deleterow = "";
+                if (item.isMappingActive == true) {
+                    status = '<td><span class="lblRed">Submitted</span></td>';
+                    deleterow = '<td class="text-center"><a style="pointer-events: none; opacity: 0.6;" id ="' + item.BatchCode + '" href="" onclick="return deleteAssignedTrainerPerBatch(' + "'" + item.BatchCode + "','" + item.StudentCode + "'" + ');"><i class="fa fa-trash" aria-hidden="true"></i></a></td>';
+
+                }
+                if (item.isMappingActive == false) {
+                    status = '<td><i class="fa fa-save" aria-hidden="true" style="color:#ff975a; font-size:22px;"></i></td>';
+                    deleterow = '<td class="text-center"><a id ="' + item.BatchCode + '" href="" onclick="return deleteAssignedTrainerPerBatch(' + "'" + item.BatchCode + "','" + item.StudentCode + "'" + ');"><i class="fa fa-trash" aria-hidden="true"></i></a></td>';
+                }
+                htmlcontent += '<tr><td>' + index + '</td>' +
+                    '<td><a>' + item.FullName + '</a></td>' +
+                                '<td>' + item.LocationName + '</td>' +
+                                '<td>' + item.Email + '</td>' +
+                                '<td>' + item.Contact + '</td>' +
+                                status +
+                                deleterow;
+
+
+            });
+            htmlcontent += '</tbody></table></div></div></div></div></div>';
+            $('#div_AssignedTrainer').html(htmlcontent);
+            BatchAssignedTrainerDataTable();
+        }, async: true,
+
+        error: function (data) {
+            alert("Either internet slow or Internal Error");
+        }
+    });
+}
+function deleteAssignedTrainerPerBatch(BatchCode, UserID) {
+    var htmlcontent = "";
+    var SelectedData = JSON.stringify({
+        'BatchCode': BatchCode,
+        'UserID': UserID,
+    });
+    $.ajax({
+        url: "/Admin/Manage/deleteAssignedTrainerPerBatch",
+        method: 'POST',
+        cache: false,
+        contentType: 'application/json; charset=utf-8',
+        data: SelectedData,
+        dataType: "json",
+        beforeSend: function () {
+            // $(".Loader").show();
+        },
+        complete: function () {
+            // $(".Loader").hide();
+        },
+        success: function (data) {
+            getAssignedTrainersPerBatch($("#BatchCode").val());
+        }, async: true,
+        error: function (data) {
+            alert("Either internet slow or Internal Error");
+        }
+    });
+    return false;
+}
+function FinalAssignStudentAndTrainersToBatch() {
+    $("#btnBatchView").attr("disabled", true);
+    var BatchCode = $("#BatchCode").val();
+    if (BatchCode != "0") {
+        var SelectedData = JSON.stringify({
+            'BatchCode': BatchCode,
+        })
+        $.ajax({
+            url: "/Admin/Manage/FinalAssignStudentAndTrainersToBatch",
+            method: 'POST',
+            cache: false,
+            contentType: 'application/json; charset=utf-8',
+            data: SelectedData,
+            dataType: "json",
+            beforeSend: function () {
+                //$(".Loader").show();
+            },
+            complete: function () {
+                //  $(".Loader").hide();
+            },
+            success: function (data) {
+                
+                var JsonObj = data[0];
+                if (data[0] == "0")
+                {
+                    $('#BatchViewSuccessHead').text('No records found To be update.');
+                }
+                if (data[0] == "1")
+                {
+                    $('#BatchViewSuccessHead').text('You have updated batch successfully');
+                }
+                $("#btnBatchView").attr("disabled", false);
+
+                getAssignedStudentsPerBatch(BatchCode);
+                $('#SelectedStudents').val("");
+                $("#StudentID").val("");
+                getAssignedTrainersPerBatch(BatchCode);
+                $('#SelectedTrainers').val("");
+                $("#TrainerID").val("");
+                $('#ModalBatchViewSuccess').modal('show');
+            }, async: true,
+
+            error: function (data) {
+                alert("Error is : " + data);
+            }
+        });
+    }
+}
+//#endregion BatchView Page
+
+//#endregion Batch
+
+
+
+//#region Trainer 
+function TrainerValidation() {
+    if ($('#txtFirstName').val().length == 0) {
+        $('#divTrainerNotify').text("First name is required");
+        $('#txtFirstName').focus();
+        return false;
+    }
+    //if ($('#txtMiddleName').val().length == 0) {
+    //    $('#divStudentNotify').text("Client Middle Name is required");
+    //    $('#txtMiddleName').focus();
+    //    return false;
+    //}
+    if ($('#txtLastName').val().length == 0) {
+        $('#divTrainerNotify').text("Last name is required");
+        $('#txtLastName').focus();
+        return false;
+    }
+    if ($('#txtLocation').val().length == 0) {
+        $('#divTrainerNotify').text("Location is required");
+        $('#txtLocation').focus();
+        return false;
+    }
+    if ($('#txtEmail').val().length == 0) {
+        $('#divTrainerNotify').text("Email is required");
+        $('#txtEmail').focus();
+        return false;
+    }
+    else if (!$("#txtEmail").val().match(ck_email)) {
+        $('#divTrainerNotify').text("Valid email is required");
+        $('#txtEmail').focus();
+        return false;
+    }
+    if ($('#txtContact').val().length == 0) {
+        $('#divTrainerNotify').text("Contact is required");
+        $('#txtContact').focus();
+        return false;
+    }
+    else if (!$("#txtContact").val().match(phoneno)) {
+        $('#divvNotify').text("Valid contact is required");
+        $('#txtContact').focus();
+        return false;
+    }
+
+}
+function showTrainerPopup() {
+    $('#TitlePopupTrainer').text("Add New Trainer");
+    ClearTrainerPopup();
+}
+function getTrainersOnDemand() {
+    
+    var htmlcontent = "";
+    var SelectedData = JSON.stringify({
+        'TrainerCode': $('#dropTrainerCode').val(),
+        'BatchCode': $('#dropBatchCode').val(),
+        'LocationCode': $('#dropLocationCode').val(),
+    });
+    $('#div_result4').empty();
+    $.ajax({
+        //global: false,
+        url: "/Admin/Manage/getTrainersOnDemand",
+        method: 'POST',
+        cache: false,
+        contentType: 'application/json; charset=utf-8',
+        data: SelectedData,
+        dataType: "json",
+
+        beforeSend: function () {
+            
+            $(".Loader").show();
+
+        },
+        complete: function () {
+            
+            $(".Loader").hide();
+        },
+        success: function (data) {
+            htmlcontent = '<div class="row">' +
+            '<div class="col-md-12">' +
+                                '<div class="campaings-table-border table-responsive">' +
+                                '<table id="tableTrainer">' +
+                                '<thead><tr>' +
+                                '<th></th>' +
+                                '<th>Trainer</th>' +
+                                '<th>Location</th>' +
+                                '<th>Email Id</th>' +
+                                '<th>Contact</th>' +
+                                '<th>Batch</th>' +
+                                ' <th ></th>' +
+                                ' <th ></th>' +
+                                ' </thead></tr>';
+
+            if (data == '') {
+                //htmlcontent += '<tr><td colspan="9">No Results Found</tr></td>';
+            }
+            $.each(data, function (i, item) {
+                var index = i + 1;
+                htmlcontent += '<tr><td>' + index + '</td>' +
+                                '<td>' + item.FullName + '</td>' +
+                                '<td>' + item.LocationName + '</td>' +
+                                '<td>' + item.Email + '</td>' +
+                                '<td>' + item.Contact + '</td>' +
+                                '<td>' + item.BatchName + '</td>' +
+                                '<td class="text-center"><a  id ="' + item.TrainerCode + '" href="#" onclick="getSingleTrainerDetails(' + "'" + item.TrainerCode + "'" + ');"><i class="fa fa-pencil" data-toggle="modal" data-target="#myModal27" aria-hidden="true"></i></a></td>' +
+                                '<td class="text-center"><a  id ="' + item.TrainerCode + '" href="#" onclick="deleteSingleTrainer(' + "'" + item.TrainerCode + "'" + ');"><i class="fa fa-trash" aria-hidden="true"></i></a></td>';
+
+
+            });
+            htmlcontent += '</table></div></div></div></div></div>';
+            $('#div_result4').html(htmlcontent);
+            TrainerDataTable();
+        }, async: true,
+        error: function (data) {
+            alert("Either internet slow or Internal Error");
+        }
+    });
+}
+function getSingleTrainerDetails(TrainerCode) {
+
+    ClearTrainerPopup();
+    $('#TitlePopupTrainer').text("Edit Trainer");
+    $('#hdnTrainerCode').val('0');
+    $('#hdnTrainerCode').val(TrainerCode);
+    var htmlcontent = "";
+    var SelectedData = JSON.stringify({
+        'TrainerCode': TrainerCode,
+    });
+    $.ajax({
+        url: "/Admin/Manage/getSingleTrainerDetails",
+        method: 'POST',
+        cache: false,
+        contentType: 'application/json; charset=utf-8',
+        data: SelectedData,
+        dataType: "json",
+        beforeSend: function () {
+            $(".Loader").show();
+            
+        },
+        complete: function () {
+            $(".Loader").hide();
+        },
+        success: function (data) {
+
+            //Binding Student Details In Student Popup
+            $('#txtFirstName').val(data[0][0].FirstName);
+            $('#txtMiddleName').val(data[0][0].MiddleName);
+            $('#txtLastName').val(data[0][0].LastName);
+            $('#txtLocation').val(data[0][0].LocationName);
+            $('#txtEmail').val(data[0][0].Email);
+            $('#txtContact').val(data[0][0].Contact);
+        }, async: true,
+
+        error: function (data) {
+            alert("Error is : " + data);
+        }
+    });
+}
+function deleteSingleTrainer(TrainerCode) {
+
+    var SelectedData = JSON.stringify({
+        'TrainerCode': TrainerCode,
+    });
+    $.ajax({
+        url: "/Admin/Manage/deleteSingleTrainer",
+        method: 'POST',
+        cache: false,
+        contentType: 'application/json; charset=utf-8',
+        data: SelectedData,
+        dataType: "json",
+        beforeSend: function () {
+            $(".Loader").show();
+            
+        },
+        complete: function () {
+            $(".Loader").hide();
+        },
+        success: function (data) {
+            if (data[0] == "0") {
+                $('#TrainerSuccessHead').text('You can' + "'t" + '  delete this trainer as the trainer is already assigned to batch');
+            }
+            if (data[0] == "1") {
+                $('#TrainerSuccessHead').text('You have deleted trainer successfully');
+                getTrainersOnDemand();
+            }
+            //getTrainersOnDemand();
+            //$('#TrainerSuccessHead').text('You have Deleted Trainer successfully');
+            $('#ModalTrainerSuccess').modal('show');
+            $('#myModal27').modal('hide');
+        }, async: true,
+
+        error: function (data) {
+            alert("Error is : " + data);
+        }
+    });
+}
+function SaveTrainerExcel() {
+    
+    var hjjh = $('#excelUpload')[0];
+    hjjh = $('#excelUpload');
+    var formData = new FormData($('#excelUpload')[0]);
+    $.ajax({
+        url: '/Admin/Manage/SaveTrainerExcel',  //Server script to process data
+        type: 'POST',
+        data: formData,
+        //Options to tell jQuery not to process data or worry about content-type.
+        cache: false,
+        contentType: false,
+        processData: false,
+        beforeSend: function () {
+            $(".Loader").show();
+            
+        },
+        complete: function () {
+            $(".Loader").hide();
+        },
+        success: function (data) {
+            getTrainersOnDemand();
+            CloseExcelPopup(data);
+        }, async: true,
+
+        error: function (data) {
+            Failure();
+        }
+    });
+    return false;
+}
+//#endregion Trainer
+
+
+
+//#region Student 
+function StudentValidation() {
+    if ($('#txtFirstName').val().length == 0) {
+        $('#divStudentNotify').text("First name is required");
+        $('#txtFirstName').focus();
+        return false;
+    }
+    //if ($('#txtMiddleName').val().length == 0) {
+    //    $('#divStudentNotify').text("Client Middle Name is required");
+    //    $('#txtMiddleName').focus();
+    //    return false;
+    //}
+    if ($('#txtLastName').val().length == 0) {
+        $('#divStudentNotify').text("Last name is required");
+        $('#txtLastName').focus();
+        return false;
+    }
+    if ($('#txtLocation').val().length == 0) {
+        $('#divStudentNotify').text("Location is required");
+        $('#txtLocation').focus();
+        return false;
+    }
+    if ($('#txtEmail').val().length == 0) {
+        $('#divStudentNotify').text("Email is required");
+        $('#txtEmail').focus();
+        return false;
+    }
+    else if (!$("#txtEmail").val().match(ck_email)) {
+        $('#divStudentNotify').text("Valid email is required");
+        $('#txtEmail').focus();
+        return false;
+    }
+    if ($('#txtContact').val().length == 0) {
+        $('#divStudentNotify').text("Contact is required");
+        $('#txtContact').focus();
+        return false;
+    }
+    else if (!$("#txtContact").val().match(phoneno)) {
+        $('#divStudentNotify').text("Valid contact is required");
+        $('#txtContact').focus();
+        return false;
+    }
+
+}
+function showStudentPopup() {
+    $('#TitlePopupStudent').text("Add New Student");
+    ClearStudentPopup();
+}
+function getStudentsOnDemand() {
+
+    var htmlcontent = "";
+    var SelectedData = JSON.stringify({
+        'BatchCode': $('#dropBatchCode').val(),
+        'LocationCode': $('#dropLocationCode').val(),
+    });
+    $('#div_result3').empty();
+    $.ajax({
+        //global: false,
+        url: "/Admin/Manage/getStudentsOnDemand",
+        method: 'POST',
+        cache: false,
+        contentType: 'application/json; charset=utf-8',
+        data: SelectedData,
+        dataType: "json",
+        beforeSend: function () {
+            $(".Loader").show();
+
+        },
+        complete: function () {
+            $(".Loader").hide();
+        },
+        success: function (data) {
+
+            htmlcontent = '<div class="row">' +
+            '<div class="col-md-12">' +
+                                '<div class="campaings-table-border table-responsive">' +
+                                '<table id="tableStudent">' +
+                                '<thead><tr>' +
+                                '<th></th>' +
+                                '<th>Students</th>' +
+                                '<th>Locations</th>' +
+                                '<th>Email Id</th>' +
+                                '<th>Contact</th>' +
+                                '<th>Batch</th>' +
+                                ' <th ></th>' +
+                                ' <th ></th>' +
+                                ' </thead></tr>';
+
+            if (data == '') {
+                //htmlcontent += '<tr><td colspan="9">No Results Found</tr></td>';
+            }
+            $.each(data, function (i, item) {
+                var index = i + 1;
+                htmlcontent += '<tr><td>' + index + '</td>' +
+                '<td>' + item.FullName + '</td>' +
+                                '<td>' + item.LocationName + '</td>' +
+                                '<td>' + item.Email + '</td>' +
+                                '<td>' + item.Contact + '</td>' +
+                                '<td>' + item.BatchName + '</td>' +
+                                '<td class="text-center"><a  id ="' + item.StudentCode + '" href="#" onclick="getSingleStudentDetails(' + "'" + item.StudentCode + "'" + ');"><i class="fa fa-pencil" data-toggle="modal" data-target="#myModal32" aria-hidden="true"></i></a></td>' +
+                                '<td class="text-center"><a  id ="' + item.StudentCode + '" href="#" onclick="deleteSingleStudent(' + "'" + item.StudentCode + "'" + ');"><i class="fa fa-trash" aria-hidden="true"></i></a></td>';
+
+
+            });
+            htmlcontent += '</table></div></div></div></div></div>';
+            $('#div_result3').html(htmlcontent);
+            StudentDataTable();
+        }, async: true,
+
+        error: function (data) {
+            alert("Either internet slow or Internal Error");
+        }
+    });
+}
+function getSingleStudentDetails(StudentCode) {
+
+    ClearStudentPopup();
+    $('#TitlePopupStudent').text("Edit Student");
+    $('#hdnStudentCode').val('0');
+    $('#hdnStudentCode').val(StudentCode);
+    var htmlcontent = "";
+    var SelectedData = JSON.stringify({
+        'StudentCode': StudentCode,
+    });
+    $.ajax({
+        url: "/Admin/Manage/getSingleStudentDetails",
+        method: 'POST',
+        cache: false,
+        contentType: 'application/json; charset=utf-8',
+        data: SelectedData,
+        dataType: "json",
+        beforeSend: function () {
+            $(".Loader").show();
+            
+        },
+        complete: function () {
+            $(".Loader").hide();
+        },
+        success: function (data) {
+            //Binding Student Details In Student Popup
+            $('#txtFirstName').val(data[0][0].FirstName);
+            $('#txtMiddleName').val(data[0][0].MiddleName);
+            $('#txtLastName').val(data[0][0].LastName);
+            $('#txtLocation').val(data[0][0].LocationName);
+            $('#txtEmail').val(data[0][0].Email);
+            $('#txtContact').val(data[0][0].Contact);
+        }, async: true,
+
+        error: function (data) {
+            alert("Error is : " + data);
+        }
+    });
+}
+function deleteSingleStudent(StudentCode) {
+
+    var SelectedData = JSON.stringify({
+        'StudentCode': StudentCode,
+    });
+    $.ajax({
+        url: "/Admin/Manage/deleteSingleStudent",
+        method: 'POST',
+        cache: false,
+        contentType: 'application/json; charset=utf-8',
+        data: SelectedData,
+        dataType: "json",
+        beforeSend: function () {
+            $(".Loader").show();
+            
+        },
+        complete: function () {
+            $(".Loader").hide();
+        },
+        success: function (data) {
+            if (data[0] == "0") {
+                $('#StudentSuccessHead').text('You can' + "'t" + ' delete this Student as the student is already assigned to batch');
+            }
+            if (data[0] == "1") {
+                $('#StudentSuccessHead').text('You have deleted student successfully');
+                getStudentsOnDemand();
+            }
+            //getStudentsOnDemand();
+            //$('#StudentSuccessHead').text('You have Deleted Student successfully');
+            $('#ModalStudentSuccess').modal('show');
+            $('#myModal32').modal('hide');
+        }, async: true,
+
+        error: function (data) {
+            alert("Error is : " + data);
+        }
+    });
+}
+function SaveStudentExcel() {
+    
+    var hjjh = $('#excelUpload')[0];
+    hjjh = $('#excelUpload');
+    var formData = new FormData($('#excelUpload')[0]);
+    $.ajax({
+        url: '/Admin/Manage/SaveStudentExcel',  //Server script to process data
+        type: 'POST',
+        data: formData,
+        //Options to tell jQuery not to process data or worry about content-type.
+        cache: false,
+        contentType: false,
+        processData: false,
+        beforeSend: function () {
+            $(".Loader").show();
+            
+        },
+        complete: function () {
+            $(".Loader").hide();
+        },
+        success: function (data) {
+            getStudentsOnDemand();
+            CloseExcelPopup(data);
+        }, async: true,
+
+        error: function (data) {
+            Failure();
+        }
+    });
+    return false;
+}
+//#endregion Student
+
+
+
+//#region Keyword 
+function KeywordValidation() {
+    if ($('#txtKeywordName').val().length == 0) {
+        $('#divKeywordNotify').text("Keyword name is required");
+        $('#txtKeywordName').focus();
+        return false;
+    }
+    if ($('#txtKeywordAvgMonthSearch').val().length == 0) {
+        $('#divKeywordNotify').text("Keyword average monthly search field is required");
+        $('#txtKeywordAvgMonthSearch').focus();
+        return false;
+    }
+    if ($('#txtKeywordCompetition').val().length == 0) {
+        $('#divKeywordNotify').text("Keyword competition field is required");
+        $('#txtKeywordCompetition').focus();
+        return false;
+    }
+    if ($('#txtKeywordSuggestBid').val().length == 0) {
+        $('#divKeywordNotify').text("Keyword suggested bid is required");
+        $('#txtKeywordSuggestBid').focus();
+        return false;
+    }
+    if ($('#txtKeywordSuggestCTR').val().length == 0) {
+        $('#divKeywordNotify').text("Keyword suggest CTR field is required");
+        $('#txtKeywordSuggestCTR').focus();
+        return false;
+    }
+
+}
+function showKeywordPopup() {
+    $('#TitlePopupKeyword').text("Add New Keyword");
+    ClearKeywordPopup();
+}
+function getKeywordsOnDemand() {
+    
+    var htmlcontent = "";
+    $('#div_result6').empty();
+    $.ajax({
+        //global: false,
+        url: "/Admin/Manage/getKeywordsOnDemand",
+        method: 'POST',
+        cache: false,
+        contentType: 'application/json; charset=utf-8',
+        dataType: "json",
+        beforeSend: function () {
+            $(".Loader").show();
+        },
+        complete: function () {
+            $(".Loader").hide();
+        },
+        success: function (data) {
+            
+            htmlcontent = '<div class="row">' +
+            '<div class="col-md-12">' +
+                                '<div class="campaings-table-border table-responsive">' +
+                                '<table id="tableKeyword">' +
+                                '<thead><tr>' +
+                                '<th></th>' +
+                                '<th>Keywords</th>' +
+                                '<th>Avg Monthly Searches</th>' +
+                                '<th>Competition</th>' +
+                                '<th>Suggested Bid</th>' +
+                                '<th>CTR</th>' +
+                                ' <th ></th>' +
+                                ' <th ></th>' +
+                                ' </thead></tr><tbody>';
+
+            if (data == '') {
+                //htmlcontent += '<tr><td colspan="9" class="dataTables_empty">No Results Found</tr></td>';
+                //htmlcontent += '<tr><td>No Results Found</td><td>No Results Found</td><td>No Results Found</td><td>No Results Found</td><td>No Results Found</td><td>No Results Found</td><td>No Results Found</td><td>No Results Found</td><td>No Results Found</td><td>No Results Found</td></tr>';
+            }
+            $.each(data, function (i, item) {
+                var index = i + 1;
+                htmlcontent += '<tr><td>' + index + '</td>' +
+                    '<td>' + item.KeyName + '</td>' +
+                                '<td>' + item.AvgMonthlySrch + '</td>' +
+                                '<td>' + item.Competition + '</td>' +
+                                '<td>' + item.SuggestedBid + '</td>' +
+                                '<td>' + item.CTR + '</td>' +
+                                '<td class="text-center"><a  id ="' + item.KeyCode + '" href="#" onclick="getSingleKeywordDetails(' + "'" + item.KeyCode + "'" + ');"><i class="fa fa-pencil" data-toggle="modal" data-target="#myModal29" aria-hidden="true"></i></a></td>' +
+                                '<td class="text-center"><a  id ="' + item.KeyCode + '" href="#" onclick="deleteSingleKeyword(' + "'" + item.KeyCode + "'" + ');"><i class="fa fa-trash" aria-hidden="true"></i></a></td>';
+
+
+            });
+            htmlcontent += '</tbody></table></div></div></div></div></div>';
+            $('#div_result6').html(htmlcontent);
+
+            // tableToExcel('tableKeyword', 'W3C Example Table');
+            KeywordDataTable();
+            //window.open('data:application/vnd.ms-excel,' + encodeURIComponent($('#div_result6').html()));
+        }, async: true,
+
+        error: function (data) {
+            alert("Either internet slow or Internal Error");
+        }
+    });
+
+}
+function getSingleKeywordDetails(KeywordCode) {
+    
+    ClearKeywordPopup();
+    $('#TitlePopupBatch').text("Edit Keyword");
+    $('#hdnKeywordCode').val('0');
+    $('#hdnKeywordCode').val(KeywordCode);
+    var htmlcontent = "";
+    var SelectedData = JSON.stringify({
+        'KeywordCode': KeywordCode,
+    });
+    $.ajax({
+        url: "/Admin/Manage/getSingleKeywordDetails",
+        method: 'POST',
+        cache: false,
+        contentType: 'application/json; charset=utf-8',
+        data: SelectedData,
+        dataType: "json",
+        beforeSend: function () {
+            $(".Loader").show();
+            
+        },
+        complete: function () {
+            $(".Loader").hide();
+        },
+        success: function (data) {
+            
+            //Binding Batch Details In Btach Popup
+            $('#txtKeywordName').val(data[0].KeyName);
+            $('#txtKeywordAvgMonthSearch').val(data[0].AvgMonthlySrch);
+            $('#txtKeywordCompetition').val(data[0].Competition);
+            $('#txtKeywordSuggestBid').val(data[0].SuggestedBid);
+            $('#txtKeywordSuggestCTR').val(data[0].CTR);
+        }, async: true,
+
+        error: function (data) {
+            alert("Error is : " + data);
+        }
+    });
+}
+function deleteSingleKeyword(KeywordCode) {
+
+    var SelectedData = JSON.stringify({
+        'KeywordCode': KeywordCode,
+    });
+    $.ajax({
+        url: "/Admin/Manage/deleteSingleKeyword",
+        method: 'POST',
+        cache: false,
+        contentType: 'application/json; charset=utf-8',
+        data: SelectedData,
+        dataType: "json",
+        beforeSend: function () {
+            $(".Loader").show();
+            
+        },
+        complete: function () {
+            $(".Loader").hide();
+        },
+        success: function (data) {
+            if (data[0] == "0") {
+                $('#KeywordSuccessHead').text('You cant delete, this Keyword is in use.');
+            }
+            if (data[0] == "1") {
+                $('#KeywordSuccessHead').text('You have Deleted Keyword successfully');
+                getKeywordsOnDemand();
+            }
+            //getKeywordsOnDemand();
+            //$('#KeywordSuccessHead').text('You have Deleted Keyword successfully');
+            $('#ModalKeywordSuccess').modal('show');
+            $('#myModal29').modal('hide');
+        }, async: true,
+
+        error: function (data) {
+            alert("Error is : " + data);
+        }
+    });
+}
+function KeywordDownloadExcel() {
+    var htmlcontent = "";
+    $.ajax({
+        url: "/Admin/Manage/getKeywordsOnDemand",
+        method: 'POST',
+        cache: false,
+        contentType: 'application/json; charset=utf-8',
+        dataType: "json",
+        success: function (data) {
+            htmlcontent =
+                '<table border="2px" id="tempTableKeyword">' +
+                '<caption>All Keywords List</caption><colgroup align="left"></colgroup><colgroup span="5" align="left"></colgroup>' +
+                                '<thead><tr>' +
+                                '<th>Index</th>' +
+                                '<th>Keywords</th>' +
+                                '<th>Avg Monthely Searches</th>' +
+                                '<th>Competition</th>' +
+                                '<th>Suggested Bid</th>' +
+                                '<th>CTR</th>' +
+                                ' </thead></tr><tbody>';
+
+            if (data == '') {
+                htmlcontent += '<tr><td colspan="5">No Results Found</tr></td>';
+            }
+            $.each(data, function (i, item) {
+                var index = i + 1;
+                htmlcontent += '<tr><td>' + index + '</td>' +
+                '<td>' + item.KeyName + '</td>' +
+                                '<td>' + item.AvgMonthlySrch + '</td>' +
+                                '<td>' + item.Competition + '</td>' +
+                                '<td>' + item.SuggestedBid + '</td>' +
+                                '<td>' + item.CTR + '</td>';
+            });
+        }, async: false,
+
+        error: function (data) {
+            alert("Either internet slow or Internal Error");
+        }
+    });
+    htmlcontent += '</tbody></table>';
+    fnExcelReport(htmlcontent, "Download_Keyword");
+}
+function SaveKeywordExcel() {
+    
+    var hjjh = $('#excelUpload')[0];
+    hjjh = $('#excelUpload');
+    var formData = new FormData($('#excelUpload')[0]);
+    $.ajax({
+        url: '/Admin/Manage/SaveKeywordExcel',  //Server script to process data
+        type: 'POST',
+        data: formData,
+        //Options to tell jQuery not to process data or worry about content-type.
+        cache: false,
+        contentType: false,
+        processData: false,
+        beforeSend: function () {
+            $(".Loader").show();
+            
+        },
+        complete: function () {
+            $(".Loader").hide();
+        },
+        success: function (data) {
+            getKeywordsOnDemand();
+            CloseExcelPopup(data);
+        }, async: true,
+
+        error: function (data) {
+            Failure();
+        }
+    });
+    return false;
+}
+//#endregion Keyword
+
+
+//#region Phrases 
+function PhraseValidation() {
+    if ($('#txtPhraseName').val().length == 0)
+    {
+        $('#divPhraseNotify').text("Phrase is required");
+        $('#txtPhraseName').focus();
+        return false;
+    }
+    if ($('#txtPhraseTraffic').val().length == 0) {
+        $('#divPhraseNotify').text("Traffic field is required");
+        $('#txtPhraseTraffic').focus();
+        return false;
+    }
+
+}
+function showPhrasePopup() {
+    $('#TitlePopupPhrase').text("Add New Phrase");
+    ClearPhrasePopup();
+}
+function getPhrasesOnDemandNew() {
+    var htmlcontent = "";
+    $('#div_result6').empty();
+    $.ajax({
+        //global: false,
+        url: "/Admin/Manage/getPhrasesOnDemand",
+        method: 'POST',
+        cache: false,
+        contentType: 'application/json; charset=utf-8',
+        dataType: "json",
+        beforeSend: function () {
+            $(".Loader").show();
+        },
+        complete: function () {
+            $(".Loader").hide();
+        },
+        success: function (data) {
+            htmlcontent = '<div class="row">' +
+            '<div class="col-md-12">' +
+                                '<div class="campaings-table-border table-responsive">' +
+                                '<table id="tablePhrase">' +
+                                '<thead><tr>' +
+                                '<th width="30px;"></th>' +
+                                '<th>Phrase</th>' +
+                                '<th>Traffic</th>' +
+                                ' <th  width="30px;"></th>' +
+                                ' <th  width="30px;"></th>' +
+                                ' </thead></tr><tbody>';
+
+            if (data == '') {
+                //htmlcontent += '<tr><td colspan="9" class="dataTables_empty">No Results Found</tr></td>';
+                //htmlcontent += '<tr><td>No Results Found</td><td>No Results Found</td><td>No Results Found</td><td>No Results Found</td><td>No Results Found</td><td>No Results Found</td><td>No Results Found</td><td>No Results Found</td><td>No Results Found</td><td>No Results Found</td></tr>';
+            }
+            $.each(data, function (i, item) {
+                
+                var index = i + 1;
+                htmlcontent += '<tr><td>' + index + '</td>' +
+                    '<td>' + item.SearchQuery + '</td>' +
+                                '<td>' + item.Traffic + '</td>' +
+                                '<td class="text-center"><a  id ="' + item.Id + '" href="#" onclick="getSinglePhraseDetails(' + "'" + item.Id + "'" + ');"><i class="fa fa-pencil" data-toggle="modal" data-target="#myModal29" aria-hidden="true"></i></a></td>' +
+                                '<td class="text-center"><a  id ="' + item.Id + '" href="#" onclick="deleteSinglePhrase(' + "'" + item.Id + "'" + ');"><i class="fa fa-trash" aria-hidden="true"></i></a></td>';
+
+
+            });
+            htmlcontent += '</tbody></table></div></div></div></div></div>';
+            $('#div_result6').html(htmlcontent);
+
+            // tableToExcel('tableKeyword', 'W3C Example Table');
+            PhraseDataTable();
+            //window.open('data:application/vnd.ms-excel,' + encodeURIComponent($('#div_result6').html()));
+        }, async: true,
+        error: function (data) {
+            alert("Either internet slow or Internal Error");
+        }
+    });
+
+}
+function getPhrasesOnDemand() {
+    var htmlcontent = "";
+    $('#div_result6').empty();
+    $.ajax({
+        //global: false,
+        url: "/Admin/Manage/getPhrasesOnDemand",
+        method: 'POST',
+        cache: false,
+        contentType: 'application/json; charset=utf-8',
+        dataType: "json",
+        beforeSend: function () {
+            $(".Loader").show();
+        },
+        complete: function () {
+            $(".Loader").hide();
+        },
+        success: function (data) {
+            
+            htmlcontent = '<div class="row">' +
+            '<div class="col-md-12">' +
+                                '<div class="campaings-table-border table-responsive">' +
+                                '<table id="tablePhrase">' +
+                                '<thead><tr>' +
+                                '<th width="30px;"></th>' +
+                                '<th>Phrase</th>' +
+                                '<th>Traffic</th>' +
+                                ' <th  width="30px;"></th>' +
+                                ' <th  width="30px;"></th>' +
+                                ' </thead></tr><tbody>';
+
+            if (data == '') {
+                //htmlcontent += '<tr><td colspan="9" class="dataTables_empty">No Results Found</tr></td>';
+                //htmlcontent += '<tr><td>No Results Found</td><td>No Results Found</td><td>No Results Found</td><td>No Results Found</td><td>No Results Found</td><td>No Results Found</td><td>No Results Found</td><td>No Results Found</td><td>No Results Found</td><td>No Results Found</td></tr>';
+            }
+            $.each(data, function (i, item) {
+                
+                var index = i + 1;
+                htmlcontent += '<tr><td>' + index + '</td>' +
+                    '<td>' + item.SearchQuery + '</td>' +
+                                '<td>' + item.Traffic + '</td>' +
+                                '<td class="text-center"><a  id ="' + item.Id + '" href="#" onclick="getSinglePhraseDetails(' + "'" + item.Id + "'" + ');"><i class="fa fa-pencil" data-toggle="modal" data-target="#myModal29" aria-hidden="true"></i></a></td>' +
+                                '<td class="text-center"><a  id ="' + item.Id + '" href="#" onclick="deleteSinglePhrase(' + "'" + item.Id + "'" + ');"><i class="fa fa-trash" aria-hidden="true"></i></a></td>';
+
+
+            });
+            htmlcontent += '</tbody></table></div></div></div></div></div>';
+            $('#div_result6').html(htmlcontent);
+
+            // tableToExcel('tableKeyword', 'W3C Example Table');
+            PhraseDataTable();
+            //window.open('data:application/vnd.ms-excel,' + encodeURIComponent($('#div_result6').html()));
+        }, async: true,
+        error: function (data) {
+
+            
+            alert("Either internet slow or Internal Error");
+        }
+    });
+
+}
+function getSinglePhraseDetails(PhraseCode) {
+    
+    ClearPhrasePopup();
+    $('#TitlePopupPhrase').text("Edit Phrase");
+    $('#hdnPhraseCode').val('0');
+    $('#hdnPhraseCode').val(PhraseCode);
+    var htmlcontent = "";
+    var SelectedData = JSON.stringify({
+        'PhraseCode': PhraseCode,
+    });
+    $.ajax({
+        url: "/Admin/Manage/getSinglePhraseDetails",
+        method: 'POST',
+        cache: false,
+        contentType: 'application/json; charset=utf-8',
+        data: SelectedData,
+        dataType: "json",
+        beforeSend: function () {
+            $(".Loader").show();
+            
+        },
+        complete: function () {
+            $(".Loader").hide();
+        },
+        success: function (data) {
+            
+            //Binding Batch Details In Btach Popup
+            $('#txtPhraseName').val(data[0].SearchQuery);
+            $('#txtPhraseTraffic').val(data[0].Traffic);
+        }, async: true,
+
+        error: function (data) {
+            alert("Error is : " + data);
+        }
+    });
+}
+function deleteSinglePhrase(PhraseCode) {
+
+    var SelectedData = JSON.stringify({
+        'PhraseCode': PhraseCode,
+    });
+    $.ajax({
+        url: "/Admin/Manage/deleteSinglePhrase",
+        method: 'POST',
+        cache: false,
+        contentType: 'application/json; charset=utf-8',
+        data: SelectedData,
+        dataType: "json",
+        beforeSend: function () {
+            $(".Loader").show();
+            
+        },
+        complete: function () {
+            $(".Loader").hide();
+        },
+        success: function (data) {
+            if (data[0] == "0") {
+                $('#PhraseSuccessHead').text('You cant delete, this Phrase is in use.');
+            }
+            if (data[0] == "1") {
+                $('#PhraseSuccessHead').text('You have deleted phrase successfully.');
+                getPhrasesOnDemand();
+            }
+            //getKeywordsOnDemand();
+            //$('#KeywordSuccessHead').text('You have Deleted Keyword successfully');
+            $('#ModalPhraseSuccess').modal('show');
+            $('#myModal29').modal('hide');
+        }, async: true,
+
+        error: function (data) {
+            alert("Error is : " + data);
+        }
+    });
+}
+function PhraseDownloadExcel() {
+    var htmlcontent = "";
+    $.ajax({
+        url: "/Admin/Manage/getPhrasesOnDemand",
+        method: 'POST',
+        cache: false,
+        contentType: 'application/json; charset=utf-8',
+        dataType: "json",
+        success: function (data) {
+            htmlcontent =
+                '<table border="2px" id="tempTablePhrase">' +
+                '<caption>All Phrase List</caption><colgroup align="left"></colgroup><colgroup span="5" align="left"></colgroup>' +
+                                '<thead><tr>' +
+                                '<th>Index</th>' +
+                                '<th>Phrase Name</th>' +
+                                '<th>Traffic</th>' +
+                                ' </thead></tr><tbody>';
+
+            if (data == '') {
+                htmlcontent += '<tr><td colspan="5">No Results Found</tr></td>';
+            }
+            $.each(data, function (i, item)
+            {
+                var index = i + 1;
+                htmlcontent += '<tr><td>' + index + '</td>' +
+                '<td>' + item.SearchQuery + '</td>' +
+                                '<td>' + item.Traffic + '</td>';
+            });
+        }, async: false,
+
+        error: function (data) {
+            alert("Either internet slow or Internal Error");
+        }
+    });
+    htmlcontent += '</tbody></table>';
+    fnExcelReport(htmlcontent, "Download_Phrase");
+}
+function SavePhraseExcel() {
+    
+    var hjjh = $('#excelUpload')[0];
+    hjjh = $('#excelUpload');
+    var formData = new FormData($('#excelUpload')[0]);
+    $.ajax({
+        url: '/Admin/Manage/SavePhraseExcel',  //Server script to process data
+        type: 'POST',
+        data: formData,
+        //Options to tell jQuery not to process data or worry about content-type.
+        cache: false,
+        contentType: false,
+        processData: false,
+        beforeSend: function () {
+            $(".Loader").show();
+            
+        },
+        complete: function () {
+            $(".Loader").hide();
+        },
+        success: function (data) {
+            getPhrasesOnDemand();
+            CloseExcelPopup(data);
+        }, async: true,
+
+        error: function (data) {
+            Failure();
+        }
+    });
+    return false;
+}
+//#endregion Phrases
+
+
+
+//#region Account 
+function AccountValidation() {
+    if ($('#txtAccountName').val().length == 0) {
+        $('#divAccountNotify').text("Account name is required");
+        $('#txtAccountName').focus();
+        // $("#btnCreateAccount").attr("disabled", false);
+        return false;
+    }
+    if ($('#hdnAccountCode').val() == '0') {
+        if ($('#file').val().length == 0) {
+            $('#divAccountNotify').text("Account image is required");
+            $('#file').focus();
+            // $("#btnCreateAccount").attr("disabled", false);
+            return false;
+        }
+    }
+    if ($('#txtAccountDesrpsn').val().length == 0)
+    {
+        $('#divAccountNotify').text("Description is required");
+        $('#txtAccountDesrpsn').focus();
+        // $("#btnCreateAccount").attr("disabled", false);
+        return false;
+    }
+    else {
+        //$("#btnCreateAccount").text('1');
+        //$("#btnCreateAccount").attr("disabled", true);
+        if (confirm('are you sure you want to continue?')) {
+            return createAccount();
+        }
+        else {
+            return false;
+        }
+    }
+}
+function showAccPopup() {
+    $('#TitlePopupAccount').text("Add Account");
+    ClearAccountPopup();
+}
+function getAccountsOnDemand() {
+
+    var htmlcontent = "";
+    $('#div_result4').empty();
+    $.ajax({
+        //global: false,
+        url: "/Admin/Manage/getAccountsOnDemand",
+        method: 'POST',
+        cache: false,
+        contentType: 'application/json; charset=utf-8',
+        dataType: "json",
+        beforeSend: function () {
+            $(".Loader").show();
+
+        },
+        complete: function () {
+            $(".Loader").hide();
+        },
+        success: function (data) {
+
+            htmlcontent = '<div class="row">' +
+            '<div class="col-md-12">';
+
+            if (data == '') {
+                htmlcontent += '<div class="item-row no_result">No Results Found</div>';
+            }
+            $.each(data, function (i, item) {
+
+                if (i % 2 == 0) {
+                    htmlcontent += '<div class="item-row">'
+                }
+
+                htmlcontent += '<div class="list-item">' +
+                    '<div>' +
+                    '<img src="' + item.ImagePath + '" class="img-box">' +
+                    '<div class="brand-details">' +
+                    '<h4><a>' + item.AccName + '</a></h4>' +
+                    '<div class="ibox-tools">' +
+                    '<a  href="#" onclick="getSingleAccountDetails(' + "'" + item.AccCode + "'" + ');">' +
+                    '<i class="fa fa-pencil"  data-toggle="modal" data-target="#myModal30" aria-hidden="true"></i></a>' +
+                    '<a  href="#" onclick="deleteSingleAccount(' + "'" + item.AccCode + "'" + ');"><i class="fa fa-trash" aria-hidden="true"></i></a>' +
+                    '</div>' +
+                    ' <span>e-Commerce</span>' +
+                    '</div></div>' +
+                    '<p>' + item.Description + '</p>' +
+                    '</div>';
+                if (i % 2 != 0) {
+                    htmlcontent += '</div>';
+                }
+
+            });
+            htmlcontent += '</div></div></div>';
+            $('#div_result5').html(htmlcontent);
+        }, async: true,
+
+        error: function (data) {
+            alert("Either internet slow or Internal Error");
+        }
+    });
+}
+function createAccount() {
+    
+    var a = $("#btnCreateAccount").text();
+    //alert($("#btnCreateAccount").text());
+    var hjjh = $('#frmUplaodFileAdd')[0];
+    var formData = new FormData($('#frmUplaodFileAdd')[0]);
+    $.ajax({
+        url: '/Admin/Manage/CreateAccount',  //Server script to process data
+        type: 'POST',
+        //xhr: function () {  // Custom XMLHttpRequest
+        //    var myXhr = $.ajaxSettings.xhr();
+        //    if (myXhr.upload) { // Check if upload property exists
+        //        myXhr.upload.addEventListener('progress',
+        //        progressHandlingFunction, false); // For handling the progress of the upload
+        //    }
+        //    return myXhr;
+        //},
+        data: formData,
+        //Options to tell jQuery not to process data or worry about content-type.
+        cache: false,
+        contentType: false,
+        processData: false,
+        beforeSend: function () {
+            $(".Loader").show();
+
+
+        },
+        complete: function () {
+            $(".Loader").hide();
+        },
+        success: function (data) {
+
+            error = 0;
+            closepoup(data);
+        }, async: true,
+
+        error: function (data) {
+            Failure();
+        }
+    });
+    return false;
+}
+function getSingleAccountDetails(AccountCode) {
+
+    ClearAccountPopup();
+    $('#TitlePopupAccount').text("Edit Account");
+    $('#hdnAccountCode').val('0');
+    $('#hdnAccountCode').val(AccountCode);
+    var htmlcontent = "";
+    var SelectedData = JSON.stringify({
+        'AccountCode': AccountCode,
+    });
+    $.ajax({
+        url: "/Admin/Manage/getSingleAccountDetails",
+        method: 'POST',
+        cache: false,
+        contentType: 'application/json; charset=utf-8',
+        data: SelectedData,
+        dataType: "json",
+        beforeSend: function () {
+            $(".Loader").show();
+            
+        },
+        complete: function () {
+            $(".Loader").hide();
+        },
+        success: function (data) {
+
+            //Binding Student Details In Student Popup
+            $('#txtAccountName').val(data[0].AccName);
+            $("#imgAcc").removeClass("hidden").addClass("show");
+            $("#imgAcc").attr("src", data[0].ImagePath);
+            $('#txtAccountDesrpsn').val(data[0].Description);
+            $('#spntxtAccount').text(300 - $('#txtAccountDesrpsn').val().length + ' Characters Left');
+        }, async: true,
+
+        error: function (data) {
+            alert("Error is : " + data);
+        }
+    });
+}
+function deleteSingleAccount(AccountCode) {
+
+    var SelectedData = JSON.stringify({
+        'AccountCode': AccountCode,
+    });
+    $.ajax({
+        url: "/Admin/Manage/deleteSingleAccount",
+        method: 'POST',
+        cache: false,
+        contentType: 'application/json; charset=utf-8',
+        data: SelectedData,
+        dataType: "json",
+        beforeSend: function () {
+            $(".Loader").show();
+            
+        },
+        complete: function () {
+            $(".Loader").hide();
+        },
+        success: function (data) {
+
+            getAccountsOnDemand();
+            $('#AccountSuccessHead').text('You have deleted account successfully');
+            $('#ModalAccountSuccess').modal('show');
+            $('#myModal30').modal('hide');
+        }, async: true,
+
+        error: function (data) {
+            alert("Error is : " + data);
+        }
+    });
+}
+//#endregion Trainer
+
+
+
+//#region CommonFunction
+function fnExcelReport(htmlcontent, Name) {
+    
+    var tab_text = htmlcontent;
+    var textRange; var j = 0;
+
+    var ua = window.navigator.userAgent;
+    var msie = ua.indexOf("MSIE ");
+
+    if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
+    {
+        txtArea1.document.open("txt/html", "replace");
+        txtArea1.document.write(tab_text);
+        txtArea1.document.close();
+        txtArea1.focus();
+        sa = txtArea1.document.execCommand("SaveAs", true, Name + ".xls");
+    }
+    else //other browser not tested on IE 11
+        sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));
+    return (sa);
+}
+function fadeOut(id) {
+    
+    $("#" + id).fadeOut(function () {
+        $(this).fadeIn();
+    });
+}
+function OpenExcelPopup(Type1) {
+    
+    $('#hdnIdenType').val(Type1);
+    ClearExcelPopup();
+    ShowPopup();
+}
+function ExcelValidation() {
+    if ($('#excelfile').val().length == 0) {
+        $('#divExcelNotify').text("Excel file is required");
+        $('#excelfile').focus();
+        $('#divExcelNotify').show();
+        return false;
+    }
+    else {
+        //$("#btnCreateAccount").text('1');
+        //$("#btnCreateAccount").attr("disabled", true);
+        if (confirm('are you sure you want to continue?')) {
+            if ($('#hdnIdenType').val() == 'TRAINER') {
+                return SaveTrainerExcel();
+            }
+            if ($('#hdnIdenType').val() == 'STUDENT') {
+                return SaveStudentExcel();
+            }
+            if ($('#hdnIdenType').val() == 'PHRASE') {
+                return SavePhraseExcel();
+            }
+            if ($('#hdnIdenType').val() == 'KEYWORD') {
+                return SaveKeywordExcel();
+            }
+            else {
+                return null;
+            }
+
+        }
+        else {
+            return false;
+        }
+    }
+}
+
+
+
+//Table To Excel
+var tableToExcel = (function () {
+    //var uri = 'data:application/vnd.ms-excel;base64,'
+    //  , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+    //  , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
+    //  , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) }
+    //return function (table, name) {
+    //    if (!table.nodeType) table = document.getElementById(table)
+    //    var ctx = { worksheet: name || 'Worksheet', table: table.innerHTML }
+    //    window.location.href = uri + base64(format(template, ctx))
+    //}
+})()
+//#endregion CommonFunction

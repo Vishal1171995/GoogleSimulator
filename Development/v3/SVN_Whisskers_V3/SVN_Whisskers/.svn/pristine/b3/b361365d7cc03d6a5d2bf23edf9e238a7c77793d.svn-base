@@ -1,0 +1,285 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using Whisker.Models;
+namespace Whisker.Areas.Students.Controllers
+{
+    public class HomeController : Controller
+    {
+        //
+        // GET: /Students/Home/
+        WhiskersDBEntities objDBentity = new WhiskersDBEntities();
+        UserLoginInfo objUserInfo = new UserLoginInfo();
+
+        public ActionResult Index()
+        {
+            
+            objUserInfo = (UserLoginInfo)Session["LoginInfo"];
+           
+
+            getAccountDetails(objUserInfo.EMAILID);
+            if (Request.QueryString.HasKeys())
+            {
+                if (Request.QueryString["Camp"]!=null)
+                {
+                    getCampaign(objUserInfo.UserID, Request.QueryString["Camp"]);
+                }
+            }
+            else
+            {
+                getCampaign(objUserInfo.UserID,null);
+            }
+            
+
+           
+            return View();
+        }
+     
+
+        [HttpPost]
+        public ActionResult CreateCompaign(FormCollection fc)
+        {
+            objUserInfo = (UserLoginInfo)Session["LoginInfo"];
+            var CampaignName = fc["txtCampaignName"];
+            var NetwordType = fc["ddlNetwordType"];
+            var Location = fc["txtLocation"];
+            var Budget = fc["txtBudget"];
+
+            objDBentity.prcCreateCampaign(CampaignName, Convert.ToInt16(NetwordType), Location, Convert.ToDecimal(Budget), objUserInfo.AccCode, objUserInfo.UserID);
+
+            return RedirectToAction("Index");
+           // return JavaScript("window.location = 'Students/Home/Index'");
+        }
+        [HttpPost]
+        public ActionResult CreateADGroup(FormCollection fc)
+        {
+            objUserInfo = (UserLoginInfo)Session["LoginInfo"];
+            var CampaignCode = fc["ddlCampaignADGM"];
+            var ADGroupName = fc["txtADGroupName"];
+            var ADGroupText = fc["txtADGroupText"];
+            var ADGroupHeadline = fc["txtADGroupHeadline"];
+            var ADGroupDesc1 = fc["txtADGroupDesc1"];
+            var ADGroupDesc2 = fc["txtADGroupDesc2"];
+            var ADGroupDespUrl = fc["txtADGroupDespUrl"];
+            var ADGroupFinalUrl = fc["txtADGroupFinalUrl"];
+
+
+
+            objDBentity.prcCraeteAD(CampaignCode, ADGroupName, ADGroupText, ADGroupHeadline, ADGroupDesc1, ADGroupDesc2, ADGroupDespUrl, ADGroupFinalUrl, null, objUserInfo.UserID);
+
+            //return RedirectToAction("Index","adgroups");
+            return new RedirectResult(Url.Action("Index") + "#adgroups");
+            //return JavaScript("<script>window.location = '/Students/Home/Index#adgroups'</script>");
+
+        }
+
+        [HttpPost]
+        public ActionResult CreateAD(FormCollection fc)
+        {
+            objUserInfo = (UserLoginInfo)Session["LoginInfo"];
+            var CampaignCode = fc["ddlCampaignAD"];
+            var ADGroupCode = fc["ddlADGroupName"];
+            var ADGroupName = fc["hidADGName"];            
+           
+            var ADGroupText = fc["txtADText"];
+            var ADGroupHeadline = fc["txtADHeadline"];
+            var ADGroupDesc1 = fc["txtADDesc1"];
+            var ADGroupDesc2 = fc["txtADDesc2"];
+            var ADGroupDespUrl = fc["txtADDespUrl"];
+            var ADGroupFinalUrl = fc["txtADFinalUrl"];
+
+
+
+            objDBentity.prcCraeteAD(CampaignCode, ADGroupName, ADGroupText, ADGroupHeadline, ADGroupDesc1, ADGroupDesc2, ADGroupDespUrl, ADGroupFinalUrl, ADGroupCode, objUserInfo.UserID);
+
+            //return RedirectToAction("Index","adgroups");
+            return new RedirectResult(Url.Action("Index") + "#ads");
+            //return JavaScript("<script>window.location = '/Students/Home/Index#adgroups'</script>");
+
+        }
+
+        private void getAccountDetails(string unicornName)
+        {
+           // var unicornName = TempData["email"].ToString();// Request.QueryString["email"];
+            // var unicornName = Request.QueryString["email"].ToString();
+            var userInfo = objDBentity.prcGetUserDetails(unicornName).FirstOrDefault();
+            /* var userType = objDBentity.prcGetUserDetails("student@gmail.com");
+             foreach (var item in userType)
+             { 
+                item.
+             }*/
+
+            // ViewBag.data = "khgij";
+            ViewBag.FName = userInfo.FirstName;
+            ViewBag.AccCode = userInfo.AccCode;
+            ViewBag.AccName = userInfo.AccName;
+            ViewBag.ImagePath = userInfo.ImagePath;
+            ViewBag.Description = userInfo.Description;
+            ViewBag.AccFullName = userInfo.AccFullName;
+            ViewBag.UserID = userInfo.UserID;
+
+        }
+        private void getCampaign(string userID,string cCode)
+        {
+            // var unicornName = TempData["email"].ToString();// Request.QueryString["email"];
+            // var unicornName = Request.QueryString["email"].ToString();
+            var userCampaign = objDBentity.prcGetCampaign(userID, cCode);
+            //* var userType = objDBentity.prcGetUserDetails("student@gmail.com");
+            /* foreach (var item in userCampaign)
+             {
+                // item.CampaignName
+                // item.Budget
+
+             }*/
+            ViewBag.uCampaign = userCampaign;
+
+            // ViewBag.data = "khgij";
+            /*ViewBag.FName = userInfo.FirstName;
+            ViewBag.AccName = userInfo.AccName;
+            ViewBag.ImagePath = userInfo.ImagePath;
+            ViewBag.Description = userInfo.Description;
+            ViewBag.AccFullName = userInfo.AccFullName;*/
+        }
+
+
+       public JsonResult GetCampaignData(string cCode)
+        {
+            if (cCode == "ALL")
+                cCode = null;
+
+            objUserInfo = (UserLoginInfo)Session["LoginInfo"];
+            var userCampaign = objDBentity.prcGetCampaign(objUserInfo.UserID, cCode).ToList();
+
+            return Json(userCampaign, JsonRequestBehavior.AllowGet); 
+
+         
+        }
+       public JsonResult GetCampaigns()
+       {
+          
+
+           objUserInfo = (UserLoginInfo)Session["LoginInfo"];
+           var userCampaign = objDBentity.prcGetCampaign(objUserInfo.UserID, null);
+
+           return Json(userCampaign, JsonRequestBehavior.AllowGet);
+
+
+       }
+       public JsonResult GetADGroupsData(string cCode)
+       {
+           if (cCode == "ALL")
+               cCode = null;
+
+           objUserInfo = (UserLoginInfo)Session["LoginInfo"];
+           var userAdGroup = objDBentity.prcGetAdGroups(cCode, objUserInfo.UserID);
+
+           return Json(userAdGroup, JsonRequestBehavior.AllowGet);
+
+
+       }
+       public JsonResult GetADsData(string cCode)
+       {
+           if (cCode == "ALL")
+               cCode = null;
+         
+
+           objUserInfo = (UserLoginInfo)Session["LoginInfo"];
+           var userAdGroup = objDBentity.prcGetCampaignAds(objUserInfo.UserID, cCode);
+
+           return Json(userAdGroup, JsonRequestBehavior.AllowGet);
+
+
+       }
+
+       public JsonResult GetADGroupsDataDistinct(string cCode)
+       {
+           if (cCode == "ALL")
+               cCode = null;
+
+           objUserInfo = (UserLoginInfo)Session["LoginInfo"];
+           var userAdGroup = objDBentity.prcGetDistAdGroups(cCode, objUserInfo.UserID);
+
+           return Json(userAdGroup, JsonRequestBehavior.AllowGet);
+
+       }
+
+
+        public JsonResult GetADGroupsDataByID(string cCode, string AdgroupCode)
+        {
+            if (cCode == "ALL")
+                cCode = null;
+
+            objUserInfo = (UserLoginInfo)Session["LoginInfo"];
+            //var userAdGroup = objDBentity.prcGetAdGroups(cCode, objUserInfo.UserID);
+            var userAdGroup = objDBentity.prcGetAdGroupsByID(cCode, Convert.ToString(objUserInfo.UserID), AdgroupCode).ToList();
+            return Json(userAdGroup, JsonRequestBehavior.AllowGet);
+
+
+        }
+
+        /// <summary>
+        /// Edit Functionality
+        /// </summary>
+        /// <param name="fc"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult UpdateCompaign(FormCollection fc)
+        {
+            objUserInfo = (UserLoginInfo)Session["LoginInfo"];
+            var CampaignName = fc["txtCampaignNameEdit"];
+            var NetwordType = fc["ddlNetwordTypeEdit"];
+            var Location = fc["txtLocationEdit"];
+            var Budget = fc["txtBudgetEdit"];
+            var CampaignCode = fc["hdnCampId"];
+
+            objDBentity.prcUpdateCampaign(Convert.ToString(objUserInfo.UserID), CampaignCode, CampaignName, Location, Budget,NetwordType);
+            //objDBentity.prcCreateCampaign(CampaignName, Convert.ToInt16(NetwordType), Location, Convert.ToDecimal(Budget), objUserInfo.AccCode, objUserInfo.UserID);
+
+            return RedirectToAction("Index");
+            // return JavaScript("window.location = 'Students/Home/Index'");
+        }
+
+        [HttpPost]
+        public ActionResult UpdateAdGroup(FormCollection fc)
+        {
+            objUserInfo = (UserLoginInfo)Session["LoginInfo"];
+            var CampaignCode = fc["ddlCampaignADGMEdit"];
+            var ADGroupName = fc["txtADGroupNameEdit"];
+            var ADGroupText = fc["txtADGroupTextEdit"];
+            var ADGroupHeadline = fc["txtADGroupHeadlineEdit"];
+            var ADGroupDesc1 = fc["txtADGroupDesc1Edit"];
+            var ADGroupDesc2 = fc["txtADGroupDesc2Edit"];
+            var ADGroupDespUrl = fc["txtADGroupDespUrlEdit"];
+            var ADGroupFinalUrl = fc["txtADGroupFinalUrlEdit"];
+            var AdGroupId = fc["hdnAdGroupId"];
+
+            objDBentity.prcUpdateAdGroup(Convert.ToString(objUserInfo.UserID), CampaignCode, AdGroupId, ADGroupName, ADGroupText, ADGroupHeadline, ADGroupDesc1, ADGroupDesc2, ADGroupDespUrl, ADGroupFinalUrl);
+
+            return new RedirectResult(Url.Action("Index") + "#adgroups");
+            // return JavaScript("window.location = 'Students/Home/Index'");
+        }
+        
+
+        [HttpPost]
+        public ActionResult UpdateAD(FormCollection fc)
+        {
+            objUserInfo = (UserLoginInfo)Session["LoginInfo"];
+            var CampaignCode = fc["ddlCampaignADEdit"];
+            var ParentADGroup = fc["ddlADName"];
+            var ADGroupText = fc["txtADTextEdit"];
+            var ADGroupHeadline = fc["txtADHeadlineEdit"];
+            var ADGroupDesc1 = fc["txtADDesc1Edit"];
+            var ADGroupDesc2 = fc["txtADDesc2Edit"];
+            var ADGroupDespUrl = fc["txtADDespUrlEdit"];
+            var ADGroupFinalUrl = fc["txtADFinalUrlEdit"];
+            var AdGroupId = fc["hdnAdGrpId"];
+
+            //objDBentity.prcUpdateAdGroup(Convert.ToString(objUserInfo.UserID), CampaignCode, AdGroupId, ADGroupName, ADGroupText, ADGroupHeadline, ADGroupDesc1, ADGroupDesc2, ADGroupDespUrl, ADGroupFinalUrl);
+            objDBentity.prcUpdateAds(Convert.ToString(objUserInfo.UserID), CampaignCode, ParentADGroup, "", ADGroupText, ADGroupHeadline, ADGroupDesc1, ADGroupDesc2, ADGroupDespUrl, ADGroupFinalUrl, AdGroupId);
+            return new RedirectResult(Url.Action("Index") + "#ads");
+        }
+
+    }
+}

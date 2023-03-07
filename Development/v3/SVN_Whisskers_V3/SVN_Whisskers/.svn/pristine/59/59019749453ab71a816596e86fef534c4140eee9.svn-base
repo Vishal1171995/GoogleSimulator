@@ -1,0 +1,910 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Students/Views/Shared/Student_Layout.cshtml";
+}
+
+<script type="text/javascript">
+
+
+    $(function () {
+        //allow the validation framework to re-prase the DOM
+        jQuery.validator.unobtrusive.parse();
+
+        //or to give the parser some context, supply it with a selector
+        //jQuery validator will parse all child elements (deep) starting
+        //from the selector element supplied
+        jQuery.validator.unobtrusive.parse("#formCampaign");
+
+        $("#btnCreateCamp").click(function () {
+
+            if (!$("formCampaign").valid()) {
+                return false;
+            }
+        });
+
+
+        jQuery.validator.unobtrusive.parse();
+        jQuery.validator.unobtrusive.parse("#formAdgroups");
+        $("#btnCreateAdgroups").click(function () {
+            if (!$("formAdgroups").valid()) {
+                return false;
+            }
+        });
+
+        jQuery.validator.unobtrusive.parse();
+        jQuery.validator.unobtrusive.parse("#formAds");
+        $("#btnCreateAds").click(function () {
+            if (!$("formAds").valid()) {
+                return false;
+            }
+        });
+
+    });
+
+    function textCounter(field, field2, maxlimit) {
+        var countfield = document.getElementById(field2);
+        if (field.value.length > maxlimit) {
+
+            //alert(maxlimit - field.value.length);
+            countfield.value = maxlimit - field.value.length;
+            if (countfield.value <= -1) {
+                $(field2).css("color", "red");
+            }
+            field.value = field.value.substring(0, maxlimit);
+            //$("msgvalid14").html("You have reach the limit.")
+            countfield.value = countfield.value + " You have reach the limit.";
+            // alert(field.value);
+            //alert("------" + field.val())
+
+
+            // $('#printchatbox').innerHTML = field.value;
+            return false;
+
+        } else {
+            countfield.value = maxlimit - field.value.length;
+            //$("msgvalid14").html('');
+        }
+
+
+    }
+    //var inputBox = document.getElementById('txtADGroupHeadline');
+
+    //inputBox.onkeyup = function(){
+    //    document.getElementById('printchatbox').innerHTML = inputBox.value;
+    //}
+
+    $(document).ready(function () {
+        $('#txtADGroupHeadline').keyup(function (event) {
+            newText = event.target.value;
+            $('.printchatbox').text(newText);
+            $('.printchatbox').css({ 'color': 'red' });
+        });
+    });
+
+</script>
+<style>
+    .ui-autocomplete {
+        z-index: 9999999 !important;
+        position: absolute;
+        margin: 0px;
+        padding: 0px;
+        height: 200px;
+        overflow: scroll;
+        overflow-x: hidden;
+        border: 1px solid #d5d5d5;
+    }
+
+        .ui-autocomplete li {
+            list-style-type: none;
+            background: rgba(255,255,255,0.9) !important;
+            padding: 5px 12px;
+            color: #666;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+    .printchatbox {
+        border-width: thick 10px;
+        border-style: solid;
+        background-color: #fff;
+        line-height: 2;
+        color: #6E6A6B;
+        font-size: 14pt;
+        text-align: left;
+        float: middle;
+        border: 3px solid #969293;
+        width: 40%;
+        height: 2em;
+    }
+</style>
+<!---------------------  Content start  --------------------->
+
+<div class="campaigns">
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-md-2 col-sm-12 col-xs-12">
+
+                <div class="campaigns-logo"><img src="@ViewBag.ImagePath" class="img-responsive" alt="amazon" /></div>
+
+            </div>
+
+            <div class="col-md-10 col-sm-12 col-xs-12">
+
+                <h1>@ViewBag.AccFullName</h1>
+                <p>@ViewBag.Description</p>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+<div class="container">
+    <div class="row">
+        <div class="campaings-header">
+            <div class="col-md-4 col-md-push-8">
+
+                @*<span class="showTooltip visible-lg-inline-block" data-original-title="Choose Camaign">*@
+                <select id="ddlUniqueCampaign" class="select margin-bottom" name="ddlCampaign" onchange="CampaignDropdownChange(this.value);"></select>
+                @*</span>*@
+                @*<span class="showTooltip visible-lg-inline-block" data-original-title="Choose AdGroup">*@
+                <select id="ddlUniqueAdGroups" class="select margin-bottom" name="ddlCampaign" onchange="BindStudentCampaignTab();">
+                    <option value="ALL">ALL Ad Groups</option>
+                </select>
+                @*</span>*@
+            </div>
+        </div>
+    </div>
+</div>
+<div class="campaigns-tab">
+
+    @*onclick="return GoForAuction();"*@
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <ul id="ul_navTab" class="nav nav-tabs">
+                    <li id="li_campaigns" class="active"><a href="#CAMPAIGNS">Campaigns</a> <img class="arrow" src="~/Content/images/arrow.png" alt="arrow" /></li>
+                    <li id="li_adgroups"><a href="#ADGROUPS">Ad Groups</a> <img class="arrow" src="~/Content/images/arrow.png" alt="arrow" /></li>
+                    <li id="li_ads"><a href="#ADS">Ads</a> <img class="arrow" src="~/Content/images/arrow.png" alt="arrow" /></li>
+                    <li id="li_keywords"><a href="#KEYWORDS">Keywords</a> <img class="arrow" src="~/Content/images/arrow.png" alt="arrow" /></li>
+                    <li id="li_RFA"><a href="#RFA">RFA</a><img class="arrow" src="~/Content/images/arrow.png" alt="arrow" /></li>
+                </ul>
+                <div class="tab-content">
+                    <div id="CAMPAIGNS" class="tab-pane fade in active">
+                        <div class="campaings-header">
+                            <div class="row">
+                                <div class="col-md-7"><h3>Campaigns</h3></div>
+
+                                <div class="col-md-5 text-right campaings-nav">
+                                    <select id="ddlCampaign" name="ddlCampaign" class="hidden">
+                                        <option value="ALL">ALL Campaigns</option>
+                                        <option value="CC0001">Campaign 1</option>
+                                        <option value="CC0002">Campaign 2</option>
+                                        <option value="CC0003">Campaign 3</option>
+                                    </select>
+                                    <span class="showTooltip visible-lg-inline-block" data-original-title="">
+                                        <a href="/Students/Home/CampaignDownloadExcel"><i class="fa fa-download" area-hidden="true"></i>  Download</a>
+                                        <a href="#" class="popup-btn disableItem" onclick="HideCampaignPopup();" data-toggle="modal" data-target="#myModal"><img src="/Content/images/plus-icon.png" alt="icon" />Create Campaign</a>
+                                    </span>
+                                </div>
+                            </div>
+
+
+                            <div id="div_result">
+                            </div>
+
+
+                        </div>
+                        @using (Html.BeginForm("CreateCompaign", "Home", FormMethod.Post))
+                        {
+                            <div class="modal fade" id="myModal" role="dialog">
+                                <div class="modal-dialog">
+
+                                    <!-- Modal content-->
+
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h4 class="modal-title">Create AdWords Campaign</h4>
+                                        </div>
+                                        <form id="formCampaign" action="" method="post">
+                                            <div class="modal-body">
+
+                                                <table>
+
+                                                    <tr>
+
+                                                        <td class="textMiddle">Campaign Name</td>
+                                                        <td>
+                                                            <div class="form-group">
+                                                                <input type="text" id="txtCampaignName" name="txtCampaignName" maxlength="100" class="form-control" data-val="true" data-val-required="Campaign name is required." data-val-msg="Campaign name is required.">
+                                                                <span id="msgvalid" class="mytextclass field-validation-valid text-danger" data-valmsg-for="txtCampaignName" data-valmsg-replace="true"></span>
+                                                            </div>
+
+                                                        </td>
+
+                                                    </tr>
+
+                                                    <tr>
+
+                                                        <td class="textMiddle">Network Type </td>
+                                                        <td>
+                                                            <div class="form-group">
+                                                                <select class="form-control" id="ddlNetwordType" name="ddlNetwordType" data-val="true" data-val-required="Network Type is required." data-val-msg="Network Type is required."> <option value="">Select Network Type</option><option value="1">Search</option><option value="2" disabled>Display</option> </select>
+                                                                <span id="msgvalid1" class="mytextclass field-validation-valid text-danger" data-valmsg-for="ddlNetwordType" data-valmsg-replace="true"></span>
+                                                            </div>
+                                                        </td>
+
+                                                    </tr>
+
+                                                    <tr>
+
+                                                        <td class="textMiddle">Location</td>
+                                                        <td>
+                                                            <div class="form-group">
+                                                                <input type="text" id="txtLocation" name="txtLocation" class="form-control" data-val="true" data-val-required="Location is required." data-val-msg="Location is required.">
+                                                                <span id="msgvalid2" class="mytextclass field-validation-valid text-danger" data-valmsg-for="txtLocation" data-valmsg-replace="true"></span>
+                                                            </div>
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="textMiddle">Budget</td>
+                                                        <td>
+                                                            <div class="form-group">
+                                                                <input type="text" id="txtBudget" name="txtBudget" class="form-control" data-val="true" data-val-required="Budget is required." data-val-msg="Budget is required." placeholder="Number" onkeypress="return isNumberKey(event)">
+                                                                <span id="msgvalid3" class="mytextclass field-validation-valid text-danger" data-valmsg-for="txtBudget" data-valmsg-replace="true"></span>
+                                                                <input type="hidden" id="hdnCampId" name="hdnCampId" />
+                                                            </div>
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr id="CampaignStatus">
+                                                        <td class="textMiddle">Status</td>
+                                                        <td>
+
+                                                            <div class="material-switch">
+                                                                <input id="someSwitchOptionDefault" type="checkbox" name="someSwitchOption001">
+                                                                <label class="label-default" for="someSwitchOptionDefault"></label>
+                                                            </div>
+
+
+                                                        </td>
+
+                                                    </tr>
+
+                                                </table>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default cancel" data-dismiss="modal" onclick="return clear_form_elements(this.form);">Cancel</button>
+                                                <button type="submit" id="btnCreateCamp" class="btn btn-default save">Save</button>
+                                            </div>
+
+                                        </form>
+                                    </div>
+
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+
+
+                    <div id="ADGROUPS" class="tab-pane fade">
+
+                        <div class="campaings-header">
+
+                            <div class="row">
+                                <div class="col-md-7"><h3>Ad Groups</h3></div>
+
+                                <div class="col-md-5 text-right campaings-nav">
+
+
+
+                                    <select id="ddlCampaign2" name="ddlCampaign" class="hidden">
+                                        <option value="ALL">ALL Campaigns</option>
+                                        <option value="CC0001">Campaign 1</option>
+                                        <option value="CC0002">Campaign 2</option>
+                                        <option value="CC0003">Campaign 3</option>
+                                    </select>
+
+                                    <span class="showTooltip visible-lg-inline-block" data-original-title="">
+                                        <a href="#" class="popup-btn disableItem" data-toggle="modal" data-target="#myModal1"><img src="/Content/images/plus-icon.png" alt="icon" />Create AD Group</a>
+                                    </span>
+
+
+                                </div>
+                            </div>
+
+                            <div id="ADGroup_Result">
+                            </div>
+                        </div>
+                    </div>
+
+
+                    @using (Html.BeginForm("CreateADGroup", "Home", FormMethod.Post, new { onsubmit = "return BatchValidation();" }))
+                    {
+                        <div class="modal fade" id="myModal1" role="dialog">
+                            <div class="modal-dialog modal-dialog1">
+
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close close1" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Create Ad Group</h4>
+                                    </div>
+                                    <form id="formAdgroups" action="" method="post">
+                                        <div class="modal-body create-adgroup-modal-body">
+
+                                            <table>
+
+                                                <tr>
+
+                                                    <td class="textMiddle">Campaign</td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <select id="ddlCampaignADGM" name="ddlCampaignADGM" class="form-control" data-val="true" data-val-required="Campaign is required." data-val-msg="Campaign is required."> <option value="">Select Campaign</option>	</select>
+                                                            <span id="msgvalid11" class="mytextclass field-validation-valid text-danger" data-valmsg-for="ddlCampaignADGM" data-valmsg-replace="true"></span>
+                                                        </div>
+                                                    </td>
+
+                                                </tr>
+
+                                                <tr>
+
+                                                    <td class="textMiddle">Ad Group Name</td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <input type="text" name="txtADGroupName" id="txtADGroupName" class="form-control" data-val="true" data-val-required="ADGroup name is required." data-val-msg="ADGroup name is required.">
+                                                            <span id="msgvalid12" class="mytextclass field-validation-valid text-danger" data-valmsg-for="txtADGroupName" data-valmsg-replace="true"></span>
+                                                        </div>
+                                                    </td>
+
+                                                </tr>
+
+                                            </table>
+                                        </div>
+                                        <div class="model-heading">Ad Details</div>
+
+                                        <div class="modal-body">
+
+                                            <table>
+
+                                                <tr>
+
+                                                    <td class="textMiddle">Ad Text</td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <input type="text" name="txtADGroupText" id="txtADGroupText" class="form-control" data-val="true" data-val-required="ADGroupText is required." data-val-msg="ADGroupText is required.">
+                                                            <span id="msgvalid13" class="mytextclass field-validation-valid text-danger" data-valmsg-for="txtADGroupText" data-valmsg-replace="true"></span>
+                                                        </div>
+
+                                                    </td>
+
+                                                </tr>
+
+                                                <tr>
+
+                                                    <td class="textMiddle">Headline</td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <input type="text" name="txtADGroupHeadline" id="txtADGroupHeadline" onkeyup="return textCounter(this,'counter',25);" class="form-control" data-val="true" data-val-required="Headline is required." data-val-msg="Headline is required.">
+                                                            <span id="msgvalid14" class="mytextclass field-validation-valid text-danger" data-valmsg-for="txtADGroupHeadline" data-valmsg-replace="true"></span>
+                                                            <input disabled maxlength="3" size="3" value="25" id="counter" style="float:right">
+
+
+                                                        </div>
+
+
+                                                    </td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2">
+                                                        <div class='printchatbox' id='printchatbox'></div>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+
+                                                    <td class="textMiddle">Description Line 1</td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <input type="text" name="txtADGroupDesc1" id="txtADGroupDesc1" onkeyup="return textCounter(this,'counter1', 35);" class="form-control" data-val="true" data-val-required="Description Line 1 is required." data-val-msg="Description Line 1 is required.">
+                                                            <span id="msgvalid15" class="mytextclass field-validation-valid text-danger" data-valmsg-for="txtADGroupDesc1" data-valmsg-replace="true"></span>
+                                                            <input disabled maxlength="3" size="3" value="35" id="counter1" style="float:right">
+                                                        </div>
+                                                    </td>
+
+                                                </tr>
+
+                                                <tr>
+
+                                                    <td>Description Line 2</td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <input type="text" name="txtADGroupDesc2" id="txtADGroupDesc2" onkeyup="return textCounter(this,'counter2', 35);" class="form-control" data-val="true" data-val-required="Description Line 2 is required." data-val-msg="Description Line 2 is required.">
+                                                            <span id="msgvalid16" class="mytextclass field-validation-valid text-danger" data-valmsg-for="txtADGroupDesc2" data-valmsg-replace="true"></span>
+                                                            <input disabled maxlength="3" size="3" value="35" id="counter2" style="float:right">
+                                                        </div>
+                                                    </td>
+
+                                                </tr>
+
+                                                <tr>
+
+                                                    <td class="textMiddle">Display URL</td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <input type="text" name="txtADGroupDespUrl" id="txtADGroupDespUrl" class="form-control" data-val="true" data-val-required="Display URL is required." data-val-msg="Display URL is required.">
+                                                            <span id="msgvalid17" class="mytextclass field-validation-valid text-danger" data-valmsg-for="txtADGroupDespUrl" data-valmsg-replace="true"></span>
+                                                        </div>
+                                                    </td>
+
+                                                </tr>
+
+                                                <tr>
+
+                                                    <td class="textMiddle">Final URL</td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <input type="text" name="txtADGroupFinalUrl" id="txtADGroupFinalUrl" class="form-control" data-val="true" data-val-required="Final URL is required." data-val-msg="Final URL is required.">
+                                                            <span id="msgvalid18" class="mytextclass field-validation-valid text-danger" data-valmsg-for="txtADGroupFinalUrl" data-valmsg-replace="true"></span>
+                                                            <input type="hidden" id="hdnAdGroupId" name="hdnAdGroupId" />
+                                                        </div>
+                                                    </td>
+
+                                                </tr>
+
+
+                                            </table>
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default cancel" data-dismiss="modal" onclick="return clear_form_elements(this.form);">Cancel</button>
+                                            <button type="submit" id="btnCreateAdgroups" class="btn btn-default save">Save</button>
+                                        </div>
+
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div>
+                    }
+
+                    <div id="ADS" class="tab-pane fade">
+
+
+                        <div class="campaings-header">
+                            <div class="row">
+                                <div class="col-md-4"><h3>Ads</h3></div>
+
+                                <div class="col-md-8 text-right campaings-nav">
+
+
+
+                                    <select id="ddlCampaignAD1" name="ddlCampaignAD1" class="hidden">
+                                        <option value="ALL">ALL Campaigns</option>
+
+                                    </select>
+
+                                    <select id="ddlADGroupName1" name="ddlADGroupName1" class="hidden">
+                                        <option value="ALL">All Ad Groups</option>
+
+                                    </select>
+                                    <span class="showTooltip visible-lg-inline-block" data-original-title="">
+                                        <a href="#" data-toggle="modal" data-target="#myModal2" class="popup-btn disableItem"><img src="~/Content/images/plus-icon.png" alt="icon" />Create Ad</a>
+                                    </span>
+
+
+
+                                </div>
+                            </div>
+
+
+
+
+                            <div id="ADs_Result">
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="KEYWORDS" class="tab-pane fade">
+                        <div class="campaings-header">
+                            <div class="row">
+                                <div class="col-md-4"><h3>keywords</h3></div>
+
+                                <div class="col-md-8 text-right campaings-nav">
+
+
+
+                                    <select id="ddlCampaignADKeyW" name="ddlCampaignADKeyW" class="hidden">
+                                        @*<option value="ALL">ALL Campaigns</option>
+                                            <option value="CC0001">Campaign 1</option>
+                                            <option value="CC0002">Campaign 2</option>
+                                            <option value="CC0003">Campaign 3</option>*@
+                                    </select>
+
+                                    <select id="ddlADGroupNameKeyW" name="ddlADGroupNameKeyW" class="hidden">
+                                        <option value="ALL">All Ad Groups</option>
+
+                                    </select>
+                                    <span class="showTooltip visible-lg-inline-block" data-original-title="">
+                                        <a href="" data-toggle="modal" onclick="showKeywordPopup();" data-target="#myModal4" class="popup-btn disableItem"><img src="~/Content/images/plus-icon.png" alt="icon" />Map Keywords</a>
+                                    </span>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div id="Kewords_Result">
+
+                        </div>
+                    </div>
+                    <div id="RFA" class="tab-pane fade">
+                        <div class="campaings-header">
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="contant-campainge">
+                                        <p>
+                                            Lorem ipsum dolor sit amet, omnes noster atomorum ius id, omnis integre an pro. Liber bonorum deserunt vim no. Iriure regione ut quo. His utamur denique vituperatoribus in. Est ut fierent
+                                            splendide incorrupte, pro an unum partiendo contentiones.His utamur denique vituperatoribus in. Est ut fierent
+                                            splendide incorrupte, pro an unum partiendo contentiones.
+                                        </p>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div id="rfastatus" class="error-red erroor-boder">Current Request is Pending</div>
+                                </div>
+                            </div>
+                            <div class="go-btn">
+                                <span class="showTooltip visible-lg-inline-block" data-original-title="Request has been sent...">
+                                    <a id="linkreqsent" href="" class="popup-btn disableItem" onclick="return GoForAuction();"><img src="/Content/images/plus-icon.png" alt="icon">Go For Auction</a>
+                                </span>
+                            </div>
+
+                        </div>
+
+                        <div id="11">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+@using (Html.BeginForm("CreateAD", "Home", FormMethod.Post, new { onsubmit = "return BatchValidation();" }))
+{
+    <div class="modal fade" id="myModal2" role="dialog">
+        <div class="modal-dialog modal-dialog1">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close close1" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Ad Group</h4>
+                </div>
+                <form id="formAds" action="" method="post">
+                    <div class="modal-body create-adgroup-modal-body">
+
+                        <table>
+
+                            <tr>
+
+                                <td class="textMiddle">Campaign</td>
+                                <td>
+                                    <div class="form-group">
+                                        <select id="ddlCampaignAD" name="ddlCampaignAD" class="form-control" data-val="true" data-val-required="Campaign is required." data-val-msg="Campaign is required."> <option value="">Select Campaign</option>	</select>
+                                        <span id="msgvalid21" class="mytextclass field-validation-valid text-danger" data-valmsg-for="ddlCampaignAD" data-valmsg-replace="true"></span>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+
+                                <td class="textMiddle">Ad Group Name</td>
+                                <td>
+                                    <div class="form-group">
+                                        <select id="ddlADGroupName" name="ddlADGroupName" class="form-control" data-val="true" data-val-required="AdGroupName is required." data-val-msg="AdGroupName is required."> <option value="">Select Ad Group</option>	</select>
+                                        <input type="hidden" id="hidADGName" name="hidADGName" />
+                                        <span id="msgvalid22" class="mytextclass field-validation-valid text-danger" data-valmsg-for="ddlADGroupName" data-valmsg-replace="true"></span>
+                                    </div>
+                                </td>
+                            </tr>
+
+
+
+                        </table>
+                    </div>
+                    <div class="model-heading">Ad Details</div>
+
+                    <div class="modal-body">
+
+                        <table>
+
+                            <tr>
+
+                                <td class="textMiddle">Ad Text</td>
+                                <td>
+                                    <div class="form-group">
+                                        <input id="hidadCode" name="hidadCode" type="hidden" value="0" />
+                                        <input id="txtADText" name="txtADText" type="text" class="form-control" data-val="true" data-val-required="AdText is required." data-val-msg="AdText is required.">
+                                        <span id="msgvalid23" class="mytextclass field-validation-valid text-danger" data-valmsg-for="txtADText" data-valmsg-replace="true"></span>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                            <tr>
+
+                                <td class="textMiddle">Headline</td>
+                                <td>
+                                    <div class="form-group">
+                                        <input id="txtADHeadline" name="txtADHeadline" type="text" class="form-control" data-val="true" data-val-required="Headline is required." data-val-msg="Headline is required.">
+                                        <span id="msgvalid24" class="mytextclass field-validation-valid text-danger" data-valmsg-for="txtADHeadline" data-valmsg-replace="true"></span>
+
+                                    </div>
+                                </td>
+
+                            </tr>
+
+                            <tr>
+
+                                <td class="textMiddle">Description Line 1</td>
+                                <td>
+                                    <div class="form-group">
+                                        <input id="txtADDesc1" name="txtADDesc1" type="text" class="form-control" data-val="true" data-val-required="Description Line 1 is required.">
+                                        <span id="msgvalid25" class="mytextclass field-validation-valid text-danger" data-valmsg-for="txtADDesc1" data-valmsg-replace="true"></span>
+
+                                    </div>
+                                </td>
+
+                            </tr>
+
+                            <tr>
+
+                                <td class="textMiddle">Description Line 2</td>
+                                <td>
+                                    <div class="form-group">
+                                        <input id="txtADDesc2" name="txtADDesc2" type="text" class="form-control" data-val="true" data-val-required="Description Line 2 is required.">
+                                        <span id="msgvalid26" class="mytextclass field-validation-valid text-danger" data-valmsg-for="txtADDesc2" data-valmsg-replace="true"></span>
+
+                                    </div>
+                                </td>
+
+                            </tr>
+
+                            <tr>
+
+                                <td class="textMiddle">Display URL</td>
+                                <td>
+                                    <div class="form-group">
+                                        <input id="txtADDespUrl" name="txtADDespUrl" type="text" class="form-control" data-val="true" data-val-required="Display URL is required." data-val-msg="Display URL is required.">
+                                        <span id="msgvalid27" class="mytextclass field-validation-valid text-danger" data-valmsg-for="txtADDespUrl" data-valmsg-replace="true"></span>
+
+                                    </div>
+                                </td>
+
+                            </tr>
+
+                            <tr>
+
+                                <td class="textMiddle">Final URL</td>
+                                <td>
+                                    <div class="form-group">
+                                        <input id="txtADFinalUrl" name="txtADFinalUrl" type="text" class="form-control" data-val="true" data-val-required="Final URL is required." data-val-msg="Final URL is required.">
+                                        <span id="msgvalid28" class="mytextclass field-validation-valid text-danger" data-valmsg-for="txtADFinalUrl" data-valmsg-replace="true"></span>
+                                        <input type="hidden" id="hdnAdGrpId" name="hdnAdGrpId" />
+                                    </div>
+                                </td>
+
+                            </tr>
+
+
+                        </table>
+                    </div>
+
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default cancel" data-dismiss="modal" onclick="return clear_form_elements(this.form);">Cancel</button>
+                        <button id="btnCreateAds" type="submit" class="btn btn-default save">Save</button>
+                    </div>
+                    <script src="~/Scripts/Whiskers.validations.js"></script>
+                </form>
+            </div>
+
+        </div>
+    </div>
+}
+
+
+<div class="modal fade" id="myModal4" role="dialog">
+    <div class="modal-dialog modal-dialog1">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close close1" data-dismiss="modal">&times;</button>
+                <h4 id="TitlePopupKeyword" class="modal-title">Add Keyword</h4>
+            </div>
+            <form action="" method="post">
+                <div class="modal-body create-adgroup-modal-body">
+                    <table>
+                        <tr>
+                            <td class="textMiddle">Campaign</td>
+                            <td>
+                                <div class="form-group">
+                                    <select class="form-control" id="ddlCampKey" name="ddlCampKey"></select>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="textMiddle">Ad Group Name</td>
+                            <td>
+                                <div class="form-group">
+                                    <select class="form-control" id="ddlAdgrpKey" name="ddlAdgrpKey"> <option value="ALL">Select Ad Group</option></select>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="textMiddle">Keyword</td>
+                            <td>
+                                <div class="form-group add-group-input-text">
+                                    <input class="form-control" id="txtAutoKey">
+                                </div>
+                                <button class="add-group-btn" id="btnMappKeyword" onclick="return AddKeywordstemp();">+</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="modal-body campaings-table table-responsive">
+                    <span id="spanmsgtble" class="text-danger" style="display:none; text-align:center">Please select campaign, Adgroup and Key before submit.</span>
+                    <div id="divkeywordmodel" class="keyword-model" style="display:none">
+                        <table id="tblKeywords">
+                            <tr>
+                                <th>Keyword/Pharses</th>
+                                <th style="display:none">Bid</th>
+                                <th>Bid</th>
+                                <th></th>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+               
+                <div class="modal-body  create-adgroup-modal-body">
+                    <div id="divKeywordNotify" class="error-red erroor-boder">All fields are required</div>
+                </div>
+                    @*@using (Html.BeginForm("MapKeywordsAD", "Home", FormMethod.Post, new { onsubmit = "return BatchValidation();" }))
+            {*@
+                    <input type="hidden" id="hdnKeywordFlag" value="CREATE" name="hdnKeywordFlag" />
+                   
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default cancel" data-dismiss="modal" onclick="return clear_form_elements(this.form);">Cancel</button>
+                        <button id="btnKeyMappAddMain" type="button" class="btn btn-default save" onclick="return SaveMapKeywords();">Save</button>
+                    </div>
+                    @*}*@
+               
+            </form>
+
+
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade" id="ModalBatchSuccess" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                @*<button type="button" class="close" data-dismiss="modal">&times;</button>*@
+                <h5 id="BatchSuccessHead" class="modal-title">Auction request accepted </h5>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Edit-->
+<script>
+    (function ($) {
+        $(window).load(function () {
+            BindCampaignDropdown();
+            location.hash = "#CAMPAIGNS";
+            window.location = location.hash;
+            BindStudentCampaignTab();
+        });
+    })(jQuery);
+
+    $(document).ready(function () {
+        //ShowResultStudentCampaignTab();
+
+        $(".nav-tabs a").click(function () {
+            $(this).tab('show');
+        });
+        $('.nav-tabs a').on('shown.bs.tab', function (event) {
+            var x = $(event.target).text();         // active tab
+            var y = $(event.relatedTarget).text();  // previous tab
+            $(".act span").text(x);
+            $(".prev span").text(y);
+            BindStudentCampaignTab();
+        });
+
+        //$("#liCampaigns").addClass("active");
+        //var sURL = window.location.href;
+        //var currTab = sURL.split('#');
+
+        //if (currTab.length == 2)
+        //{
+        //    $('#ul_navTab li').removeClass("active");
+        //    $('#ul_navTab #li_' + currTab[1] + '').addClass("active");
+
+
+        //    $('.tab-content >div').removeClass("active in");
+        //    $('.tab-content #' + currTab[1] + '').addClass("active in");
+
+        //}
+        //else if (currTab.length > 2)
+        //{
+        //    $('#ul_navTab li').removeClass("active");
+        //    $('#ul_navTab #li_' + currTab[1] + '').addClass("active");
+
+        //    $('.tab-content >div').removeClass("active in");
+        //    $('.tab-content #' + currTab[1] + '').addClass("active in");
+
+        //    if (currTab[1] == 'adgroups') {
+        //        $('#ddlCampaign2').val(currTab[2]);
+        //        $('#ddlCampaign2').trigger('change');
+        //    }
+        //    else if (currTab[1] == 'ads') {
+        //        var currTab1 = currTab[2].split('~');
+        //        $('#ddlCampaignAD1').val(currTab1[0]);
+        //        $('#ddlCampaignAD1').trigger('change');
+        //        $('#ddlADGroupName1').val(currTab1[1]);
+        //        $('#ddlADGroupName1').trigger('change');
+        //    }
+        //}
+    });
+    function BindStudentCampaignTab() {
+        debugger;
+        var UrlLength = window.location.href.toString().split("#").length;
+        if (window.location.href.toString().split("#")[1].toUpperCase() == "CAMPAIGNS" && UrlLength == 2) {
+            getCampaignsOnDemand();
+        }
+        if (window.location.href.toString().split("#")[1].toUpperCase() == "ADGROUPS" && UrlLength == 2) {
+            getADGroupsOnDemand();
+        }
+        if (window.location.href.toString().split("#")[1].toUpperCase() == "ADS" && UrlLength == 2) {
+            getCampaignAdsOnDemand();
+        }
+        if (window.location.href.toString().split("#")[1].toUpperCase() == "KEYWORDS" && UrlLength == 2) {
+            getMappedkeyWordsOnDemand();
+        }
+        CheckStudentRFAStatus();
+    }
+</script>
+<style type="text/css">
+    a[aria-expanded=true].glyphicon-menu-hamburger {
+        display: none;
+    }
+
+    a[aria-expanded=false].glyphicon-chevron-down {
+        display: none;
+    }
+</style>
+
+<!---------------------  Content End  --------------------->

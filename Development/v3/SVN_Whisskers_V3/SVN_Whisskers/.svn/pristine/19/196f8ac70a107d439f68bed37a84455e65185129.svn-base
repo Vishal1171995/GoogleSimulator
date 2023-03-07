@@ -1,0 +1,985 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="WhiskersDBModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+  <EntityContainer Name="WhiskersDBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="BatchAndStudentMappings" EntityType="WhiskersDBModel.BatchAndStudentMapping" />
+    <EntitySet Name="keyWordRanks" EntityType="WhiskersDBModel.keyWordRank" />
+    <EntitySet Name="LocationMasters" EntityType="WhiskersDBModel.LocationMaster" />
+    <EntitySet Name="MapKeywordsAGs" EntityType="WhiskersDBModel.MapKeywordsAG" />
+    <EntitySet Name="RFA_Percentage_Result" EntityType="WhiskersDBModel.RFA_Percentage_Result" />
+    <EntitySet Name="RFA_Result" EntityType="WhiskersDBModel.RFA_Result" />
+    <EntitySet Name="sysdiagrams" EntityType="WhiskersDBModel.sysdiagram" />
+    <EntitySet Name="UserMasters" EntityType="WhiskersDBModel.UserMaster" />
+    <EntitySet Name="AccountsMasters" EntityType="WhiskersDBModel.AccountsMaster" />
+    <EntitySet Name="AdGroups" EntityType="WhiskersDBModel.AdGroup" />
+    <EntitySet Name="BatchAndTrainerMappings" EntityType="WhiskersDBModel.BatchAndTrainerMapping" />
+    <EntitySet Name="BatchMasters" EntityType="WhiskersDBModel.BatchMaster" />
+    <EntitySet Name="CampaignMasters" EntityType="WhiskersDBModel.CampaignMaster" />
+    <EntitySet Name="KeywordMasters" EntityType="WhiskersDBModel.KeywordMaster" />
+    <EntitySet Name="RFA_Result_bak" EntityType="WhiskersDBModel.RFA_Result_bak" />
+    <EntitySet Name="RFAMasters" EntityType="WhiskersDBModel.RFAMaster" />
+    <EntitySet Name="tblAds" EntityType="WhiskersDBModel.tblAd" />
+    <FunctionImport Name="CheckRFAStatus" ReturnType="Collection(WhiskersDBModel.CheckRFAStatus_Result)">
+      <Parameter Name="AccCode" Mode="In" Type="String" />
+      <Parameter Name="CreatedBy" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="GetAccountReport" ReturnType="Collection(WhiskersDBModel.GetAccountReport_Result)">
+      <Parameter Name="BatchCode" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="getADGroupsOnDemand" ReturnType="Collection(WhiskersDBModel.getADGroupsOnDemand_Result)">
+      <Parameter Name="CampaignCode" Mode="In" Type="String" />
+      <Parameter Name="CreatedBy" Mode="In" Type="String" />
+      <Parameter Name="AdGroupCode" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="getAssignedStudentsPerBatch" ReturnType="Collection(WhiskersDBModel.getAssignedStudentsPerBatch_Result)">
+      <Parameter Name="BatchCode" Mode="In" Type="String" />
+      <Parameter Name="Type" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="getCampaignAdsOnDemand" ReturnType="Collection(WhiskersDBModel.getCampaignAdsOnDemand_Result)">
+      <Parameter Name="Userid" Mode="In" Type="String" />
+      <Parameter Name="CampaignCode" Mode="In" Type="String" />
+      <Parameter Name="AdGroupCode" Mode="In" Type="String" />
+      <Parameter Name="AdCode" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="GetIndustryReport_TopKey" ReturnType="Collection(WhiskersDBModel.GetIndustryReport_TopKey_Result)">
+      <Parameter Name="BatchCode" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="GetMappedkeyWords" ReturnType="Collection(WhiskersDBModel.GetMappedkeyWords_Result)">
+      <Parameter Name="CreatedBy" Mode="In" Type="String" />
+      <Parameter Name="CampaignCode" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="getMappedkeyWordsOnDemand" ReturnType="Collection(WhiskersDBModel.getMappedkeyWordsOnDemand_Result)">
+      <Parameter Name="CreatedBy" Mode="In" Type="String" />
+      <Parameter Name="CampaignCode" Mode="In" Type="String" />
+      <Parameter Name="AdGroupCode" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="getSingleKeywordDetails" ReturnType="Collection(WhiskersDBModel.getSingleKeywordDetails_Result)">
+      <Parameter Name="CampaignCode" Mode="In" Type="String" />
+      <Parameter Name="AdGroupCode" Mode="In" Type="String" />
+      <Parameter Name="CreatedBy" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="getTrainerToBatch" ReturnType="Collection(WhiskersDBModel.getTrainerToBatch_Result)">
+      <Parameter Name="patternValue" Mode="In" Type="String" />
+      <Parameter Name="BatchCode" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="prcAccountsPerBatches" ReturnType="Collection(WhiskersDBModel.prcAccountsPerBatches_Result)">
+      <Parameter Name="BatchCode" Mode="In" Type="String" />
+      <Parameter Name="AccCode" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="prcAssignedStudentsAndTrainer">
+      <Parameter Name="BatchCode" Mode="In" Type="String" />
+      <Parameter Name="UserID" Mode="In" Type="String" />
+      <Parameter Name="AssignedTo" Mode="In" Type="String" />
+      <Parameter Name="isMappingActive" Mode="In" Type="String" />
+      <Parameter Name="Status" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="prcBatchesOnDemand" ReturnType="Collection(WhiskersDBModel.prcBatchesOnDemand_Result)">
+      <Parameter Name="BatchTime" Mode="In" Type="Int32" />
+      <Parameter Name="TrainerCode" Mode="In" Type="String" />
+      <Parameter Name="LocationCode" Mode="In" Type="String" />
+      <Parameter Name="BatchCode" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="prcCheckKeywordFromMapKeywordsAG" ReturnType="Collection(WhiskersDBModel.prcCheckKeywordFromMapKeywordsAG_Result)">
+      <Parameter Name="KeywordCode" Mode="In" Type="Int32" />
+      <Parameter Name="CampaignCode" Mode="In" Type="String" />
+      <Parameter Name="AdGroupCode" Mode="In" Type="String" />
+      <Parameter Name="UserId" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="prcCreateAccount">
+      <Parameter Name="AccName" Mode="In" Type="String" />
+      <Parameter Name="ImagePath" Mode="In" Type="String" />
+      <Parameter Name="Description" Mode="In" Type="String" />
+      <Parameter Name="InputAccountCode" Mode="In" Type="String" />
+      <Parameter Name="Status" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="prcCreateAD">
+      <Parameter Name="CampaignCode" Mode="In" Type="String" />
+      <Parameter Name="AdGroupCode" Mode="In" Type="String" />
+      <Parameter Name="ADText" Mode="In" Type="String" />
+      <Parameter Name="HeadLine" Mode="In" Type="String" />
+      <Parameter Name="DescLine1" Mode="In" Type="String" />
+      <Parameter Name="DescLine2" Mode="In" Type="String" />
+      <Parameter Name="DispUrl" Mode="In" Type="String" />
+      <Parameter Name="FinalUrl" Mode="In" Type="String" />
+      <Parameter Name="CreatedBy" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="prcCreateADGroup">
+      <Parameter Name="CampaignCode" Mode="In" Type="String" />
+      <Parameter Name="AdGroupName" Mode="In" Type="String" />
+      <Parameter Name="AccCode" Mode="In" Type="String" />
+      <Parameter Name="ADText" Mode="In" Type="String" />
+      <Parameter Name="HeadLine" Mode="In" Type="String" />
+      <Parameter Name="DescLine1" Mode="In" Type="String" />
+      <Parameter Name="DescLine2" Mode="In" Type="String" />
+      <Parameter Name="DispUrl" Mode="In" Type="String" />
+      <Parameter Name="FinalUrl" Mode="In" Type="String" />
+      <Parameter Name="CreatedBy" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="prcCreateBatch">
+      <Parameter Name="BatchName" Mode="In" Type="String" />
+      <Parameter Name="Location" Mode="In" Type="String" />
+      <Parameter Name="Address" Mode="In" Type="String" />
+      <Parameter Name="StratDate" Mode="In" Type="DateTime" />
+      <Parameter Name="EndDate" Mode="In" Type="DateTime" />
+      <Parameter Name="InputLocationCode" Mode="In" Type="String" />
+      <Parameter Name="Time" Mode="In" Type="Time" />
+      <Parameter Name="InputBatchCode" Mode="In" Type="String" />
+      <Parameter Name="Status" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="prcCreateCampaign">
+      <Parameter Name="CampaignName" Mode="In" Type="String" />
+      <Parameter Name="NetwordType" Mode="In" Type="Int32" />
+      <Parameter Name="Location" Mode="In" Type="String" />
+      <Parameter Name="Budget" Mode="In" Type="Decimal" />
+      <Parameter Name="AccCode" Mode="In" Type="Int32" />
+      <Parameter Name="CreatedBy" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="prcCreateKeyword">
+      <Parameter Name="KeywordName" Mode="In" Type="String" />
+      <Parameter Name="KeywordAvgMonthSearch" Mode="In" Type="String" />
+      <Parameter Name="KeywordCompetition" Mode="In" Type="String" />
+      <Parameter Name="KeywordSuggestBid" Mode="In" Type="Int32" />
+      <Parameter Name="KeywordSuggestCTR" Mode="In" Type="String" />
+      <Parameter Name="InputKeywordCode" Mode="In" Type="String" />
+      <Parameter Name="Status" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="prcCreateMappedKeywords">
+      <Parameter Name="KeywordName" Mode="In" Type="String" />
+      <Parameter Name="KeywordCode" Mode="In" Type="String" />
+      <Parameter Name="CampaignCode" Mode="In" Type="String" />
+      <Parameter Name="AdGroupCode" Mode="In" Type="String" />
+      <Parameter Name="KeywordBid" Mode="In" Type="String" />
+      <Parameter Name="UserId" Mode="In" Type="String" />
+      <Parameter Name="flag" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="prcCreateStudent">
+      <Parameter Name="FirstName" Mode="In" Type="String" />
+      <Parameter Name="MiddleName" Mode="In" Type="String" />
+      <Parameter Name="LastName" Mode="In" Type="String" />
+      <Parameter Name="Location" Mode="In" Type="String" />
+      <Parameter Name="Email" Mode="In" Type="String" />
+      <Parameter Name="Contact" Mode="In" Type="String" />
+      <Parameter Name="InputLocationCode" Mode="In" Type="String" />
+      <Parameter Name="InputStudentCode" Mode="In" Type="String" />
+      <Parameter Name="Status" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="prcCreateTrainer">
+      <Parameter Name="FirstName" Mode="In" Type="String" />
+      <Parameter Name="MiddleName" Mode="In" Type="String" />
+      <Parameter Name="LastName" Mode="In" Type="String" />
+      <Parameter Name="Location" Mode="In" Type="String" />
+      <Parameter Name="Email" Mode="In" Type="String" />
+      <Parameter Name="Contact" Mode="In" Type="String" />
+      <Parameter Name="InputLocationCode" Mode="In" Type="String" />
+      <Parameter Name="InputTrainerCode" Mode="In" Type="String" />
+      <Parameter Name="Status" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="prcGetAdGroups">
+      <Parameter Name="CampaignCode" Mode="In" Type="String" />
+      <Parameter Name="CreatedBy" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="prcGetAdGroupsByID" ReturnType="Collection(WhiskersDBModel.prcGetAdGroupsByID_Result)">
+      <Parameter Name="CampaignCode" Mode="In" Type="String" />
+      <Parameter Name="CreatedBy" Mode="In" Type="String" />
+      <Parameter Name="AdGroupCode" Mode="In" Type="String" />
+      <Parameter Name="ADCode" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="prcGetAdGroupsByID_old">
+      <Parameter Name="CampaignCode" Mode="In" Type="String" />
+      <Parameter Name="CreatedBy" Mode="In" Type="String" />
+      <Parameter Name="AdGroupCode" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="prcGetCampaign" ReturnType="Collection(WhiskersDBModel.prcGetCampaign_Result)">
+      <Parameter Name="Userid" Mode="In" Type="String" />
+      <Parameter Name="CampaignCode" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="prcGetCampaignAds">
+      <Parameter Name="Userid" Mode="In" Type="String" />
+      <Parameter Name="CampaignCode" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="prcGetCurrentBatches" ReturnType="Collection(WhiskersDBModel.prcGetCurrentBatches_Result)">
+      <Parameter Name="Userid" Mode="In" Type="String" />
+      <Parameter Name="BatchType" Mode="In" Type="String" />
+      <Parameter Name="BatchCode" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="prcGetDistAdGroups" ReturnType="Collection(WhiskersDBModel.prcGetDistAdGroups_Result)">
+      <Parameter Name="CampaignCode" Mode="In" Type="String" />
+      <Parameter Name="CreatedBy" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="prcGetKeywords" ReturnType="Collection(WhiskersDBModel.prcGetKeywords_Result)">
+      <Parameter Name="Keywordtxt" Mode="In" Type="String" />
+      <Parameter Name="flag" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="prcGetKeywordsbyCampCode" ReturnType="Collection(WhiskersDBModel.prcGetKeywordsbyCampCode_Result)">
+      <Parameter Name="campcode" Mode="In" Type="String" />
+      <Parameter Name="adgroupcode" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="prcGetUserDetails" ReturnType="Collection(WhiskersDBModel.prcGetUserDetails_Result)">
+      <Parameter Name="emailID" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="prcMappedKeyword">
+      <Parameter Name="KeywordCode" Mode="In" Type="String" />
+      <Parameter Name="CampaignCode" Mode="In" Type="String" />
+      <Parameter Name="AdGroupCode" Mode="In" Type="String" />
+      <Parameter Name="KeywordBid" Mode="In" Type="String" />
+      <Parameter Name="UserId" Mode="In" Type="String" />
+      <Parameter Name="flag" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="prcSaveAccount">
+      <Parameter Name="StudentIDS" Mode="In" Type="String" />
+      <Parameter Name="AccountID" Mode="In" Type="String" />
+      <Parameter Name="Status" Mode="In" Type="Int32" />
+      <Parameter Name="TrainerCode" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="prcSrudentsPerBatches" ReturnType="Collection(WhiskersDBModel.prcSrudentsPerBatches_Result)">
+      <Parameter Name="BatchCode" Mode="In" Type="String" />
+      <Parameter Name="AccCode" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="prcStudentOnDemand" ReturnType="Collection(WhiskersDBModel.prcStudentOnDemand_Result)">
+      <Parameter Name="BatchCode" Mode="In" Type="String" />
+      <Parameter Name="LocationCode" Mode="In" Type="String" />
+      <Parameter Name="StudentCode" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="prcTrainerOnDemand" ReturnType="Collection(WhiskersDBModel.prcTrainerOnDemand_Result)">
+      <Parameter Name="BatchCode" Mode="In" Type="String" />
+      <Parameter Name="LocationCode" Mode="In" Type="String" />
+      <Parameter Name="TrainerCode" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="prcUpdateAdGroup">
+      <Parameter Name="Userid" Mode="In" Type="String" />
+      <Parameter Name="CampaignCode" Mode="In" Type="String" />
+      <Parameter Name="AdGroupCode" Mode="In" Type="String" />
+      <Parameter Name="AdGroupName" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="prcUpdateAds">
+      <Parameter Name="Userid" Mode="In" Type="String" />
+      <Parameter Name="CampaignCode" Mode="In" Type="String" />
+      <Parameter Name="AdGroupCode" Mode="In" Type="String" />
+      <Parameter Name="AdCode" Mode="In" Type="String" />
+      <Parameter Name="ADText" Mode="In" Type="String" />
+      <Parameter Name="HeadLine" Mode="In" Type="String" />
+      <Parameter Name="DescLine1" Mode="In" Type="String" />
+      <Parameter Name="DescLine2" Mode="In" Type="String" />
+      <Parameter Name="DispUrl" Mode="In" Type="String" />
+      <Parameter Name="FinalUrl" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="prcUpdateCampaign">
+      <Parameter Name="Userid" Mode="In" Type="String" />
+      <Parameter Name="CampaignCode" Mode="In" Type="Int32" />
+      <Parameter Name="CampaignName" Mode="In" Type="String" />
+      <Parameter Name="Location" Mode="In" Type="String" />
+      <Parameter Name="Budget" Mode="In" Type="String" />
+      <Parameter Name="Network" Mode="In" Type="String" />
+      <Parameter Name="isActive" Mode="In" Type="Boolean" />
+    </FunctionImport>
+    <FunctionImport Name="prcUpdateMappedKeywords">
+      <Parameter Name="KeywordName" Mode="In" Type="String" />
+      <Parameter Name="KeywordCode" Mode="In" Type="String" />
+      <Parameter Name="CampaignCode" Mode="In" Type="String" />
+      <Parameter Name="AdGroupCode" Mode="In" Type="String" />
+      <Parameter Name="KeywordBid" Mode="In" Type="String" />
+      <Parameter Name="UserId" Mode="In" Type="String" />
+      <Parameter Name="flag" Mode="In" Type="Int32" />
+      <Parameter Name="status" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="prcUserDetailsOnDemand" ReturnType="Collection(WhiskersDBModel.prcUserDetailsOnDemand_Result)">
+      <Parameter Name="UserType" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="RFA_Algorithm" />
+    <FunctionImport Name="RFA_Calculation" />
+    <FunctionImport Name="RFA_Calculation_bak" />
+    <FunctionImport Name="RFAAlgo" />
+    <FunctionImport Name="RFAIniateByStudent">
+      <Parameter Name="AccCode" Mode="In" Type="String" />
+      <Parameter Name="CreatedBy" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_alterdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_creatediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_dropdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(WhiskersDBModel.sp_helpdiagramdefinition_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(WhiskersDBModel.sp_helpdiagrams_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_renamediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="new_diagramname" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_upgraddiagrams" />
+    <FunctionImport Name="prcGetRemainingAccounts" ReturnType="Collection(WhiskersDBModel.prcGetRemainingAccounts_Result)">
+      <Parameter Name="AccCode" Mode="In" Type="String" />
+      <Parameter Name="TrainerCode" Mode="In" Type="String" />
+      <Parameter Name="BatchCode" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="prcGetAccntsDetails" ReturnType="Collection(WhiskersDBModel.prcGetAccntsDetails_Result)">
+      <Parameter Name="TrainerCode" Mode="In" Type="String" />
+      <Parameter Name="BatchCode" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="prcCreatePhrase">
+      <Parameter Name="PhraseName" Mode="In" Type="String" />
+      <Parameter Name="CreatedOn" Mode="In" Type="DateTime" />
+      <Parameter Name="CreatedBy" Mode="In" Type="String" />
+      <Parameter Name="Traffic" Mode="In" Type="Int32" />
+      <Parameter Name="InputPhraseCode" Mode="In" Type="String" />
+      <Parameter Name="Status" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="prcPhraseOnDemand" ReturnType="Collection(WhiskersDBModel.prcPhraseOnDemand_Result)" />
+    <EntitySet Name="SearchQueryMasters" EntityType="WhiskersDBModel.SearchQueryMaster" />
+    <EntitySet Name="RFAHistories" EntityType="WhiskersDBModel.RFAHistory" />
+    <FunctionImport Name="GetAccountAdGrpReport" ReturnType="Collection(WhiskersDBModel.GetAccountAdGrpReport_Result)">
+      <Parameter Name="BatchCode" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="GetAccountCampReport" ReturnType="Collection(WhiskersDBModel.GetAccountCampReport_Result)">
+      <Parameter Name="BatchCode" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="GetBatchesOfTrainer" ReturnType="Collection(WhiskersDBModel.GetBatchesOfTrainer_Result)">
+      <Parameter Name="TrainerCode" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="GetCampaignMatrix_Report" ReturnType="Collection(WhiskersDBModel.GetCampaignMatrix_Report_Result)">
+      <Parameter Name="BatchCode" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="GetTopAccount_Report" ReturnType="Collection(WhiskersDBModel.GetTopAccount_Report_Result)">
+      <Parameter Name="BatchCode" Mode="In" Type="Int32" />
+    </FunctionImport>
+  </EntityContainer>
+  <EntityType Name="BatchAndStudentMapping">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="BatchCode" Type="Int32" />
+    <Property Name="UserID" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="AccCode" Type="Int32" />
+    <Property Name="Status" Type="Int32" />
+    <Property Name="isMappingActive" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="keyWordRank">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Heading" Type="Decimal" Precision="18" Scale="4" />
+    <Property Name="DisplayUrl" Type="Decimal" Precision="18" Scale="4" />
+    <Property Name="description1" Type="Decimal" Precision="18" Scale="4" />
+    <Property Name="description2" Type="Decimal" Precision="18" Scale="4" />
+    <Property Name="AdgroupName" Type="Decimal" Precision="9" Scale="2" />
+  </EntityType>
+  <EntityType Name="LocationMaster">
+    <Key>
+      <PropertyRef Name="LocationCode" />
+    </Key>
+    <Property Name="LocationCode" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="false" />
+    <Property Name="LocationName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="isActive" Type="Int32" />
+  </EntityType>
+  <EntityType Name="MapKeywordsAG">
+    <Key>
+      <PropertyRef Name="MappingId" />
+    </Key>
+    <Property Name="CampaignCode" Type="Int32" Nullable="false" />
+    <Property Name="AdGroupCode" Type="Int32" Nullable="false" />
+    <Property Name="KeyCode" Type="Int32" Nullable="false" />
+    <Property Name="CreatedBy" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="NewBid" Type="Int32" />
+    <Property Name="MappingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ModifiedBy" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="RFA_Percentage_Result">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="KeyCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="AdGroupCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="CampaignCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Parent" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="KeyNamePercentCount" Type="Decimal" Precision="9" Scale="2" />
+    <Property Name="HeadlinePercentCount" Type="Decimal" Precision="9" Scale="2" />
+    <Property Name="Descline1PercentCount" Type="Decimal" Precision="9" Scale="2" />
+    <Property Name="Descline2PercentCount" Type="Decimal" Precision="9" Scale="2" />
+    <Property Name="DispUrlPercentCount" Type="Decimal" Precision="9" Scale="2" />
+    <Property Name="AdGroupNamePercentCount" Type="Decimal" Precision="9" Scale="2" />
+  </EntityType>
+  <EntityType Name="RFA_Result">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SearchQuery" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="BatchCode" Type="Int32" Nullable="false" />
+    <Property Name="AccCode" Type="Int32" />
+    <Property Name="CampaignCode" Type="Int32" />
+    <Property Name="AdCode" Type="Int32" />
+    <Property Name="KeyCode" Type="Int32" />
+    <Property Name="MatchCountKTSQ" Type="Decimal" Precision="9" Scale="2" />
+    <Property Name="MatchCountKTADs" Type="Decimal" Precision="9" Scale="2" />
+    <Property Name="AdRank" Type="Decimal" Precision="9" Scale="2" />
+    <Property Name="AdGroupCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="HeadlineMatchCount" Type="Decimal" Precision="9" Scale="2" />
+    <Property Name="Descline1MatchCount" Type="Decimal" Precision="9" Scale="2" />
+    <Property Name="Descline2MatchCount" Type="Decimal" Precision="9" Scale="2" />
+    <Property Name="DispUrlMatchCount" Type="Decimal" Precision="9" Scale="2" />
+    <Property Name="AdGroupNamePercentCount" Type="Decimal" Precision="9" Scale="2" />
+    <Property Name="Impressions" Type="Decimal" Precision="9" Scale="2" />
+    <Property Name="CTR" Type="Decimal" Precision="9" Scale="2" />
+    <Property Name="Position" Type="Decimal" Precision="9" Scale="2" />
+    <Property Name="CVR" Type="Decimal" Precision="9" Scale="2" />
+    <Property Name="RFAId" Type="Int32" />
+    <Property Name="CPC" Type="Decimal" Precision="9" Scale="2" />
+    <Property Name="CostPerConversions" Type="Decimal" Precision="9" Scale="2" />
+    <Property Name="RevActualCost" Type="Decimal" Precision="9" Scale="2" />
+    <Property Name="RevNewClicks" Type="Decimal" Precision="9" Scale="2" />
+    <Property Name="RevNewImpression" Type="Decimal" Precision="9" Scale="2" />
+    <Property Name="ImpressionShare" Type="Decimal" Precision="9" Scale="2" />
+    <Property Name="RFA_Id" Type="Int32" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="UserMaster">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="UserID" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="FirstName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="MiddleName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="LastName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="DOB" Type="DateTime" Precision="0" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="UserType" Type="Int16" />
+    <Property Name="IsActive" Type="Boolean" />
+    <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Location" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="Address" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="Contact" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+    <Property Name="ModifiedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="AccountsMaster">
+    <Key>
+      <PropertyRef Name="AccCode" />
+    </Key>
+    <Property Name="AccCode" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="AccName" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+    <Property Name="ImagePath" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+    <Property Name="Description" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+    <Property Name="IsActive" Type="Boolean" />
+    <Property Name="AccFullName" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="AdGroup">
+    <Key>
+      <PropertyRef Name="AdGroupCode" />
+      <PropertyRef Name="CampaignCode" />
+      <PropertyRef Name="AccCode" />
+    </Key>
+    <Property Name="AdGroupCode" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CampaignCode" Type="Int32" Nullable="false" />
+    <Property Name="AccCode" Type="Int32" Nullable="false" />
+    <Property Name="AdGroupName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="CreatedBy" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="BatchAndTrainerMapping">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="BatchCode" Type="Int32" />
+    <Property Name="UserID" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="isMappingActive" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="BatchMaster">
+    <Key>
+      <PropertyRef Name="BatchCode" />
+    </Key>
+    <Property Name="BatchCode" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="BatchName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Location" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="Address" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="StratDate" Type="DateTime" Precision="3" />
+    <Property Name="EndDate" Type="DateTime" Precision="3" />
+    <Property Name="Time" Type="Time" Precision="7" />
+    <Property Name="isActive" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="CampaignMaster">
+    <Key>
+      <PropertyRef Name="CampaignCode" />
+      <PropertyRef Name="AccCode" />
+      <PropertyRef Name="isActive" />
+    </Key>
+    <Property Name="CampaignCode" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CampaignName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="NetWorkType" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="Location" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="Budget" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="AccCode" Type="Int32" Nullable="false" />
+    <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="isActive" Type="Boolean" Nullable="false" />
+  </EntityType>
+  <EntityType Name="KeywordMaster">
+    <Key>
+      <PropertyRef Name="KeyCode" />
+    </Key>
+    <Property Name="KeyCode" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="KeyName" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="AvgMonthlySrch" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="Competition" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="SuggestedBid" Type="Decimal" Precision="9" Scale="2" />
+    <Property Name="CTR" Type="Decimal" Precision="9" Scale="2" />
+    <Property Name="IsActive" Type="Boolean" />
+    <Property Name="FromMaster" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="RFA_Result_bak">
+    <Key>
+      <PropertyRef Name="Id" />
+      <PropertyRef Name="BatchCode" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SearchQuery" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="BatchCode" Type="Int32" Nullable="false" />
+    <Property Name="AccCode" Type="Int32" />
+    <Property Name="CampaignCode" Type="Int32" />
+    <Property Name="AdGroupCode" Type="Int32" />
+    <Property Name="KeyCode" Type="Int32" />
+    <Property Name="MatchCountKTSQ" Type="Decimal" Precision="9" Scale="2" />
+    <Property Name="MatchCountKTADs" Type="Decimal" Precision="9" Scale="2" />
+    <Property Name="AdRank" Type="Decimal" Precision="9" Scale="2" />
+    <Property Name="ParentAdGroupCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="HeadlineMatchCount" Type="Decimal" Precision="9" Scale="2" />
+    <Property Name="Descline1MatchCount" Type="Decimal" Precision="9" Scale="2" />
+    <Property Name="Descline2MatchCount" Type="Decimal" Precision="9" Scale="2" />
+    <Property Name="DispUrlMatchCount" Type="Decimal" Precision="9" Scale="2" />
+    <Property Name="AdGroupNamePercentCount" Type="Decimal" Precision="9" Scale="2" />
+    <Property Name="Impressions" Type="Int32" />
+    <Property Name="Clicks" Type="Int32" />
+    <Property Name="CTR" Type="Decimal" Precision="9" Scale="2" />
+    <Property Name="COST" Type="Decimal" Precision="9" Scale="2" />
+    <Property Name="Avg_Cpc" Type="Decimal" Precision="9" Scale="2" />
+    <Property Name="Conversions" Type="Decimal" Precision="9" Scale="2" />
+    <Property Name="CostPerConversion" Type="Decimal" Precision="9" Scale="2" />
+  </EntityType>
+  <EntityType Name="RFAMaster">
+    <Key>
+      <PropertyRef Name="Id" />
+      <PropertyRef Name="BatchCode" />
+      <PropertyRef Name="AccountCode" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="BatchCode" Type="Int32" Nullable="false" />
+    <Property Name="AccountCode" Type="Int32" Nullable="false" />
+    <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="tblAd">
+    <Key>
+      <PropertyRef Name="CampaignCode" />
+      <PropertyRef Name="AdGroupCode" />
+      <PropertyRef Name="ADCode" />
+    </Key>
+    <Property Name="CampaignCode" Type="Int32" Nullable="false" />
+    <Property Name="AdGroupCode" Type="Int32" Nullable="false" />
+    <Property Name="ADCode" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ADText" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="HeadLine" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="DescLine1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="DescLine2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="DispUrl" Type="String" MaxLength="70" FixedLength="false" Unicode="true" />
+    <Property Name="FinalUrl" Type="String" MaxLength="70" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedBy" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <ComplexType Name="CheckRFAStatus_Result">
+    <Property Type="Int32" Name="Id" Nullable="false" />
+    <Property Type="Int32" Name="BatchCode" Nullable="false" />
+    <Property Type="Int32" Name="AccountCode" Nullable="false" />
+    <Property Type="String" Name="Status" Nullable="true" MaxLength="10" />
+    <Property Type="String" Name="CreatedBy" Nullable="true" MaxLength="50" />
+  </ComplexType>
+  <ComplexType Name="GetAccountReport_Result">
+    <Property Type="Int32" Name="AccCode" Nullable="false" />
+    <Property Type="String" Name="AccFullName" Nullable="true" MaxLength="300" />
+    <Property Type="String" Name="AccName" Nullable="true" MaxLength="300" />
+    <Property Type="String" Name="Impressions" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="CTR" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="Clicks" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="CPC" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="COST" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="Conversions" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="CostPerConversion" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="ImpressionShare" Nullable="false" MaxLength="100" />
+  </ComplexType>
+  <ComplexType Name="getADGroupsOnDemand_Result">
+    <Property Type="String" Name="CampaignName" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="AdGroupName" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="Location" Nullable="true" MaxLength="10" />
+    <Property Type="Decimal" Name="Budget" Nullable="true" Precision="18" Scale="0" />
+    <Property Type="String" Name="NetWorkType" Nullable="false" MaxLength="7" />
+    <Property Type="Int32" Name="CampaignCode" Nullable="false" />
+    <Property Type="Int32" Name="AdGroupCode" Nullable="false" />
+    <Property Type="String" Name="Impressions" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="CTR" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="Clicks" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="CPC" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="COST" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="Conversions" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="CostPerConversion" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="ImpressionShare" Nullable="false" MaxLength="100" />
+  </ComplexType>
+  <ComplexType Name="getAssignedStudentsPerBatch_Result">
+    <Property Type="String" Name="FullName" Nullable="false" MaxLength="62" />
+    <Property Type="String" Name="LocationName" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Email" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Contact" Nullable="false" MaxLength="15" />
+    <Property Type="String" Name="StudentCode" Nullable="false" MaxLength="10" />
+    <Property Type="Int32" Name="BatchCode" Nullable="true" />
+    <Property Type="Boolean" Name="isMappingActive" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="getCampaignAdsOnDemand_Result">
+    <Property Type="Int32" Name="CampaignCode" Nullable="true" />
+    <Property Type="String" Name="CampaignName" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="Location" Nullable="true" MaxLength="10" />
+    <Property Type="Decimal" Name="Budget" Nullable="true" Precision="18" Scale="0" />
+    <Property Type="String" Name="NetWorkType" Nullable="false" MaxLength="7" />
+    <Property Type="Int32" Name="AdCode" Nullable="true" />
+    <Property Type="String" Name="AdGroupName" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="ADText" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="HeadLine" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="DescLine1" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="DescLine2" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="DispUrl" Nullable="true" MaxLength="70" />
+    <Property Type="String" Name="FinalUrl" Nullable="true" MaxLength="70" />
+    <Property Type="Int32" Name="AdGroupCode" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="GetIndustryReport_TopKey_Result">
+    <Property Type="String" Name="KeyName" Nullable="true" MaxLength="150" />
+    <Property Type="Int32" Name="batchcode" Nullable="true" />
+    <Property Type="Int32" Name="KeyCode" Nullable="true" />
+    <Property Type="Decimal" Name="ImpressionShare" Nullable="true" Precision="38" Scale="2" />
+  </ComplexType>
+  <ComplexType Name="GetMappedkeyWords_Result">
+    <Property Type="Int32" Name="CampaignCode" Nullable="false" />
+    <Property Type="Int32" Name="AdGroupCode" Nullable="false" />
+    <Property Type="Int32" Name="KeyCode" Nullable="false" />
+    <Property Type="String" Name="CampaignName" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="AdGroupName" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="KeyName" Nullable="true" MaxLength="150" />
+    <Property Type="Decimal" Name="Budget" Nullable="true" Precision="18" Scale="0" />
+    <Property Type="String" Name="NetWorkType" Nullable="true" MaxLength="7" />
+    <Property Type="String" Name="Location" Nullable="false" MaxLength="3" />
+    <Property Type="Int32" Name="NewBid" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="getMappedkeyWordsOnDemand_Result">
+    <Property Type="Int32" Name="CampaignCode" Nullable="false" />
+    <Property Type="Int32" Name="AdGroupCode" Nullable="false" />
+    <Property Type="Int32" Name="KeyCode" Nullable="false" />
+    <Property Type="String" Name="CampaignName" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="AdGroupName" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="KeyName" Nullable="true" MaxLength="150" />
+    <Property Type="Decimal" Name="Budget" Nullable="true" Precision="18" Scale="0" />
+    <Property Type="String" Name="NetWorkType" Nullable="true" MaxLength="7" />
+    <Property Type="String" Name="Location" Nullable="true" MaxLength="10" />
+    <Property Type="Int32" Name="NewBid" Nullable="true" />
+    <Property Type="String" Name="Impressions" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="CTR" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="Clicks" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="CPC" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="COST" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="Conversions" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="CostPerConversion" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="ImpressionShare" Nullable="false" MaxLength="100" />
+  </ComplexType>
+  <ComplexType Name="getSingleKeywordDetails_Result">
+    <Property Type="Int32" Name="CampaignCode" Nullable="false" />
+    <Property Type="Int32" Name="AdGroupCode" Nullable="false" />
+    <Property Type="Int32" Name="KeywordCode" Nullable="false" />
+    <Property Type="Int32" Name="KeywordBid" Nullable="true" />
+    <Property Type="String" Name="KeywordName" Nullable="true" MaxLength="150" />
+    <Property Type="Boolean" Name="KeywordFromMaster" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="getTrainerToBatch_Result">
+    <Property Type="String" Name="ID" Nullable="false" MaxLength="10" />
+    <Property Type="String" Name="Name" Nullable="true" MaxLength="76" />
+  </ComplexType>
+  <ComplexType Name="prcAccountsPerBatches_Result">
+    <Property Type="Int32" Name="AccCode" Nullable="false" />
+    <Property Type="String" Name="ImagePath" Nullable="true" MaxLength="300" />
+    <Property Type="String" Name="AccName" Nullable="true" MaxLength="300" />
+    <Property Type="Int32" Name="Status" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="prcBatchesOnDemand_Result">
+    <Property Type="String" Name="BatchName" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="TrainerName" Nullable="false" MaxLength="62" />
+    <Property Type="String" Name="StudentCount" Nullable="true" />
+    <Property Type="String" Name="Location" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Address" Nullable="true" MaxLength="150" />
+    <Property Type="String" Name="StartDate" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="EndDate" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="Time" Nullable="false" MaxLength="100" />
+    <Property Type="Int32" Name="BatchCode" Nullable="false" />
+    <Property Type="String" Name="UserID" Nullable="true" MaxLength="10" />
+  </ComplexType>
+  <ComplexType Name="prcCheckKeywordFromMapKeywordsAG_Result">
+    <Property Type="Int32" Name="KeyCode" Nullable="false" />
+    <Property Type="Int32" Name="CampaignCode" Nullable="false" />
+    <Property Type="Int32" Name="AdGroupCode" Nullable="false" />
+    <Property Type="Int32" Name="MappingId" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="prcGetAdGroupsByID_Result">
+    <Property Type="String" Name="CampaignName" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="AdGroupName" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="ADText" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="HeadLine" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="DescLine1" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="DescLine2" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="DispUrl" Nullable="true" MaxLength="70" />
+    <Property Type="String" Name="FinalUrl" Nullable="true" MaxLength="70" />
+    <Property Type="String" Name="Location" Nullable="true" MaxLength="50" />
+    <Property Type="Decimal" Name="Budget" Nullable="true" Precision="18" Scale="0" />
+    <Property Type="String" Name="NetWorkType" Nullable="false" MaxLength="7" />
+    <Property Type="Int32" Name="CampaignCode" Nullable="false" />
+    <Property Type="Int32" Name="ADCode" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="prcGetCampaign_Result">
+    <Property Type="Int32" Name="CampaignCode" Nullable="false" />
+    <Property Type="String" Name="CampaignName" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="Location" Nullable="true" MaxLength="10" />
+    <Property Type="Decimal" Name="Budget" Nullable="true" Precision="18" Scale="0" />
+    <Property Type="String" Name="NetWorkType" Nullable="true" MaxLength="10" />
+    <Property Type="Boolean" Name="isActive" Nullable="false" />
+    <Property Type="Int32" Name="BatchCode" Nullable="true" />
+    <Property Type="Int32" Name="AccCode" Nullable="true" />
+    <Property Type="String" Name="Impressions" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="CTR" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="Clicks" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="CPC" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="COST" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="Conversions" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="CostPerConversion" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="ImpressionShare" Nullable="false" MaxLength="100" />
+  </ComplexType>
+  <ComplexType Name="prcGetCurrentBatches_Result">
+    <Property Type="String" Name="BatchName" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="Location" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Address" Nullable="true" MaxLength="150" />
+    <Property Type="String" Name="StartDate" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="EndDate" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="Time" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="TrainerName" Nullable="true" MaxLength="20" />
+    <Property Type="Int32" Name="BatchCode" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="prcGetDistAdGroups_Result">
+    <Property Type="String" Name="AdGroupName" Nullable="true" MaxLength="100" />
+    <Property Type="Int32" Name="AdGroupCode" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="prcGetKeywords_Result">
+    <Property Type="String" Name="KeyName" Nullable="true" MaxLength="150" />
+    <Property Type="Int32" Name="KeyCode" Nullable="false" />
+    <Property Type="String" Name="Competition" Nullable="true" MaxLength="10" />
+    <Property Type="Decimal" Name="CTR" Nullable="true" Precision="9" Scale="2" />
+    <Property Type="Decimal" Name="SuggestedBid" Nullable="true" Precision="9" Scale="2" />
+  </ComplexType>
+  <ComplexType Name="prcGetKeywordsbyCampCode_Result">
+    <Property Type="Int32" Name="CampaignCode" Nullable="false" />
+    <Property Type="Int32" Name="AdGroupCode" Nullable="false" />
+    <Property Type="Int32" Name="KeyCode" Nullable="false" />
+    <Property Type="Int32" Name="NewBid" Nullable="true" />
+    <Property Type="Int32" Name="MappingId" Nullable="false" />
+    <Property Type="String" Name="CreatedBy" Nullable="true" MaxLength="10" />
+    <Property Type="String" Name="KeyName" Nullable="true" MaxLength="150" />
+  </ComplexType>
+  <ComplexType Name="prcGetUserDetails_Result">
+    <Property Type="String" Name="FirstName" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="UserID" Nullable="false" MaxLength="10" />
+    <Property Type="Int16" Name="UserType" Nullable="true" />
+    <Property Type="Int32" Name="AccCode" Nullable="true" />
+    <Property Type="String" Name="AccName" Nullable="true" MaxLength="300" />
+    <Property Type="String" Name="ImagePath" Nullable="true" MaxLength="300" />
+    <Property Type="String" Name="Description" Nullable="true" MaxLength="300" />
+    <Property Type="String" Name="AccFullName" Nullable="true" MaxLength="300" />
+  </ComplexType>
+  <ComplexType Name="prcSrudentsPerBatches_Result">
+    <Property Type="String" Name="UserID" Nullable="false" MaxLength="10" />
+    <Property Type="Int32" Name="Status" Nullable="true" />
+    <Property Type="Int32" Name="AccCode" Nullable="true" />
+    <Property Type="String" Name="StudentFirstName" Nullable="true" MaxLength="41" />
+  </ComplexType>
+  <ComplexType Name="prcStudentOnDemand_Result">
+    <Property Type="String" Name="FullName" Nullable="false" MaxLength="62" />
+    <Property Type="String" Name="FirstName" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="MiddleName" Nullable="false" MaxLength="20" />
+    <Property Type="String" Name="LastName" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="LocationName" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Email" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Contact" Nullable="false" MaxLength="15" />
+    <Property Type="String" Name="StudentCode" Nullable="false" MaxLength="10" />
+    <Property Type="Int32" Name="BatchCode" Nullable="true" />
+    <Property Type="String" Name="Location" Nullable="true" MaxLength="10" />
+    <Property Type="String" Name="BatchName" Nullable="false" MaxLength="20" />
+    <Property Type="Boolean" Name="isMappingActive" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="prcTrainerOnDemand_Result">
+    <Property Type="String" Name="FullName" Nullable="false" MaxLength="62" />
+    <Property Type="String" Name="FirstName" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="MiddleName" Nullable="false" MaxLength="20" />
+    <Property Type="String" Name="LastName" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="LocationName" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Email" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Contact" Nullable="false" MaxLength="15" />
+    <Property Type="String" Name="TrainerCode" Nullable="false" MaxLength="10" />
+    <Property Type="Int32" Name="BatchCode" Nullable="true" />
+    <Property Type="String" Name="Location" Nullable="true" MaxLength="10" />
+    <Property Type="String" Name="BatchName" Nullable="false" MaxLength="20" />
+  </ComplexType>
+  <ComplexType Name="prcUserDetailsOnDemand_Result">
+    <Property Type="String" Name="UserID" Nullable="false" MaxLength="10" />
+    <Property Type="String" Name="FullName" Nullable="false" MaxLength="62" />
+    <Property Type="String" Name="Location" Nullable="true" MaxLength="10" />
+    <Property Type="String" Name="Email" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Contact" Nullable="true" MaxLength="15" />
+    <Property Type="String" Name="Address" Nullable="true" MaxLength="150" />
+  </ComplexType>
+  <ComplexType Name="sp_helpdiagramdefinition_Result">
+    <Property Type="Int32" Name="version" Nullable="true" />
+    <Property Type="Binary" Name="definition" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_helpdiagrams_Result">
+    <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+    <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+    <Property Type="Int32" Name="ID" Nullable="false" />
+    <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+    <Property Type="Int32" Name="OwnerID" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="prcGetRemainingAccounts_Result">
+    <Property Type="Int32" Name="AccCode" Nullable="false" />
+    <Property Type="String" Name="ImagePath" Nullable="true" MaxLength="300" />
+    <Property Type="String" Name="AccFullName" Nullable="true" MaxLength="300" />
+  </ComplexType>
+  <ComplexType Name="prcGetAccntsDetails_Result">
+    <Property Type="String" Name="UserNames" Nullable="true" />
+    <Property Type="Int32" Name="BatchCode" Nullable="true" />
+    <Property Type="String" Name="BatchName" Nullable="true" />
+    <Property Type="Int32" Name="AccCode" Nullable="false" />
+    <Property Type="String" Name="ImagePath" Nullable="true" MaxLength="300" />
+    <Property Type="String" Name="AccFullName" Nullable="true" MaxLength="300" />
+    <Property Type="Int32" Name="Status" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="prcPhraseOnDemand_Result">
+    <Property Type="String" Name="SearchQuery" Nullable="false" MaxLength="100" />
+    <Property Type="Int32" Name="Traffic" Nullable="false" />
+    <Property Type="Int32" Name="Id" Nullable="false" />
+  </ComplexType>
+  <EntityType Name="SearchQueryMaster">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SearchQuery" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Traffic" Type="Int32" />
+    <Property Name="isActive" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="RFAHistory">
+    <Key>
+      <PropertyRef Name="RFAId" />
+    </Key>
+    <Property Name="RFAId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="BatchCode" Type="Int32" />
+    <Property Name="UserID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Status" Type="Int32" />
+    <Property Name="CreatedOn" Type="DateTime" Precision="7" />
+  </EntityType>
+  <ComplexType Name="GetAccountAdGrpReport_Result">
+    <Property Type="String" Name="CampaignName" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="AdGroupName" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="Location" Nullable="true" MaxLength="10" />
+    <Property Type="Decimal" Name="Budget" Nullable="true" Precision="18" Scale="0" />
+    <Property Type="Int32" Name="BatchCode" Nullable="true" />
+    <Property Type="String" Name="NetWorkType" Nullable="false" MaxLength="7" />
+    <Property Type="Int32" Name="CampaignCode" Nullable="false" />
+    <Property Type="Int32" Name="AdGroupCode" Nullable="false" />
+    <Property Type="String" Name="Impressions" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="CTR" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="Clicks" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="CPC" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="COST" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="Conversions" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="CostPerConversion" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="ImpressionShare" Nullable="false" MaxLength="100" />
+  </ComplexType>
+  <ComplexType Name="GetAccountCampReport_Result">
+    <Property Type="Int32" Name="CampaignCode" Nullable="false" />
+    <Property Type="String" Name="CampaignName" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="Location" Nullable="true" MaxLength="10" />
+    <Property Type="Decimal" Name="Budget" Nullable="true" Precision="18" Scale="0" />
+    <Property Type="String" Name="NetWorkType" Nullable="true" MaxLength="10" />
+    <Property Type="Boolean" Name="isActive" Nullable="false" />
+    <Property Type="Int32" Name="BatchCode" Nullable="true" />
+    <Property Type="Int32" Name="AccCode" Nullable="true" />
+    <Property Type="String" Name="Impressions" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="CTR" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="Clicks" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="CPC" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="COST" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="Conversions" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="CostPerConversion" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="ImpressionShare" Nullable="false" MaxLength="100" />
+  </ComplexType>
+  <ComplexType Name="GetBatchesOfTrainer_Result">
+    <Property Type="Int32" Name="BatchCode" Nullable="false" />
+    <Property Type="String" Name="BatchName" Nullable="true" MaxLength="20" />
+  </ComplexType>
+  <ComplexType Name="GetCampaignMatrix_Report_Result">
+    <Property Type="Int32" Name="CampaignCode" Nullable="false" />
+    <Property Type="String" Name="CampaignName" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="Location" Nullable="true" MaxLength="10" />
+    <Property Type="Decimal" Name="Budget" Nullable="true" Precision="18" Scale="0" />
+    <Property Type="String" Name="NetWorkType" Nullable="true" MaxLength="10" />
+    <Property Type="Boolean" Name="isActive" Nullable="false" />
+    <Property Type="Int32" Name="BatchCode" Nullable="true" />
+    <Property Type="Int32" Name="AccCode" Nullable="true" />
+    <Property Type="String" Name="Impressions" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="CTR" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="Clicks" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="CPC" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="COST" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="Conversions" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="CostPerConversion" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="ImpressionShare" Nullable="false" MaxLength="100" />
+  </ComplexType>
+  <ComplexType Name="GetTopAccount_Report_Result">
+    <Property Type="Int32" Name="AccCode" Nullable="false" />
+    <Property Type="String" Name="AccName" Nullable="true" MaxLength="300" />
+    <Property Type="String" Name="Impressions" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="CTR" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="Clicks" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="CPC" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="COST" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="Conversions" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="CostPerConversion" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="ImpressionShare" Nullable="false" MaxLength="100" />
+    <Property Type="Int32" Name="BatchCode" Nullable="true" />
+    <Property Type="String" Name="Budget" Nullable="false" MaxLength="1" />
+  </ComplexType>
+</Schema>

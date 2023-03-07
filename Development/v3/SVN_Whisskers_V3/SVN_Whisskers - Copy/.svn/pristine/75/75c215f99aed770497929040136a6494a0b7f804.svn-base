@@ -1,0 +1,197 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="expires" content="0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Digital Marketing Tool</title>
+    <link href="~/Content/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" type="text/css">
+    <link href="~/Content/css/jquery-ui.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/plug-ins/9dcbecd42ad/integration/jqueryui/dataTables.jqueryui.css">
+    <link href="~/Content/css/admin.css" rel="stylesheet" />
+
+
+    @*Extra js for the case when server slow
+    <script src="~/Scripts/jquery-ui-1.8.24.min.js"></script>
+    <script src="~/Scripts/jquery-1.11.0.min.js"></script>*@
+
+
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/admin.js"></script>
+    <script src="https://cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/plug-ins/9dcbecd42ad/integration/jqueryui/dataTables.jqueryui.js"></script>
+
+</head>
+
+<body>
+    <!---------------------  Header Start  --------------------->
+
+    <div class="header">
+        <div class="container">
+
+            <div class="row">
+
+                <div class="col-md-2 col-sm-2 col-xs-4">
+
+                    <div class="logo"><a href=""> <img src="~/Content/images/logo-inner.jpg" class="img-responsive" alt="logo" /></a></div>
+
+                </div>
+
+                <div class="col-md-10 col-sm-10 col-xs-8 right">
+
+                    <div class="top-bar">
+
+                        <div class="top-heading">Digital <span>Marketing</span> Tool</div>
+
+                        <div class="top-right-nav">
+                            <a>
+                                Welcome ( @ViewBag.FName ) <i class="fa fa-sort-desc"></i>
+                            </a>
+
+
+                            <ul>
+
+                                <li><a href="/Home/Logout">Logout</a>                                </li>
+
+
+                            </ul>
+
+
+
+
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                    </div>
+
+                    <!------------  Nav Start  ------------>
+
+                    <div class="nav-main">
+
+                        <nav class="navbar navbar-default">
+                            <div class="container-fluid">
+
+                                <div class="navbar-header">
+                                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                                        <span class="sr-only">Toggle navigation</span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                    </button>
+
+                                </div>
+
+
+                                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                                    <ul class="nav navbar-nav">
+                                        <li class="active"><a href="#">Manage</a></li>
+                                        <li><a href="#">Reports</a></li>
+                                        <li><a href="#">Opportunities</a></li>
+                                        <li><a href="#">Tools</a></li>
+                                        <li><a href="#">Resources</a></li>
+                                        <li><a href="#">RFA</a></li>
+                                    </ul>
+
+
+                                </div>
+                            </div>
+                        </nav>
+                    </div>
+
+                    <!------------  Nav End  ------------>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <!---------------------  Header End  --------------------->
+    @RenderBody()
+    <iframe id="txtArea1" style="display:none"></iframe>
+    <style type="text/css">
+            /*.Loader {
+        position: fixed;
+        z-index: 9999999;
+        height: 100%;
+        width: 100%;
+        top: 0;
+        left: 0;
+        background-color: Black;
+        filter: alpha(opacity=60);
+        opacity: 0.6;
+        -moz-opacity: 0.8;
+    }
+
+    .LoaderCentre {
+        z-index: 1000;
+        margin: 300px auto;
+        width: 0px;
+        background-color: White;
+        border-radius: 10px;
+        filter: alpha(opacity=100);
+        opacity: 1;
+        -moz-opacity: 1;
+    }*/
+   .loading
+    {
+        font-family: Arial;
+        font-size: 15pt;
+        display: none;
+        position: fixed;
+        background-color: White;
+        z-index: 999;
+        top: 0;
+        left: 0;
+        z-index: 99;
+        opacity: 0.8;
+        filter: alpha(opacity=80);
+        -moz-opacity: 0.8;
+        min-height: 100%;
+        width: 100%;
+    }
+    </style>
+    @*<div id="ProgressDiv" class="Loader">
+        <div class="LoaderCentre">
+            <div class="loader1">Loading</div>
+        </div>
+    </div>*@
+    <div class="loading Loader" align="center">
+        Loading. Please wait.<br />
+        <br />
+        <img src="~/Content/images/progressbar.gif" />
+    </div>
+    <!---------------------  Footer Start  --------------------->
+    <div class="clearfix"></div>
+    <div class="footer">
+
+        <div class="container">
+
+            <div class="row">
+
+                <p>&copy; Whisskers 2016-17. All rights reserved.</p>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+    <!---------------------  Footer End  --------------------->
+</body>
+</html>
+<SCRIPT language="javascript">
+          if(window.history.forward(1) != null)
+          window.history.forward(1);
+</SCRIPT>

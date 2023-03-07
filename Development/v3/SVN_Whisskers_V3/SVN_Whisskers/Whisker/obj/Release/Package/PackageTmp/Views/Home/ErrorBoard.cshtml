@@ -1,0 +1,110 @@
+﻿@{
+    Layout = null;
+}
+
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="expires" content="0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Digital Marketing Tool</title>
+    <link href="~/Content/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" type="text/css">
+    <link href="~/Content/css/jquery-ui.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/plug-ins/9dcbecd42ad/integration/jqueryui/dataTables.jqueryui.css">
+    <link href="~/Content/css/admin.css" rel="stylesheet" />
+    <style type="text/css">
+        a[aria-expanded=true] i#open {
+            display: none !important;
+        }
+
+        a[aria-expanded=false] i#close {
+            display: none;
+        }
+    </style>
+
+    @*Extra js for the case when server slow
+        <script src="~/Scripts/jquery-ui-1.8.24.min.js"></script>
+        <script src="~/Scripts/jquery-1.11.0.min.js"></script>*@
+
+
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/admin.js"></script>
+    <script src="https://cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/plug-ins/9dcbecd42ad/integration/jqueryui/dataTables.jqueryui.js"></script>
+    <title></title>
+    <script>
+        (function ($) {
+            $(window).load(function () {
+            });
+        })(jQuery);
+        $(document).ready(function () {
+
+        });
+    </script>
+</head>
+
+<body>
+
+    <div class="container">
+
+
+        <div class="row">
+            <div class="col-md-12">
+                <h1>
+                  Whisskers Error Dashboard
+                </h1>
+
+                <div class="campaings-table-border table-responsive">
+                    <table id="changeBoard" border="0" cellspacing="0" cellpadding="0" class="">
+                        <thead>
+                            <tr id="Headrow">
+                                <th style="width:15px;">S No</th>
+                                <th>Controller</th>
+                                <th>Action</th>
+                                <th>Exception</th>
+                                <th>User</th>
+                                <th>Email</th>
+                                <th>Date</th>
+                              
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (ViewBag.TotalRecord > 0)
+                            {
+                                foreach (var item in ViewBag.Result)
+                                {
+                                    <tr>
+                                        <td></td>
+                                        <td>@item.Controller</td>
+                                        <td>@item.Action</td>
+                                        <td>@item.Exception</td>
+                                        <td>@item.UserId</td>
+                                        <td>@item.EmailID</td>
+                                        <td>@item.DatenTime</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
+<script type="text/javascript">
+    $(document).ready(function () {
+        ApplyAdminDataTableWithSrch("changeBoard", "0",true);
+    });
+
+</script>
+
+
+
+

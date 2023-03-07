@@ -1,0 +1,163 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using Whisker.Models;
+
+namespace Whisker.Controllers
+{
+    public class HomeController : Controller
+    {
+        WhiskersDBEntities objDBentity = new WhiskersDBEntities();
+        UserLoginInfo objUserInfo = new UserLoginInfo();
+        //
+        // GET: /Home/
+        public ActionResult Index()
+        {
+            #region Cookies Implementation
+            //var Cookies = Request.Cookies["MainCookie"];
+            //if (Cookies != null)
+            //{
+            //    Int16 UserType = Convert.ToInt16(Request.Cookies["MainCookie"]["UserType"]);
+            //    var URL = "";
+            //    if (UserType == 0)
+            //    {
+            //        //URL = "Students/Home";
+            //        URL = "Home";
+            //    }
+            //    if (UserType == 1)
+            //    {
+            //        URL = "Trainers/Home";
+
+            //    }
+            //    return RedirectToAction("Index", URL);
+            //}
+            //else
+            //{
+            //    return View();
+            //}
+            #endregion
+            if (Session["LoginInfo"] != null)
+            {
+
+                objUserInfo = (UserLoginInfo)Session["LoginInfo"];
+                var j = objUserInfo.UserType;
+                if (objUserInfo.UserType == 0)
+                {
+                    return RedirectToAction("Index", "Manage", new { area = "Students" });
+                }
+                if (objUserInfo.UserType == 1)
+                {
+                    return RedirectToAction("Index", "Home", new { area = "Trainers" });
+                }
+                else
+                {
+                    return RedirectToAction("Batches", "Manage", new { area = "Admin" });
+                }
+            }
+            else
+            {
+                return View();
+            }
+        }
+        [HttpPost]
+        public ActionResult Login(FormCollection fc)
+        {
+            var emailid = fc["EmailId"];
+            var password = fc["password"];
+            var Cookies = Request.Cookies["MainCookie"];
+            //Getting Unique row on the basis of userid and password
+            var userDetails = objDBentity.UserMasters.Where(x => x.Email == emailid && x.Password == password).FirstOrDefault();
+            if (userDetails != null)
+            {
+                if (userDetails.UserType == 0)
+                {
+                    getAccountDetails(emailid);
+                    ViewBag.Account = objDBentity.BatchAndStudentMappings.Where(x => x.UserID == objUserInfo.UserID && x.isMappingActive == true && x.Status == 1 && x.AccCode != null).OrderBy(x => x.BatchCode).FirstOrDefault();
+                    if (ViewBag.Account == null)
+                    {
+                        return Content("Account is not Assigned");
+                    }
+                    else
+                    {
+                        //return RedirectToRoute("default");
+                        return JavaScript("window.location = 'Students/Home/Index'");
+                    }
+                }
+                else if (userDetails.UserType == 1)
+                {
+                    getAccountDetails(emailid);
+                    ViewBag.Batches = objDBentity.BatchAndTrainerMappings.Where(x => x.UserID == objUserInfo.UserID && x.isMappingActive == true).OrderBy(x => x.BatchCode).FirstOrDefault();
+                    if (ViewBag.Batches == null)
+                    {
+                        return Content("Batch is not Assigned");
+                    }
+                    else
+                    {
+                        //return RedirectToRoute("default");
+                        return JavaScript("window.location = 'Trainers/Home/Index'");
+                    }
+                }
+                else if (userDetails.UserType == 2)
+                {
+                    getAccountDetails(emailid);
+                    return JavaScript("window.location = 'Admin/Manage/Batches'");
+                }
+                else
+                {
+                    //return RedirectToAction("Index", "Home", new { area = "Admin" });
+                    return Content("Invalid id pwd");
+                }
+            }
+            else
+            {
+                //return RedirectToAction("Index", "Home", new { area = "Admin" });
+                return Content("Invalid id pwd");
+            }
+        }
+        public ActionResult Logout()
+        {
+            Session["LoginInfo"] = null;
+            return RedirectToAction("Index", "Home");
+        }
+        public ActionResult Forgot()
+        {
+            return View();
+        }
+
+        private void getAccountDetails(string emailid)
+        {
+            // var unicornName = TempData["email"].ToString();// Request.QueryString["email"];
+            // var unicornName = Request.QueryString["email"].ToString();
+            var userInfo = objDBentity.prcGetUserDetails(emailid).FirstOrDefault();
+            /* var userType = objDBentity.prcGetUserDetails("student@gmail.com");
+             foreach (var item in userType)
+             { 
+                item.
+             }*/
+
+            // ViewBag.data = "khgij";
+
+            objUserInfo.FirstName = userInfo.FirstName;
+            objUserInfo.AccCode = Convert.ToInt32(userInfo.AccCode);
+            objUserInfo.AccName = userInfo.AccName;
+            objUserInfo.EMAILID = emailid;
+            objUserInfo.UserID = userInfo.UserID;
+            objUserInfo.UserType = (Int16)userInfo.UserType;
+            objUserInfo.BatchCode = userInfo.BatchCode.ToString();
+            objUserInfo.Status = "NSRFA"; //NSRFA means No Student RFA (Go For Auction has not been done)
+            Session["LoginInfo"] = objUserInfo;
+
+            //#region Cookies Implementation
+            //HttpCookie MainCookie = new HttpCookie("MainCookie");
+            //MainCookie.Values.Add("Name", objUserInfo.FirstName);
+            //MainCookie.Values.Add("Id", objUserInfo.UserID);
+            //MainCookie.Values.Add("EmailId", objUserInfo.EMAILID);
+            //MainCookie.Values.Add("UserType", objUserInfo.UserType.ToString());
+            //MainCookie.Expires = DateTime.Now.AddDays(5);
+            //Response.Cookies.Add(MainCookie);
+            //#endregion
+        }
+    }
+}

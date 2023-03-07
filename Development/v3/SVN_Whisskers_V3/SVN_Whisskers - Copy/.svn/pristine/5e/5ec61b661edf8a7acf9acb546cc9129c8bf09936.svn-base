@@ -1,0 +1,66 @@
+//**************************************************************
+//  Creator Name    : Aman Jain  
+//  Creation Date   : 21-04-2016
+//  Reason          : To create common fuction that can be used throughout the project.
+//  Updated By      : Aman Jain
+//  Update Date     : 21-04-2016
+//**************************************************************
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using Whisker.Models;
+using System.Web.Mvc.Ajax;
+using Whisker.App_Start;
+using Whisker;
+using System.Globalization;
+//using System.Data.Linq;
+using System.Collections;
+/// <summary>
+/// common fuction that can be used throughout the project.
+/// </summary>
+namespace Whisker.CommonClass
+{
+    public class CommonFunc
+    {
+        WhiskersDBEntities objDBentity = new WhiskersDBEntities();
+        public string GetPrimaryKeyOnDataExist(string TableName, string ColumnName, string ColumnValue, string SelectedColumn)
+        {
+            string resultvalue = null;
+            ColumnValue = ColumnValue.Trim();
+            string qry = "select " + SelectedColumn + " from " + TableName + " where isActive = 1 and " + ColumnName + "={0}";
+            var result = objDBentity.Database.SqlQuery<string>(qry, ColumnValue);
+            foreach (var r in result)
+            {
+                resultvalue = r.ToString();
+            }
+            return resultvalue;
+        }
+        public string GetIntegerPrimaryKeyOnDataExist(string TableName, string ColumnName, string ColumnValue, string SelectedColumn)
+        {
+            string resultvalue = null;
+            ColumnValue = ColumnValue.Trim();
+            string qry = "select " + SelectedColumn + " from " + TableName + " where isActive = 1 and " + ColumnName + "={0}";
+            var result = objDBentity.Database.SqlQuery<Int32>(qry, ColumnValue);
+            foreach (var r in result)
+            {
+                resultvalue = r.ToString();
+            }
+            return resultvalue;
+        }
+        public string GetPrimaryKeyOnDataExistInMappedKeywordsAg(Int32 CampaignCode, Int32 AdGroupCode, Int32 KeyCode)
+        {
+            
+            string resultvalue = null;
+            resultvalue = Convert.ToString(objDBentity.MapKeywordsAGs.Where(x => x.CampaignCode == CampaignCode && x.AdGroupCode == AdGroupCode && x.KeyCode == KeyCode).Select(x => x.KeyCode).FirstOrDefault());
+            return resultvalue;
+        }
+        public DateTime StringToDate(string InputDate)
+        {
+            DateTime dateTime = Convert.ToDateTime(InputDate.Trim()).Date;
+            return dateTime;
+        }
+    }
+}

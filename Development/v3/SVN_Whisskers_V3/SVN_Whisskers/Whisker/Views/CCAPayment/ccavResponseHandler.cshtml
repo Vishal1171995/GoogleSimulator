@@ -1,0 +1,51 @@
+﻿@{
+    Layout = "~/Views/Shared/MasterLayoutOuter.cshtml";
+    string transactionStatus = "Transaction Successfull";
+    string bankRefNo = "ABCD123";
+    string  orderStatus= "Order Successfull";
+    string trackingID = "TRACK12345";
+    string orderID = "ORDER12345";
+    string curr = "INR";
+    double amount = 6000.56;
+    string failureMsg = "This order can't be Processed, Please try Again!";
+    string statusMsg = "Your are now Member of Whisskers Training Simulation, Congrats!";
+}
+
+
+    <div class="hidden-response-data">
+
+
+        Pram Count <input type="text" id="encRequest1" name="PramCnt" value="@ViewBag.PramCnt" />
+        encResp <input type="text" name="access_code1" id="encResp" value="@ViewBag.encResp" />
+        encResponse <input type="text" id="encRequest1" name="encResponse" value="@ViewBag.encResponse" />
+        strException<input type="text" name="access_code1" id="strException" value="@ViewBag.strException" />
+    </div>
+    <section id="responseBoxWrapper">
+        <section class="responseBox">
+            <h3>@orderStatus</h3>
+            <div class="row">
+                <div class="col-sm-6">
+                    <p><span>Order ID:</span> @orderID</p>
+                </div>
+                <div class="col-sm-6">
+                    <p><span>Tracking ID:</span> @trackingID</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                </div>
+                <div class="col-sm-6">
+                    <p><span>Bank Ref. No.:</span> @bankRefNo</p>
+                </div>
+            </div>
+            <p class="center" style="color:green;font-size:1.5em;">@transactionStatus</p>
+            <p class="center">@statusMsg</p>
+            <div class="row">
+                <div class="col-sm-6"></div>
+                <div class="col-sm-6">
+                    <p class="amount">@curr @amount</p>
+                </div>
+            </div>
+            <p class="center">@failureMsg</p>
+    </section>
+    </section>

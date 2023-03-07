@@ -1,0 +1,87 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>SignUP</title>
+</head>
+<body>
+    <div>
+        <section id="register">
+            <div id="signup-box-wrap" class="box-wrapper signup" style="">
+                <h1>Let's Setup your Account!</h1>
+               
+
+                    @using (Html.BeginForm("Register", "Home", FormMethod.Post, new {@class= "customer-signup" }))
+                    {
+                            <div class="signup-box-wrapper">
+                                <div class="signup-box">
+                                    <h4>Account Information</h4>
+                                    <div class="form-item">
+                                        <p>
+                                            <i class="ion-person"></i>
+                                            <input placeholder="First Name" id="reg-first-name" name="fname" class="user half-input" type="text">
+                                            <input placeholder="Last Name" id="reg-last-name" name="lname" class="user half-input" type="text">
+                                        </p>
+                                    </div>
+                                    <div class="form-item">
+                                        <p>
+                                            <i class="ion-email"></i>
+                                            <input placeholder="Email" id="reg-email" name="Email" class="user" type="email">
+                                        </p>
+                                    </div>
+                                    <div class="form-item last-form-item">
+                                        <p>
+                                            <i class="ion-key"></i>
+                                            <input placeholder="Create a Password" id="reg-pwd" name="Password" class="user half-input" type="password">
+                                            <input placeholder="Confirm your Password" id="reg-verify-pwd" name="Password" class="user half-input" type="password">
+                                        </p>
+                                    </div>
+                                    <i class="note-label">Must be between 8 - 15 alphanumeric characters</i>
+                                </div>
+                                <div class="box-divider"></div>
+                                <div class="signup-box">
+                                    <h4>Additional Information</h4>
+                                    <div class="form-item two-col">
+                                        <p>
+                                            <i class="ion-iphone"></i>
+                                            <input placeholder="Mobile Phone" id="reg-contact" name="Contact" class="user" type="tel">
+                                        </p>
+                                    </div>
+                                    <div class="form-item">
+                                        <p>
+                                            <i class="ion-briefcase"></i>
+                                            <input placeholder="Current Organization/University" id="reg-company" name="Company" class="user" type="text">
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="last-wrap">
+                                <div class="btn-wrap">
+                                    <div>
+                                        By clicking 'Register’, you agree to Whisskers Marketing's
+                                        <a id="terms-click" href="" target="_blank">Terms &amp; Conditions</a>
+                                    </div>
+                                    <div class="buttons">
+                                        <button type="submit" name="Submit" class="submit-btn">Register</button>
+                                        <button type="reset" name="Reset" class="reset-btn">Cancel</button>
+                                    </div>
+                                    <div>
+                                        Already have an account?
+                                        <a href="#" id="back-to-login" onclick="showLogin(); return false">Login here</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            }
+                        
+                    </div>
+                </section>
+
+            </div>
+        </body>
+        </html>

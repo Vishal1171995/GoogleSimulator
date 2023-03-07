@@ -1,0 +1,35 @@
+﻿@{
+    Layout = "~/Views/Shared/MasterLayoutOuter.cshtml";
+}
+
+<div class="checkout-container">
+    <div class="checkout-box">
+        <form class="checkout-form" method="post" name="customerData" action="ccavRequestHandler" runat="server">
+            <h1>Subscription Summary</h1>
+            <div class="checkout-plan-name">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <h5>Plan:</h5>
+                    </div>
+                    <div class="col-sm-8">
+                        <p>Monthly</p>
+                    </div>
+                </div>
+            </div>
+            <div class="checkout-plan-amount">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <h5>Amount:</h5>
+                    </div>
+                    <div class="col-sm-8">
+                        <p>@ViewBag.Ammount INR</p>
+                    </div>
+                </div>
+            </div>
+            <div class="button">
+                <input type="submit" value="Proceed to Pay" />
+            </div>
+        </form>
+    </div>
+
+</div>

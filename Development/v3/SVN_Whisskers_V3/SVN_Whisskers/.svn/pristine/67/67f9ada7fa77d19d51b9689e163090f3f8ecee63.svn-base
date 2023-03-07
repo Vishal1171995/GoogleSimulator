@@ -1,0 +1,1468 @@
+﻿
+@import url(https://fonts.googleapis.com/css?family=Roboto+Condensed|Roboto:400,100,100italic,300,300italic,500,500italic,700|Roboto+Slab);
+
+
+html, body {
+    height: 100%;
+    font-family: Roboto;
+}
+
+.main-container {
+    width: 100%;
+    position: relative;
+}
+
+.lblGreen {
+    padding: 3px;
+    border-radius: 3px;
+    color: white;
+    background-color: #ff975a;
+     padding: 7px 20px;
+}
+
+.lblRed {
+    padding: 3px;
+    border-radius: 3px;
+    color:#333;
+    background-color:#e4e4e4;
+    padding: 7px 20px;
+}
+
+.hidden1{display:none;}
+
+.main-container .container-fluid {
+}
+
+.header .col-md-2, .campaigns .col-md-2 {
+    width: 11.33%;
+}
+
+.right {
+    float: right;
+}
+
+* {
+    outline: none !important;
+}
+
+    *:focus {
+        text-decoration: none !important;
+    }
+
+/*------------------  Header Start  ------------------*/
+
+
+.header {
+    background: #ff975a;
+    color: #fff;
+    padding: 15px 0px 0px;
+}
+
+    .header .logo {
+        padding-bottom: 15px;
+    }
+
+    .header .top-bar {
+        padding-top: 0px;
+    }
+
+        .header .top-bar .top-heading {
+            float: left;
+            font-size: 30px;
+            font-weight: 300;
+        }
+
+            .header .top-bar .top-heading span {
+                color: #2a2a2a;
+            }
+
+        .header .top-bar .top-right-nav {
+            float: right;
+        }
+
+            .header .top-bar .top-right-nav a {
+                color: #fff;
+                transition: all .4s ease-in;
+            }
+
+.top-right-nav a:hover {
+    color: #2a2a2a !important;
+    text-decoration: none;
+}
+
+.header .top-bar .top-right-nav a i {
+    color: #fff;
+    margin-left: 5px;
+    margin-top: -4px;
+}
+
+.nav-main {
+    bottom: 0px;
+    width: 95%;
+    padding-top: 15px;
+}
+
+    .nav-main .navbar {
+        position: relative;
+        min-height: 50px;
+        margin-bottom: 0px;
+        border: none;
+        border-radius: 0px;
+        background: #ff975a;
+        -webkit-box-shadow: none;
+        box-shadow: none);
+    }
+
+        .nav-main .navbar .nav > li {
+            font-size: 20px;
+            margin-right: 5px;
+            color: #fff;
+        }
+
+            .nav-main .navbar .nav > li a {
+                color: #fff;
+                box-shadow: none;
+                padding: 15px 35px;
+                transition: all .4s ease-in-out;
+            }
+
+            .nav-main .navbar .nav > li:hover a {
+                color: #2a2a2a;
+                background: none;
+            }
+
+.navbar-nav > li > .dropdown-menu {
+    border-top: none;
+    padding: 0px;
+}
+
+.nav-main .navbar .nav > li li a {
+    color: #2a2a2a;
+    background: none;
+    padding: 8px 35px 8px 10px;
+    font-size: 16px;
+    border-bottom: 1px #ddd solid;
+    transition: all .4s ease-in-out;
+}
+
+.nav-main .navbar .nav > li li:hover a {
+    color: #fff;
+    background: #ff975a;
+}
+
+.navbar-default {
+    box-shadow: none;
+}
+
+    .nav-main .navbar.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .open > a {
+        background-image: none;
+        background-repeat: no-repeat;
+        box-shadow: none;
+        background: #fff;
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff', endColorstr='#fff', GradientType=0);
+        color: #2a2a2a;
+    }
+
+.nav-main .navbar .navbar-collapse, .nav-main .navbar .container-fluid {
+    padding-left: 0px;
+}
+
+
+
+
+
+/*------------------  Header End  ------------------*/
+
+/*------------------  Campaigns Page Start  ------------------*/
+
+.campaigns {
+    padding: 35px 0px;
+}
+
+    .campaigns .campaigns-logo img {
+        border: 1px #ddd solid;
+    }
+
+    .campaigns h1 {
+        margin: 0px 0px 10px;
+        font-size: 24px;
+        color: #2a2a2a;
+    }
+
+    .campaigns p {
+        color: #666666;
+        font-size: 16px;
+    }
+
+.campaigns-tab .nav-tabs > li.active > a, .campaigns-tab .nav-tabs > li.active > a:focus, .campaigns-tab .nav-tabs > li.active > a:hover {
+    color: #2a2a2a;
+    cursor: default;
+    border: 0px;
+    border-bottom-color: transparent;
+    border-radius: 0px;
+    background: #d4d4d4;
+    background-image: url('../images/plus.png');
+    background-repeat: no-repeat;
+    background-position: 203px 15px;
+}
+
+.campaigns-tab .nav-tabs > li {
+    position: relative;
+    width: 20%;
+    text-align: center;
+}
+
+    .campaigns-tab .nav-tabs > li .arrow {
+        position: absolute;
+        bottom: -12px;
+        left: 41%;
+        display: none;
+    }
+
+    .campaigns-tab .nav-tabs > li.active > .arrow {
+        position: absolute;
+        bottom: -12px;
+        left: 41%;
+        display: block;
+    }
+
+    .campaigns-tab .nav-tabs > li > a {
+        margin-right: 2px;
+        line-height: 1.42857143;
+        border: 0px solid transparent;
+        border-radius: 0;
+        font-size: 17px;
+        background: #ff975a;
+        color: #fff;
+    }
+
+.campaigns-tab .nav > li > a {
+    position: relative;
+    display: block;
+    padding: 10px 26px;
+}
+
+.campaigns-tab .nav-tabs > li > a {
+    background-image: url('../images/plus.png');
+    background-repeat: no-repeat;
+    background-position: -124px 16px;
+}
+
+.campaigns-tab .nav-tabs > li:last-child > a {
+    background-image: none;
+}
+
+.campaigns-tab .nav-tabs > li.active:last-child > a {
+    background-image: none;
+}
+
+.campaigns-tab .nav-tabs > li:last-child > a img {
+    margin-right: 10px;
+}
+
+.campaigns-tab .nav-tabs {
+    border-bottom: 0px;
+}
+
+.tab-inner-text {
+    padding: 15px;
+}
+
+.tab-content > .tab-pane {
+    padding-top: 11px;
+}
+
+.manage-batch .campaings-nav, .campaings-header .campaings-nav {
+    margin-top: 15px;
+}
+
+    .manage-batch .campaings-nav li, .campaings-header .campaings-nav li {
+        list-style-type: none;
+        float: left;
+        display: inline;
+        border: 1px #ff975a solid;
+    }
+
+        .campaings-header .campaings-nav li:nth-child(2) {
+            border-left: none;
+        }
+
+        .campaings-header .campaings-nav li:nth-child(3) {
+            border-left: none;
+        }
+
+        .manage-batch .campaings-nav li a, .campaings-header .campaings-nav li a {
+            padding: 8px 18px;
+            display: inline-block;
+            color: #ff975a;
+            font-size: 16px;
+        }
+
+            .manage-batch .campaings-nav li a:hover, .campaings-header .campaings-nav li a:hover {
+                text-decoration: none;
+            }
+
+.campaings-nav i {
+    margin-left: 8px;
+}
+
+.manage-batch .campaings-nav li li, .campaings-header .campaings-nav li li {
+    display: block !important;
+    width: 100%;
+    border: 0px !important;
+    background: 0px;
+    border-bottom: 0px !important;
+}
+
+    .manage-batch .campaings-nav li li:hover a, .campaings-header .campaings-nav li li:hover a {
+        background: none;
+        color: #2a2a2a;
+    }
+
+    .manage-batch .campaings-nav li li a, .campaings-header .campaings-nav li li a {
+        padding: 8px 18px;
+        display: block !important;
+        color: #ff975a;
+        font-size: 16px;
+        transition: all .4s ease-in-out;
+    }
+
+.campaings-nav li a img {
+    margin-right: 8px;
+}
+
+.campaings-nav {
+    margin-bottom: 15px;
+}
+
+
+.manage-batch .campaings-nav li a, .campaings-header .campaings-nav select {
+    padding: 8px 18px;
+    display: inline-block;
+    color: #ff975a;
+    font-size: 16px;
+    border: 1px #ff975a solid;
+    margin-right: -4px;
+    height: 40px;
+    width: 180px;
+}
+
+    .manage-batch .campaings-nav li a, .campaings-header .campaings-nav select option {
+        padding: 8px 18px;
+        color: #ff975a;
+        font-size: 16px;
+        border-bottom: 1px #ff975a solid !important;
+    }
+
+.select {
+    padding: 8px 18px;
+    display: inline-block;
+    color: #ff975a;
+    font-size: 16px;
+    border: 1px #ff975a solid;
+    margin-right: -4px;
+    height: 40px;
+    width: 170px;
+    margin-right: 5px;
+}
+
+    .select option {
+        padding: 8px 18px;
+        color: #ff975a;
+        font-size: 16px;
+        border-bottom: 1px #ff975a solid !important;
+    }
+
+.margin-bottom {
+    margin-bottom: 12px;
+}
+
+.popup-btn {
+    padding: 8px 18px;
+    display: inline-block;
+    color: #ff975a;
+    font-size: 16px;
+    border: 1px #ff975a solid;
+}
+
+    .popup-btn:hover {
+        text-decoration: none;
+        color: #ff975a;
+    }
+
+    .popup-btn img {
+        margin-right: 7px;
+    }
+
+.campaings-table-border, .campaings-table {
+    margin-top: 15px;
+}
+
+    .campaings-table-border table, .campaings-table table {
+        width: 100%;
+    }
+
+        .campaings-table-border table th, .campaings-table table th {
+            background: #e4e4e4;
+            border: 1px #d4d4d4 solid;
+            padding: 6px 12px;
+            font-weight: 400;
+            color: #2a2a2a !important;
+            font-size: 16px;
+        }
+
+        .campaings-table-border table td, .campaings-table table td {
+            border: 1px #d4d4d4 solid;
+            padding: 6px 12px;
+            font-weight: 400;
+            color: #787878 !important;
+            font-size: 16px;
+        }
+
+        .campaings-table table tr th:first-child, .campaings-table table tr td:first-child {
+            border-left: none;
+        }
+
+        .campaings-table table tr th, .campaings-table table tr td:last-child {
+            border-right: none;
+        }
+
+        .campaings-table table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .campaings-table-border table td a, .campaings-table table td a {
+            color: #ff975a !important;
+            transition: all .4s ease-in;
+        }
+
+            .campaings-table-border table td a:hover, .campaings-table table td a:hover {
+                text-decoration: none;
+                color: #2a2a2a !important;
+            }
+
+        .campaings-table-border table tr:nth-child(odd), .campaings-table table tr:nth-child(odd) {
+            background: #f0f1f1;
+        }
+
+.modal-dialog {
+    width: 600px;
+    margin: 12% auto;
+}
+
+.modal-content {
+    position: relative;
+    background-color: #fff;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid #999;
+    border: 1px solid rgba(0,0,0,.2);
+    border-radius: 0px;
+    outline: 0;
+    -webkit-box-shadow: none;
+    box-shadow: 0 3px 9px rgba(0,0,0,.3);
+}
+
+.modal-header {
+    padding: 18px 34px 15px;
+    border: 0px;
+}
+
+    .modal-header h4 {
+        font-size: 22px;
+    }
+
+.modal-body {
+    padding: 5px 34px 15px;
+}
+
+    .modal-body table {
+        width: 100%;
+        color: #737373;
+        font-size: 16px;
+    }
+
+        .modal-body table tr td:first-child {
+            width: 27%;
+        }
+
+        .modal-body table .form-control {
+            border-radius: 0px;
+        }
+
+.modal-footer {
+    padding: 0px;
+    border: 0px;
+}
+
+    .modal-footer .cancel, .modal-footer .save {
+        width: 50%;
+        padding: 9px 15px;
+        text-align: center;
+        border: 0px;
+        border-radius: 0px;
+        float: left;
+        text-shadow: none;
+        font-size: 22px;
+        text-transform: uppercase;
+    }
+
+    .modal-footer .cancel {
+        background: #d4d4d4;
+        color: #2a2a2a;
+        transition: all .4s ease-in-out;
+    }
+
+        .modal-footer .cancel:hover {
+            background: #c6c5c5;
+        }
+
+    .modal-footer .save {
+        background: #ff975a;
+        color: #fff;
+        transition: all .4s ease-in-out;
+    }
+
+        .modal-footer .save:hover {
+            background: #f5823e;
+        }
+
+    .modal-footer .btn + .btn {
+        margin-bottom: 0;
+        margin-left: 0px;
+    }
+
+button.close {
+    border: 0 none;
+    cursor: pointer;
+    padding: 0;
+    position: absolute;
+    right: -100%;
+    top: -67%;
+    color: #fff !important;
+    font-size: 100px;
+    font-weight: 100;
+}
+
+.panel-default > .panel-heading {
+    background: #e0e1e1;
+    padding: 0px;
+    border-radius: 0px;
+}
+
+.panel-group .panel {
+    background: none;
+    border: 1px #d4d4d4 solid !important;
+    border-radius: 0px;
+}
+
+.panel-default > .panel-heading a {
+    padding: 10px 15px;
+    display: block;
+}
+
+.panel-heading h4 a:hover {
+    text-decoration: none !important;
+}
+
+.panel-heading h4 span {
+    font-family: 13px;
+    font-weight: 400;
+    color: #5f5f5f;
+    margin-right: 10px;
+}
+
+.panel-body {
+    padding: 0px;
+}
+
+    .panel-body .campaings-table {
+        margin-top: 0px;
+    }
+
+.active-panel {
+    background: #fff !important;
+    border: 0px !important;
+    border-bottom: 0px !important;
+}
+
+.create-adgroup-modal-body {
+    padding: 5px 34px 15px;
+    border-bottom: 1px #ddd solid;
+    margin-bottom: 20px;
+}
+
+.modal-dialog1 {
+    margin: 10% auto;
+}
+
+button.close1 {
+    border: 0 none;
+    cursor: pointer;
+    padding: 0;
+    position: absolute;
+    right: -100%;
+    top: -33%;
+    color: #fff !important;
+    font-size: 100px;
+    font-weight: 100;
+}
+
+.model-heading {
+    background-color: #fff;
+    padding: 5px 10px;
+    margin: -36px auto 8px;
+    width: 104px;
+    z-index: 1;
+    position: relative;
+    text-align: center;
+    font-size: 18px;
+    color: #a3a3a3;
+}
+
+.ad-group-text {
+    font-size: 20px;
+    color: #4b4b4b;
+    padding: 5px 0px 0px;
+}
+
+    .ad-group-text span {
+        display: block;
+        font-size: 15px;
+        color: #999a9a;
+    }
+
+.item-slider {
+    width: 100%;
+    padding: 40px 55px;
+    margin-top: -2px;
+}
+
+    .item-slider .item-list {
+        float: left;
+    }
+
+        .item-slider .item-list a {
+            display: block;
+            color: #f47d35;
+            font-size: 18px;
+        }
+
+            .item-slider .item-list a:hover {
+                text-decoration: none !important;
+            }
+
+        .item-slider .item-list .green-text {
+            display: block;
+            color: #46871f;
+            font-size: 18px;
+        }
+
+        .item-slider .item-list .item-text {
+            display: block;
+            color: #2a2a2a;
+            font-size: 16px;
+        }
+
+.carousel-control.left, .carousel-control.right {
+    background: none;
+}
+
+.carousel-control {
+    position: absolute;
+    top: 43px;
+    bottom: 0;
+    left: 0;
+    width: 5%;
+    font-size: 20px;
+    color: #fff;
+    text-align: center;
+    opacity: 1;
+}
+
+.panel-group .panel-heading + .panel-collapse > .list-group, .panel-group .panel-heading + .panel-collapse > .panel-body {
+    border-top: 0px;
+}
+
+
+
+.add-group-input-text {
+    float: left;
+    width: 87%;
+}
+
+.add-group-btn {
+    float: right;
+    width: 10%;
+    margin-left: 3%;
+    border: 1px solid #ff975a;
+    padding: 3px 6px;
+    background: #fff;
+    color: #ff975a;
+    font-size: 18px;
+}
+
+.keyword-model table {
+    border: 1px solid #d4d4d4 !important;
+}
+
+    .keyword-model table tr th:last-child {
+        border-left: none !important;
+    }
+
+    .keyword-model table tr th:first-child,
+    .keyword-model table tr td:first-child {
+        width: 60%;
+    }
+
+    .keyword-model table tr td:last-child {
+        width: 15%;
+        text-align: center;
+    }
+
+.keyword-model {
+    border-top: none !important;
+    height: 150px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+
+/*------------------  Campaigns Page End  ------------------*/
+
+
+/*------------------  Trainer Manage Batch Page Start  ------------------*/
+
+.manage-batch {
+    padding: 35px 0px 0px;
+}
+
+    .manage-batch h1 {
+        margin: 0px;
+        font-size: 24px;
+        color: #2a2a2a;
+    }
+
+.button {
+    padding: 9px 25px;
+    color: #fff;
+    background: #ff975a;
+    font-size: 16px;
+    border: 0px;
+    transition: all .4s ease-in-out;
+}
+
+    .button:hover {
+        color: #fff;
+        background: #fb7729;
+        text-decoration: none;
+    }
+
+.manage-batch .top-margin {
+    margin-top: 25px;
+}
+
+
+.radio {
+    padding-left: 20px;
+}
+
+    .radio label {
+        display: inline-block;
+        position: relative;
+        padding-left: 5px;
+    }
+
+        .radio label::before {
+            content: "";
+            display: inline-block;
+            position: absolute;
+            width: 17px;
+            height: 17px;
+            left: 0;
+            margin-left: -20px;
+            border: 2px solid #ff975a;
+            border-radius: 50%;
+            background-color: #fff;
+            -webkit-transition: border 0.15s ease-in-out;
+            -o-transition: border 0.15s ease-in-out;
+            transition: border 0.15s ease-in-out;
+        }
+
+        .radio label::after {
+            display: inline-block;
+            position: absolute;
+            content: " ";
+            width: 9px;
+            height: 9px;
+            left: 4px;
+            top: 4px;
+            margin-left: -20px;
+            border-radius: 50%;
+            background-color: #ff975a;
+            -webkit-transform: scale(0, 0);
+            -ms-transform: scale(0, 0);
+            -o-transform: scale(0, 0);
+            transform: scale(0, 0);
+            -webkit-transition: -webkit-transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
+            -moz-transition: -moz-transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
+            -o-transition: -o-transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
+            transition: transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
+        }
+
+    .radio input[type=radio] {
+        opacity: 0;
+    }
+
+        .radio input[type=radio]:checked + label::after {
+            -webkit-transform: scale(1, 1);
+            -ms-transform: scale(1, 1);
+            -o-transform: scale(1, 1);
+            transform: scale(1, 1);
+        }
+
+        .radio input[type=radio]:disabled + label {
+            opacity: 0.65;
+        }
+
+            .radio input[type=radio]:disabled + label::before {
+                cursor: not-allowed;
+            }
+
+    .radio.radio-inline {
+        margin-top: 0;
+    }
+
+.radio-danger input[type=radio] + label::after {
+    display: inline-block;
+    background-color: #626262;
+}
+
+.radio-danger input[type=radio]:checked + label::before {
+    display: inline-block;
+    border-color: #626262;
+}
+
+.radio-danger input[type=radio]:checked + label::after {
+    display: inline-block;
+    background-color: #626262;
+}
+
+/*------------------  Trainer Manage Batch Page End  ------------------*/
+
+
+/*------------------  Trainer Manage Batch Page Start  ------------------*/
+
+.manage-batch .campaings-nav {
+    margin-top: 0px;
+}
+
+.manage-batch .batch-detail p {
+    margin-bottom: 3px;
+}
+
+.manage-batch .batch-detail span {
+    padding: 5px 0;
+}
+
+.manage-batch .batch-detail span {
+    padding: 4px 5px;
+    font-size: 18px;
+    color: #898989;
+}
+
+    .manage-batch .batch-detail span:first-child {
+        color: #363636;
+        padding: 4px 0px;
+        width: 120px;
+    }
+
+    .manage-batch .batch-detail span span {
+        padding: 0px 8px;
+    }
+
+.edit-detail {
+    background: #e4e4e4;
+    border: 1px #d8d8d8 solid;
+    border-left: none;
+    border-right: none;
+    padding: 5px 0px;
+    margin-top: 15px;
+}
+
+.logo-img {
+    margin-left: -15px;
+}
+
+.col-left {
+    float: left;
+    padding: 15px 0px;
+}
+
+    .col-left img {
+        height: 70px;
+        width: 85px;
+    }
+
+.col-right {
+    float: left;
+    padding: 35px 0px 0px 20px;
+    font-size: 22px;
+    text-transform: uppercase;
+}
+
+.col-border {
+    border-bottom: 1px #d0d1d1 solid;
+}
+
+.col-border-right {
+    border-right: 1px #dcdddd solid;
+}
+
+.col-border-left {
+    border-left: 1px #dcdddd solid;
+}
+
+.batch-edit-detail .student-col {
+    padding: 20px 0px 0px;
+}
+
+    .batch-edit-detail .student-col .col-icon {
+        float: left;
+    }
+
+    .batch-edit-detail .student-col ul {
+        margin: 0px;
+        padding: 0px;
+    }
+
+        .batch-edit-detail .student-col ul li {
+            list-style-type: none;
+            display: inline-block;
+            padding-left: 15px;
+        }
+
+.batch-edit-detail p {
+    margin: 15px 0px 15px;
+    font-size: 16px;
+    color: #9c9d9d;
+}
+
+.batch-edit-detail .panel-group {
+    margin: 6px 0px 15px;
+    margin-left: -15px;
+    border: 1px #ddd solid;
+    width: 320px;
+}
+
+.mCSB_scrollTools {
+    position: absolute;
+    width: 17px;
+    height: auto;
+    left: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    opacity: .75;
+    filter: "alpha(opacity=75)";
+    -ms-filter: "alpha(opacity=75)";
+}
+
+.mCSB_inside > .mCSB_container {
+    margin-right: 16px !important;
+}
+
+.batch-edit-detail .panel-group ul {
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+}
+
+    .batch-edit-detail .panel-group ul li .logo-img-scroll {
+        float: left;
+    }
+
+
+    .batch-edit-detail .panel-group ul li {
+        list-style-type: none;
+        clear: both;
+        display: block;
+        border-bottom: 1px #ddd solid;
+        border-right: 1px #ddd solid;
+        transition: all .4s ease-in-out;
+    }
+
+        .batch-edit-detail .panel-group ul li a {
+            display: block;
+            line-height: 72px;
+            padding: 0px 11px;
+        }
+
+            .batch-edit-detail .panel-group ul li a span {
+                margin-left: 15px;
+                color: #8a8a8a;
+                font-size: 16px;
+                font-weight: 500;
+            }
+
+        .batch-edit-detail .panel-group ul li:hover {
+            background: #efefef;
+        }
+
+        .batch-edit-detail .panel-group ul li.active {
+            background: #f6ede8;
+            border: 1px #fa9e68 solid;
+            color: #ff975a;
+            background-image: url('../images/trainer/check-icon.png');
+            background-repeat: no-repeat;
+            background-position: 262px 25px;
+        }
+
+            .batch-edit-detail .panel-group ul li.active a span {
+                color: #ff975a;
+            }
+
+.batch-edit-detail .select-text {
+    color: #9c9d9d;
+    font-size: 16px;
+    padding-top: 15px;
+}
+
+    .batch-edit-detail .select-text i {
+        margin-right: 4px;
+    }
+
+.select-max-student {
+    position: relative;
+}
+
+    .select-max-student .panel-group {
+        margin: 6px 0px 15px;
+        margin-left: 0px;
+        border: 1px #ddd solid;
+        width: 320px;
+    }
+
+        .select-max-student .panel-group ul li a {
+            display: block;
+            padding: 0px 11px;
+            color: #8a8a8a;
+            font-size: 16px;
+            line-height: 40px;
+        }
+
+        .select-max-student .panel-group ul li a {
+            text-decoration: none;
+        }
+
+        .select-max-student .panel-group ul li.active {
+            background: #f6ede8;
+            border: 1px #fa9e68 solid;
+            color: #ff975a;
+            background-image: url('../images/trainer/check-icon.png');
+            background-repeat: no-repeat;
+            background-position: 262px 8px;
+        }
+
+            .select-max-student .panel-group ul li.active a {
+                color: #ff975a;
+            }
+
+    .select-max-student .save-student {
+        padding: 6px 25px;
+        border: 1px #ff975a solid;
+        position: absolute;
+        bottom: 0px;
+        right: 0px;
+        color: #ff975a;
+        transition: all .4s ease-in-out;
+        font-size: 16px;
+        
+    }
+       .select-max-student .save-as-student {
+        padding: 6px 25px;
+        border: 1px #ff975a solid;
+        position: absolute;
+        bottom: 0px;
+        right: 100px;
+        color: #ff975a;
+        transition: all .4s ease-in-out;
+        font-size: 16px;
+        background: #fff;
+    }
+       .select-max-student .save-as-student:hover,
+        .select-max-student .save-student:hover {
+            border: 1px #ff975a solid;
+            color: #fff;
+            background: #ff975a;
+            text-decoration: none;
+        }
+
+.error-red {
+    color: #ff3c00;
+    margin-bottom: 15px;
+}
+
+.batch-edit-detail .add-more-btn button {
+    color: #ff975a;
+    border: 1px #ff975a solid;
+    padding: 8px;
+    width: 100%;
+    background: #fff;
+    font-size: 16px;
+    transition: all .4s ease-in-out;
+}
+
+    .batch-edit-detail .add-more-btn button:hover {
+        border: 1px #ff975a solid;
+        color: #fff;
+        background: #ff975a;
+        text-decoration: none;
+    }
+
+.batch-edit-detail .submit {
+    padding-top: 25px;
+    float: right;
+}
+
+    .batch-edit-detail .submit .save-as-btn {
+        float: left;
+        color: #ff975a;
+        border: 1px #ff975a solid;
+        padding: 10px 40px;
+        background: #fff;
+        font-size: 16px;
+        transition: all .4s ease-in-out;
+    }
+
+        .batch-edit-detail .submit .save-as-btn:hover {
+            border: 1px #ff975a solid;
+            color: #363636;
+            text-decoration: none;
+        }
+
+    .batch-edit-detail .submit .final-submit-btn {
+        float: left;
+        color: #fff;
+        border: 1px #ff975a solid;
+        padding: 10px 40px;
+        background: #ff975a;
+        font-size: 16px;
+        transition: all .4s ease-in-out;
+    }
+
+        .batch-edit-detail .submit .final-submit-btn:hover {
+            border: 1px #ff975a solid;
+            color: #363636;
+            text-decoration: none;
+        }
+
+.padding-top {
+    padding-top: 10px;
+}
+
+.campaings-table-border tr td span {
+    float: left;
+    font-weight: 500;
+    color: #393838;
+}
+
+.col-border-no {
+    border-bottom: 1px solid #dcdddd;
+}
+.btn-float {
+    float:right;
+    margin-right:15px;
+}
+
+
+.dataTables_wrapper .ui-toolbar {
+    padding: 8px;
+    border-radius: 0px;
+    background: #efefef;
+    border-color: #ddd;
+}
+
+
+:hov
+
+
+.cls
+
+element.style {
+}
+/*------------------  Trainer Manage Batch Page End  ------------------*/
+
+
+/*------------------  Trainer Account Report Page Start  ------------------*/
+
+
+.account-report {
+    padding-top: 30px;
+}
+
+.campaigns-tab .account-report .nav-tabs > li {
+    position: relative;
+    width: 25%;
+}
+
+    .campaigns-tab .account-report .nav-tabs > li > a {
+        background-image: none;
+        text-align: center;
+    }
+
+    .campaigns-tab .account-report .nav-tabs > li.active > a, .campaigns-tab .account-report .nav-tabs > li.active > a:focus, .campaigns-tab .account-report .nav-tabs > li.active > a:hover {
+        color: #2a2a2a;
+        cursor: default;
+        border: 0px;
+        border-bottom-color: transparent;
+        border-radius: 0px;
+        background: #d4d4d4;
+        background-image: none;
+    }
+
+
+/*------------------  Trainer Account Report Page End  ------------------*/
+
+
+.material-switch > input[type=checkbox] {
+    display: none;
+}
+
+    .material-switch > input[type=checkbox]:checked + label::before {
+        background: inherit;
+        opacity: .7;
+    }
+
+.material-switch > label::before {
+    background: rgb(0, 0, 0) none repeat scroll 0 0;
+    border-radius: 8px;
+    box-shadow: 0 0 10px #ff975a inset;
+    content: "";
+    height: 16px;
+    margin-top: -8px;
+    opacity: 0.3;
+    position: absolute;
+    transition: all 0.4s ease-in-out 0s;
+    width: 40px;
+}
+
+*::before, *::after {
+    box-sizing: border-box;
+}
+
+.material-switch > input[type=checkbox]:checked + label::after {
+    background: inherit;
+    left: 20px;
+}
+
+.material-switch > label::after {
+    background: rgb(255, 255, 255) none repeat scroll 0 0;
+    border-radius: 16px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    content: "";
+    height: 24px;
+    left: -4px;
+    margin-top: -8px;
+    position: absolute;
+    top: -4px;
+    transition: all 0.3s ease-in-out 0s;
+    width: 24px;
+}
+
+*::before, *::after {
+    box-sizing: border-box;
+}
+
+.material-switch > label {
+    cursor: pointer;
+    height: 0;
+    position: relative;
+    width: 40px;
+}
+
+.label-default {
+    background-color: #ff975a;
+}
+
+/*-------------20-05-2016------------*/
+
+.contant-campainge {
+    padding: 20px 0px;
+}
+
+    .contant-campainge p {
+        font-size: 16px;
+        color: #666;
+    }
+
+.erroor-boder {
+    border: dashed;
+    border-width: 1px;
+    padding: 8px;
+    font-weight: 400;
+    font-size: 15px;
+}
+
+.go-btn {
+    text-align: right;
+}
+/*-------------20-05-2016 End------------*/
+
+/*------------------  Footer Start  ------------------*/
+
+
+.footer {
+    margin-top: 80px;
+    padding: 15px 0px;
+    border-top: 1px solid #cccdcd;
+}
+
+    .footer p {
+        text-align: center;
+        font-size: 14px;
+        font-weight: 400;
+        color: #7d7d7d;
+    }
+
+
+/*------------------  Footer End  ------------------*/
+
+@media screen and (max-width: 1920px), screen and (max-height: 1040px) {
+    .footer {
+        position: absolute;
+        bottom: 0px;
+        width: 100%;
+        margin-top: 80px;
+        padding: 15px 0px;
+        border-top: 1px solid #cccdcd;
+    }
+}
+
+
+@media (max-width : 1366px) {
+
+    button.close {
+        right: -28%;
+        top: -45%;
+    }
+
+    .footer {
+        position: inherit;
+        margin-top: 70px;
+    }
+}
+
+
+@media (max-width : 1024px) {
+
+    .nav-main .navbar .nav > li a {
+        color: #fff;
+        box-shadow: none;
+        padding: 15px 20px;
+    }
+
+    .campaigns-tab .nav > li > a {
+        padding: 10px 45px;
+    }
+
+    .campaings-header .campaings-nav li a {
+        padding: 8px 7px;
+        line-height: 21px;
+        display: inline-block;
+        color: #ff975a;
+        font-size: 15px;
+    }
+
+    .campaigns-tab .nav-tabs > li.active > a, .campaigns-tab .nav-tabs > li.active > a:focus, .campaigns-tab .nav-tabs > li.active > a:hover {
+        background-image: url('../images/plus.png');
+        background-repeat: no-repeat;
+        background-position: 168px 15px;
+    }
+
+
+    .campaigns-tab .nav-tabs > li > a {
+        background-image: url('../images/plus.png');
+        background-repeat: no-repeat;
+        background-position: -160px 16px;
+    }
+
+
+    button.close {
+        right: -28%;
+        top: -39%;
+    }
+
+    button.close1 {
+        right: -28%;
+        top: -15%;
+    }
+
+    .footer {
+        position: inherit;
+        margin-top: 60px;
+    }
+
+    .batch-edit-detail .panel-group {
+        width: 100%;
+    }
+
+        .batch-edit-detail .panel-group ul li.active {
+            background: #f6ede8;
+            border: 1px #fa9e68 solid;
+            color: #ff975a;
+            background-image: url('../images/trainer/check-icon.png');
+            background-repeat: no-repeat;
+            background-position: 225px 25px;
+        }
+
+    .select-max-student .panel-group {
+        width: 320px;
+    }
+
+        .select-max-student .panel-group ul li.active {
+            background: #f6ede8;
+            border: 1px #fa9e68 solid;
+            color: #ff975a;
+            background-image: url('../images/trainer/check-icon.png');
+            background-repeat: no-repeat;
+            background-position: 262px 8px;
+        }
+
+    .goToBack {
+        margin-bottom: 10px;
+    }
+
+        .goToBack a i {
+            font-size: 16px;
+            font-weight: 300;
+            color: #ff975a;
+        }
+}
+.ui-widget-header {
+    border: 1px solid #ddd;
+    background:#fff;
+    color: #222222;
+    font-weight: bold;
+    border-radius:0px;
+}
+.campaings-table-border table th, .campaings-table table th {
+    background: #e4e4e4;
+    border: 1px #d4d4d4 solid;
+    padding: 6px 12px;
+    font-weight: 400;
+    color: #2a2a2a !important;
+    font-size: 16px;
+}
+.campaings-table-border table td, .campaings-table table td {
+    border: 1px #d4d4d4 solid;
+    padding: 6px 12px;
+    font-weight: 400;
+    color: #787878 !important;
+    font-size: 16px;
+    border-top: 0;
+    border-right: 0;
+}
+    .campaings-table-border table td:last-child, .campaings-table table td:last-child {
+        border-right: 1px #d4d4d4 solid;
+    }

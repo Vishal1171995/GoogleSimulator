@@ -1,0 +1,710 @@
+﻿@{
+    Layout = "~/Areas/Admin/Views/Shared/Admin_Layout.cshtml";
+}
+<!---------------------  Content start  --------------------->
+
+
+<div class="admin-tab">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="tab-content">
+                    <div id="campaigns" class="tab-pane fade in active">
+                        <div class="admin-manage-header">
+                            <div class="row">
+                                <div class="col-md-12"><h3>Batch Details</h3></div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="pull-right goToBack">
+                                            <a href="/Admin/Manage/Batches">
+                                                <i class="fa fa-backward" aria-hidden="true"> Back</i>
+
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="edit-batch dash-border">
+
+
+                                        <div class="row">
+
+                                            <div class="col-md-6">
+
+                                                <table class="edit-batch-details">
+                                                    <tr>
+                                                        <td>Batch Name</td>
+                                                        <td>:</td>
+                                                        <td><span id="spnBatchName">Batch 2</span></td>
+
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>Address</td>
+                                                        <td>:</td>
+                                                        <td><span id="spnAddress"></span></td>
+
+                                                    </tr>
+
+                                                </table>
+
+                                            </div>
+
+                                            <div class="col-md-6">
+
+                                                <table class="edit-batch-details">
+                                                    <tr>
+                                                        <td>Location</td>
+                                                        <td>:</td>
+                                                        <td><span id="spnLocation"></span></td>
+                                                        <td colspan="2"></td>
+
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>Dates</td>
+                                                        <td>:</td>
+                                                        <td><span id="spnDates"></span></td>
+                                                        <td colspan="2" style="width:42%">
+                                                            <a href="#">
+                                                                <i class="fa fa-pencil hidden" aria-hidden="true"></i>
+                                                            </a>
+                                                        </td>
+
+                                                    </tr>
+
+                                                </table>
+
+
+
+
+                                            </div>
+
+
+                                        </div>
+
+
+
+
+                                    </div>
+
+
+
+                                </div>
+
+
+                            </div>
+
+
+                            <div class="row">
+                                <div class="col-md-12">
+
+                                    <div class="tab-content">
+
+
+                                        <div class="tab-pane fade active in">
+
+                                            <div class="campaings-header">
+
+                                                <div id="ADGroup_Result">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+
+                                                            <div class="campaings-table">
+
+                                                                <div class="panel-group" id="accordion">
+                                                                    <div class="panel panel-default">
+                                                                        <div class="panel-heading active-panel">
+                                                                            <h4 class="panel-title">
+                                                                                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false">
+                                                                                    Assign Students to Batch
+                                                                                    <i class="indicator glyphicon glyphicon-chevron-down  pull-right"></i>
+                                                                                </a>
+                                                                            </h4>
+                                                                        </div>
+                                                                        <div id="collapseOne" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                                                            <div class="panel-body">
+
+                                                                                <div class="add-details">
+
+                                                                                    <div class="col-md-6">
+
+                                                                                        <div class="search-stu">
+                                                                                            <div class="form-group">
+                                                                                                <input type="hidden" id="StudentID" value="" name="StudentID" />
+                                                                                                <input type="hidden" id="BatchCode" value="0" name="BatchCode" />
+                                                                                                <input id="SelectedStudents" type="text" class="form-control">
+                                                                                                <a href="" class="add-student" onclick="return AssignStudentsToBatch();"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+                                                                                            </div>
+
+                                                                                        </div>
+
+
+                                                                                    </div>
+
+                                                                                    <div class="col-md-6">
+
+                                                                                        <ul class="campaings-nav pull-right hidden">
+                                                                                            <li class="dropdown">
+                                                                                                <img src="images/admin/excel.png" /> <a href="#" class="dropdown-toggle" data-toggle="modal" data-target="#myModal23">
+                                                                                                    Emport From Excel
+                                                                                                </a>
+
+                                                                                            </li>
+
+                                                                                            <li><a href="#" data-toggle="modal" data-target="#myModal22"><img src="../images/plus-icon.png" alt="icon">Add New Student</a></li>
+
+                                                                                        </ul>
+
+                                                                                    </div>
+
+                                                                                </div>
+
+                                                                                <div class="clearfix"></div>
+                                                                                <div id="div_AssignedStudent">
+                                                                                    
+                                                                                </div>
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="panel panel-default">
+                                                                        <div class="panel-heading">
+                                                                            <h4 class="panel-title">
+                                                                                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false">
+                                                                                    Assign Trainers to Batch
+                                                                                    <i class="indicator glyphicon glyphicon-menu-hamburger  pull-right"></i>
+                                                                                </a>
+                                                                            </h4>
+                                                                        </div>
+                                                                        <div id="collapseTwo" class="panel-collapse collapse" aria-expanded="false">
+                                                                            <div class="panel-body">
+
+                                                                                <div class="add-details">
+
+                                                                                    <div class="col-md-6">
+
+                                                                                        <div class="search-stu">
+                                                                                                <div class="form-group">
+                                                                                                    <input type="hidden" id="TrainerID" value="" name="TrainerID" />
+                                                                                                    <input id="SelectedTrainers" type="text" class="form-control">
+                                                                                                    <a href="" class="add-student" onclick="return AssignTrainersToBatch();"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+                                                                                                </div>
+                                                                                        </div>
+
+
+                                                                                    </div>
+
+                                                                                    <div class="col-md-6">
+
+                                                                                        <ul class="campaings-nav pull-right hidden">
+
+                                                                                            <li><a href="#" data-toggle="modal" data-target="#myModal24"><img src="../images/plus-icon.png" alt="icon">Add New Trainer</a></li>
+
+                                                                                        </ul>
+
+                                                                                    </div>
+
+                                                                                </div>
+
+                                                                                <div class="clearfix"></div>
+
+                                                                                <div id="div_AssignedTrainer">
+
+                                                                                </div>
+
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+
+
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="row">
+
+                                                        <div class="col-md-12">
+
+                                                            <div class="submit text-right">
+
+                                                                <button class="save-as-btn hidden">Save as Draft</button>
+
+                                                                <button id="btnBatchView" onclick="return FinalAssignStudentAndTrainersToBatch();" class="final-submit-btn">Final Submit</button>
+                                                            </div>
+
+                                                        </div>
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+
+
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+
+
+<!---------------------  Content End  --------------------->
+<!---------------------  Footer Start  --------------------->
+<!---------------------  Footer End  --------------------->
+<!--start popbox-->
+<!--add new student-->
+<div class="modal fade" id="myModal22" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <h4 class="modal-title">Add New Batch</h4>
+            </div>
+            <form action="" method="post">
+
+
+                <div class="modal-body">
+
+                    <div class="form-details">
+
+                        <div class="row">
+
+
+                            <div class="form-group">
+
+                                <div class="col-xs-12 col-md-3">
+                                    <label class="lab_01">Student Name</label>
+                                </div>
+                                <div class="col-xs-12 col-md-9">
+                                    <div class="col-form-box">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control">
+
+                                            <span>First</span>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-form-box">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control">
+
+                                            <span>Middle</span>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-form-box">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control">
+
+                                            <span>Last</span>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-xs-12 col-md-3"> <label class="lab_01">Location</label>   </div>
+                                <div class="col-xs-12 col-md-9">
+                                    <div class="form-group"> <input type="text" class="form-control"> </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-xs-12 col-md-3"> <label class="lab_01">Email Id</label>   </div>
+                                <div class="col-xs-12 col-md-9">
+                                    <div class="form-group"> <input type="text" class="form-control"> </div>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <div class="col-xs-12 col-md-3"> <label class="lab_01">Contact</label>   </div>
+                                <div class="col-xs-12 col-md-9">
+                                    <div class="form-group"> <input type="text" class="form-control"> </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="clearfix"></div>
+
+
+                        <div class="form-group">
+
+
+                            <div class="error-red erroor-boder"> Error Message Here</div>
+
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default cancel" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-default save" data-dismiss="modal">Save</button>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+</div>
+
+
+
+<!--add new Trainer-->
+<div class="modal fade" id="myModal24" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <h4 class="modal-title">Add New Trainer</h4>
+            </div>
+            <form action="" method="post">
+
+
+                <div class="modal-body">
+
+                    <div class="form-details">
+
+                        <div class="row">
+
+
+                            <div class="form-group">
+
+                                <div class="col-xs-12 col-md-3">
+                                    <label class="lab_01">Trainer Name</label>
+                                </div>
+                                <div class="col-xs-12 col-md-9">
+                                    <div class="col-form-box">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control">
+
+                                            <span>First</span>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-form-box">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control">
+
+                                            <span>Middle</span>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-form-box">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control">
+
+                                            <span>Last</span>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-xs-12 col-md-3"> <label class="lab_01">Location</label>   </div>
+                                <div class="col-xs-12 col-md-9">
+                                    <div class="form-group"> <input type="text" class="form-control"> </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-xs-12 col-md-3"> <label class="lab_01">Email Id</label>   </div>
+                                <div class="col-xs-12 col-md-9">
+                                    <div class="form-group"> <input type="text" class="form-control"> </div>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <div class="col-xs-12 col-md-3"> <label class="lab_01">Contact</label>   </div>
+                                <div class="col-xs-12 col-md-9">
+                                    <div class="form-group"> <input type="text" class="form-control"> </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="clearfix"></div>
+
+
+                        <div class="form-group">
+
+
+                            <div class="error-red erroor-boder"> Error Message Here</div>
+
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default cancel" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-default save" data-dismiss="modal">Save</button>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+</div>
+
+
+
+<!--import to excel-->
+<div class="modal fade" id="myModal23" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <h4 class="modal-title">Import From Excel</h4>
+            </div>
+            <form action="" method="post">
+
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group">
+
+                            <div class="col-xs-12 col-md-12">
+                                <div class="form-group">
+
+                                    <div class="fileinput-button">
+                                        <input type="file" name="imageUpload" id="imageUpload" class="hide" />
+                                        <label for="imageUpload" class="file-btn">  Upload Excel</label>
+                                        <input type="button" class="uplaod-button" value="Upload">
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+
+
+
+                    </div>
+
+                    <div class="clearfix"></div>
+
+
+                    <div class="form-group">
+
+
+                        <div class="success-message"> <i class="fa fa-smile-o" aria-hidden="true"></i> File Successfully upload</div>
+
+
+                    </div>
+
+
+
+
+                    <div class="form-group">
+
+
+                        <div class="error-red erroor-boder"> Error Message Here</div>
+
+
+                    </div>
+
+
+
+
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default cancel" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-default save" data-dismiss="modal">Save</button>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="modal fade" id="ModalBatchViewSuccess" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                @*<button type="button" class="close" data-dismiss="modal">&times;</button>*@
+                <h5 id="BatchViewSuccessHead" class="modal-title"></h5>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        var url = window.location.href;
+        var id = url.substring(url.lastIndexOf('/') + 1);
+        $("#BatchCode").val(id);
+        CompleteBatchDetails(id);
+        BatchViewStudentAutoComplete();
+        BatchViewTrainerAutoComplete($("#BatchCode").val());
+        $(".nav-tabs a").click(function () {
+            $(this).tab('show');
+        });
+        $('.nav-tabs a').on('shown.bs.tab', function (event) {
+            var x = $(event.target).text();         // active tab
+            var y = $(event.relatedTarget).text();  // previous tab
+            $(".act span").text(x);
+            $(".prev span").text(y);
+        });
+
+
+        // data table shorting
+
+        $('#imageUpload').change(function () {
+            readImgUrlAndPreview(this);
+            function readImgUrlAndPreview(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        });
+
+
+    });
+    function BatchViewStudentAutoComplete() {
+        $(function () {
+            var getData = function (request, response) {
+                $.getJSON(
+                    "/Admin/Manage/getStudentToBatch?StudentName=" + $('#SelectedStudents').val() + "",
+                    function (data) {
+                        $("#StudentID").val("");
+                        response($.map(data, function (item) {
+                            // alert(item)
+                            return { label: item.Name, lvalue: item.ID };
+                        }))
+                    });
+            };
+
+            var selectItem = function (event, ui) {
+                $("#SelectedStudents").val(ui.item.label);
+                $("#StudentID").val(ui.item.lvalue);
+                return false;
+            }
+
+            $("#SelectedStudents").autocomplete({
+                source: getData,
+                select: selectItem,
+                minLength: 1,
+            });
+
+
+        });
+    }
+    function BatchAssignedStudentDataTable() {
+        //check admin.css DataTable section if you want to hide header paging
+        $('#tableAssignedStudent').dataTable({
+            "searching": false
+            //scrollY: '50vh',
+            //scrollCollapse: true,
+            //scrollY: '50vh',
+            //scrollCollapse: true,
+
+            //order: [],
+            //columnDefs: [{ orderable: false, targets: [0] }],
+            //"bLengthChange": true
+        });
+    }
+    function BatchViewTrainerAutoComplete(BatchCode) {
+        $(function () {
+            var getData = function (request, response)
+            {
+                $.getJSON(
+                    "/Admin/Manage/getTrainerToBatch?TrainerName=" + $('#SelectedTrainers').val() + "&BatchCode=" + BatchCode + "",
+                    function (data) {
+                        $("#TrainerID").val("");
+                        response($.map(data, function (item) {
+                            return { label: item.Name, lvalue: item.ID };
+                        }))
+                    });
+            };
+
+            var selectItem = function (event, ui) {
+                $("#SelectedTrainers").val(ui.item.label);
+                $("#TrainerID").val(ui.item.lvalue);
+                return false;
+            }
+
+            $("#SelectedTrainers").autocomplete({
+                source: getData,
+                select: selectItem,
+                minLength: 1,
+            });
+
+
+        });
+    }
+    function BatchAssignedTrainerDataTable() {
+        //check admin.css DataTable section if you want to hide header paging
+        $('#tableAssignedTrainer').dataTable({
+            "searching": false
+            //scrollY: '50vh',
+            //scrollCollapse: true,
+            //scrollY: '50vh',
+            //scrollCollapse: true,
+
+            //order: [],
+            //columnDefs: [{ orderable: false, targets: [0] }],
+            //"bLengthChange": true
+        });
+    }
+</script>                               		

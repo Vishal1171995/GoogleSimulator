@@ -1,0 +1,856 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Students/Views/Shared/Student_Layout.cshtml";
+}
+<style>
+    .ui-autocomplete {
+        z-index: 9999999 !important;
+        position: absolute;
+        margin: 0px;
+        padding: 0px;
+        height: 200px;
+        overflow: scroll;
+        overflow-x: hidden;
+        border: 1px solid #d5d5d5;
+    }
+
+        .ui-autocomplete li {
+            list-style-type: none;
+            background: rgba(255,255,255,0.9) !important;
+            padding: 5px 12px;
+            color: #666;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+    .printchatbox {
+        border-width: thick 10px;
+        border-style: solid;
+        background-color: #fff;
+        line-height: 2;
+        color: #6E6A6B;
+        font-size: 14pt;
+        text-align: left;
+        float: middle;
+        border: 3px solid #969293;
+        width: 40%;
+        height: 2em;
+    }
+</style>
+<style type="text/css">
+    a[aria-expanded=true] i#open {
+        display: none !important;
+    }
+
+    a[aria-expanded=false] i#close {
+        display: none;
+    }
+</style>
+<!---------------------  Content start  --------------------->
+
+<div class="campaigns">
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-md-2 col-sm-12 col-xs-12">
+                <div class="campaigns-logo"><img src="@ViewBag.ImagePath" class="img-responsive" alt="amazon" /></div>
+            </div>
+            <div class="col-md-10 col-sm-12 col-xs-12">
+                <h1>@ViewBag.AccFullName</h1>
+                <p>@ViewBag.Description</p>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<div class="container">
+    <div class="row">
+        <div class="campaings-header">
+            <div class="col-md-6 col-md-push-6 text-right">
+
+                @*<span class="showTooltip visible-lg-inline-block" data-original-title="Choose Camaign">*@
+                <select id="ddlUniqueCampaign" class="select margin-bottom" name="ddlCampaign" onchange="CampaignDropdownChange(this.value);"></select>
+                @*</span>*@
+                @*<span class="showTooltip visible-lg-inline-block" data-original-title="Choose AdGroup">*@
+                <select id="ddlUniqueAdGroups" class="select margin-bottom" name="ddlCampaign" onchange="BindStudentCampaignTab();">
+                    <option value="ALL">ALL Ad Groups</option>
+                </select>
+                @*</span>*@
+            </div>
+        </div>
+    </div>
+</div>
+<div class="campaigns-tab">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <ul id="ul_navTab" class="nav nav-tabs">
+                    <li id="li_campaigns" class="active"><a href="#CAMPAIGNS">Campaigns</a> <img class="arrow" src="~/Content/images/arrow.png" alt="arrow" /></li>
+                    <li id="li_adgroups"><a href="#ADGROUPS">Ad Groups</a> <img class="arrow" src="~/Content/images/arrow.png" alt="arrow" /></li>
+                    <li id="li_ads"><a href="#ADS">Ads</a> <img class="arrow" src="~/Content/images/arrow.png" alt="arrow" /></li>
+                    <li id="li_keywords"><a href="#KEYWORDS">Keywords</a> <img class="arrow" src="~/Content/images/arrow.png" alt="arrow" /></li>
+                    <li id="li_RFA"><a href="#RFA">RFA</a><img class="arrow" src="~/Content/images/arrow.png" alt="arrow" /></li>
+                </ul>
+                <div class="tab-content">
+                    <div id="CAMPAIGNS" class="tab-pane fade in active">
+                        <div class="campaings-header">
+                            <div class="row">
+                                <div class="col-md-7"><h3>Campaigns</h3></div>
+                                <div class="col-md-5 text-right campaings-nav">
+                                    
+                                        <a class="fa-download-icon" href="/Students/Home/CampaignDownloadExcel"><i class="fa fa-download" area-hidden="true"></i>  Download</a>
+                                    <span class="showTooltip visible-lg-inline-block" data-original-title="">
+                                        <a href="#" class="popup-btn disableItem" onclick="showCampaignPopup();" data-toggle="modal" data-target="#myModal"><img src="/Content/images/plus-icon.png" alt="icon" />Create Campaign</a>
+                                    </span>
+                                </div>
+                            </div>
+                            <div id="div_result" class="loadSectn">
+                            </div>
+
+
+                        </div>
+                        @using (Ajax.BeginForm("CreateCompaign", "Home", FormMethod.Post, new AjaxOptions { OnSuccess = "closeCampaignPopup", OnBegin = "AjaxBegin", OnFailure = "OnError" }))
+                        {
+                            <div class="modal fade" id="myModal" role="dialog">
+                                <div class="modal-dialog">
+
+                                    <!-- Modal content-->
+
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h4 id="TitlePopupCampaign" class="modal-title">Create AdWords Campaign</h4>
+                                        </div>
+                                        <form id="formCampaign" action="" method="post">
+                                            <div class="modal-body">
+
+                                                <table>
+
+                                                    <tr>
+
+                                                        <td class="textMiddle required">Campaign Name</td>
+                                                        <td>
+                                                            <div class="form-group">
+                                                                <input type="text" id="txtCampaignName" name="txtCampaignName" maxlength="100" class="form-control">
+                                                            </div>
+
+                                                        </td>
+
+                                                    </tr>
+
+                                                    <tr>
+
+                                                        <td class="textMiddle required">Network Type </td>
+                                                        <td>
+                                                            <div class="form-group">
+                                                                <select class="form-control" id="ddlNetwordType" name="ddlNetwordType"> <option value="">Select Network Type</option><option value="1">Search</option><option value="2" disabled>Display</option> </select>
+
+                                                            </div>
+                                                        </td>
+
+                                                    </tr>
+
+                                                    <tr>
+
+                                                        <td class="textMiddle required">Location</td>
+                                                        <td>
+                                                            <div class="form-group">
+                                                                <input type="text" id="txtLocation" name="txtLocation" class="form-control">
+
+                                                            </div>
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="textMiddle required">Budget</td>
+                                                        <td>
+                                                            <div class="form-group">
+                                                                <input type="text" id="txtBudget" name="txtBudget" class="form-control" placeholder="Number" onkeypress="return isNumberKey(event)">
+                                                                <input type="hidden" id="hdnCampId" value="0" name="hdnCampId" />
+                                                            </div>
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr id="CampaignStatus">
+                                                        <td class="textMiddle">Status</td>
+                                                        <td>
+
+                                                            <div class="material-switch">
+                                                                <input id="someSwitchOptionDefault" type="checkbox" name="someSwitchOption001">
+                                                                <label class="label-default" for="someSwitchOptionDefault"></label>
+                                                            </div>
+
+
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2">
+                                                            <div id="divCampNotify" class="error-red erroor-boder">All Fields are required</div>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default cancel" data-dismiss="modal">Cancel</button>
+                                                <button type="submit" id="btnCreateCamp" class="btn btn-default save" onclick="return CampaignValidation();">Save</button>
+                                            </div>
+
+                                        </form>
+                                    </div>
+
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <div id="ADGROUPS" class="tab-pane fade">
+
+                        <div class="campaings-header">
+
+                            <div class="row">
+                                <div class="col-md-7"><h3>Ad Groups</h3></div>
+
+                                <div class="col-md-5 text-right campaings-nav">
+                                    
+                                        <a class="fa-download-icon" href="/Students/Home/AdgroupDownloadExcel"><i class="fa fa-download" area-hidden="true"></i>  Download</a>
+                                    <span class="showTooltip visible-lg-inline-block" data-original-title="">
+                                        <a href="#" class="popup-btn disableItem" data-toggle="modal" data-target="#myModal1" onclick="showAdgroupPopup();"><img src="/Content/images/plus-icon.png" alt="icon" />Create AD Group</a>
+                                    </span>
+
+
+                                </div>
+                            </div>
+
+                            <div id="ADGroup_Result" class="loadSectn">
+                            </div>
+                        </div>
+                    </div>
+                    @using (Ajax.BeginForm("CreateADGroup", "Home", FormMethod.Post, new AjaxOptions { OnSuccess = "CloseAdgroupPopup", OnBegin = "AjaxBegin", OnFailure = "OnError" }))
+                    {
+                        <div class="modal fade" id="myModal1" role="dialog">
+                            <div class="modal-dialog modal-dialog1">
+
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close close1" data-dismiss="modal">&times;</button>
+                                        <h4 id="TitlePopupAdgroup" class="modal-title">Create Ad Group</h4>
+                                    </div>
+                                    <form id="formAdgroups" action="" method="post">
+                                        <div class="modal-body create-adgroup-modal-body">
+
+                                            <table>
+
+                                                <tr>
+
+                                                    <td class="textMiddle required">Campaign</td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <select id="ddlCampaignADGM" name="ddlCampaignADGM" class="form-control"> <option value="">Select Campaign</option>	</select>
+
+                                                        </div>
+                                                    </td>
+
+                                                </tr>
+
+                                                <tr>
+
+                                                    <td class="textMiddle required">Ad Group Name</td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <input type="text" name="txtADGroupName" id="txtADGroupName" class="form-control">
+
+                                                        </div>
+                                                    </td>
+
+                                                </tr>
+
+                                            </table>
+                                        </div>
+                                        <div class="model-heading">Ad Text</div>
+
+                                        <div id="div_Adtext" class="modal-body">
+
+                                            <table>
+
+
+                                                <tr>
+
+                                                    <td class="textMiddle required">Headline</td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <input type="text" name="txtADGroupHeadline" id="txtADGroupHeadline" class="form-control">
+                                                            <span id="spntxtADGroupHeadline"> 25 Characters left</span>
+                                                            <span id="spntADGroupHeadlinePreview" class="blue"></span>
+                                                        </div>
+
+
+                                                    </td>
+
+
+
+                                                <tr>
+
+                                                    <td class="textMiddle required">Description Line 1</td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <input type="text" name="txtADGroupDesc1" id="txtADGroupDesc1" class="form-control">
+                                                            <span id="spntxtADGroupDesc1"> 35 Characters left</span>
+                                                            <span id="spntADGroupDesc1Preview" style="color:#46871f"></span>
+
+                                                        </div>
+                                                    </td>
+
+                                                </tr>
+
+                                                <tr>
+
+                                                    <td class="textMiddle required">Description Line 2</td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <input type="text" name="txtADGroupDesc2" id="txtADGroupDesc2" class="form-control">
+                                                            <span id="spntxtADGroupDesc2"> 35 Characters left</span>
+                                                            <span id="spntADGroupDesc2Preview" style="color:#2a2a2a"></span>
+                                                        </div>
+                                                    </td>
+
+                                                </tr>
+
+                                                <tr>
+
+                                                    <td class="textMiddle required">Display URL</td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <span class="UrlPlaceHolder">http://</span>
+                                                            <input type="text" name="txtADGroupDespUrl" id="txtADGroupDespUrl" class="form-control spacing">
+
+                                                        </div>
+                                                    </td>
+
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="textMiddle required">Final URL</td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <span class="UrlPlaceHolder">http://</span>
+                                                            <input type="text" name="txtADGroupFinalUrl" id="txtADGroupFinalUrl" class="form-control spacing" >
+                                                            <input type="hidden" id="hdnAdGroupId" value="0" name="hdnAdGroupId" />
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2">
+                                                        
+                                                        <div id="divAdgroupNotify" class="error-red erroor-boder">All Fields are required</div>
+                                                    </td>
+                                                </tr>
+
+                                            </table>
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default cancel" data-dismiss="modal">Cancel</button>
+                                            <button type="submit" id="btnCreateAdgroups" class="btn btn-default save" onclick="return AdgroupValidation();">Save</button>
+                                        </div>
+
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div>
+                    }
+                    <div id="ADS" class="tab-pane fade">
+                        <div class="campaings-header">
+                            <div class="row">
+                                <div class="col-md-4"><h3>Ads</h3></div>
+
+                                <div class="col-md-8 text-right campaings-nav">
+                                    <span class="showTooltip visible-lg-inline-block" data-original-title="">
+                                        <a href="#" data-toggle="modal" data-target="#myModal2" onclick="showAdPopup();" class="popup-btn disableItem"><img src="~/Content/images/plus-icon.png" alt="icon" />Create Ad</a>
+                                    </span>
+                                </div>
+                            </div>
+                            <div id="ADs_Result" class="loadSectn">
+                            </div>
+                        </div>
+                    </div>
+                    @using (Ajax.BeginForm("CreateAD", "Home", FormMethod.Post, new AjaxOptions { OnSuccess = "CloseAdPopup", OnBegin = "AjaxBegin", OnFailure = "OnError" }))
+                    {
+                        <div class="modal fade" id="myModal2" role="dialog">
+                            <div class="modal-dialog modal-dialog1">
+
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close close1" data-dismiss="modal">&times;</button>
+                                        <h4 id="TitlePopupAd" class="modal-title">Ad Group</h4>
+                                    </div>
+                                    <form id="formAds" action="" method="post">
+                                        <div class="modal-body create-adgroup-modal-body">
+
+                                            <table>
+
+                                                <tr>
+
+                                                    <td class="textMiddle required">Campaign</td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <select id="ddlCampaignAD" name="ddlCampaignAD" class="form-control"> <option value="">Select Campaign</option>	</select>
+
+                                                        </div>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+
+                                                    <td class="textMiddle required">Ad Group Name</td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <select id="ddlADGroupName" name="ddlADGroupName" class="form-control"> <option value="">Select Ad Group</option>	</select>
+                                                            <input type="hidden" id="hidADGName" name="hidADGName" />
+
+                                                        </div>
+                                                    </td>
+                                                </tr>
+
+
+
+                                            </table>
+                                        </div>
+                                        <div class="model-heading">Ad Text</div>
+
+                                        <div class="modal-body">
+
+                                            <table>
+
+                                                
+
+                                                <tr>
+
+                                                    <td class="textMiddle required">Headline</td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            
+                                                            <input id="txtADHeadline" name="txtADHeadline" type="text" class="form-control">
+                                                            <span id="spntxtADHeadline"> 25 Characters left</span>
+                                                            <span id="spntADHeadlinePreview" class="blue"></span>
+
+                                                        </div>
+                                                    </td>
+
+                                                </tr>
+
+                                                <tr>
+
+                                                    <td class="textMiddle required">Description Line 1</td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <input id="txtADDesc1" name="txtADDesc1" type="text" class="form-control">
+                                                            <span id="spntxtADDesc1"> 35 Characters left</span>
+                                                            <span id="spntADDesc1Preview" style="color:#46871f"></span>
+
+                                                        </div>
+                                                    </td>
+
+                                                </tr>
+
+                                                <tr>
+
+                                                    <td class="textMiddle required">Description Line 2</td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <input id="txtADDesc2" name="txtADDesc2" type="text" class="form-control">
+                                                            <span id="spntxtADDesc2"> 35 Characters left</span>
+                                                            <span id="spntADDesc2Preview" style="color:#2a2a2a"></span>
+                                                        </div>
+                                                    </td>
+
+                                                </tr>
+
+                                                <tr>
+
+                                                    <td class="textMiddle required">Display URL</td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <span class="UrlPlaceHolder">http://</span>
+                                                            <input id="txtADDespUrl" name="txtADDespUrl" type="text" class="form-control spacing">
+
+
+                                                        </div>
+                                                    </td>
+
+                                                </tr>
+
+                                                <tr>
+
+                                                    <td class="textMiddle required">Final URL</td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <span class="UrlPlaceHolder">http://</span>
+                                                            <input id="txtADFinalUrl" name="txtADFinalUrl" type="text" class="form-control spacing">
+                                                            <input type="hidden" id="hdnAdId" value="0" name="hdnAdId" />
+                                                        </div>
+                                                    </td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2">
+
+                                                        <div id="divAdNotify" class="error-red erroor-boder">All Fields are required</div>
+                                                    </td>
+                                                </tr>
+
+
+                                            </table>
+                                        </div>
+
+
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default cancel" data-dismiss="modal">Cancel</button>
+                                            <button id="btnCreateAds" type="submit" onclick="return AdValidation();" class="btn btn-default save">Save</button>
+                                        </div>
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div>
+                    }
+                    <div id="KEYWORDS" class="tab-pane fade">
+                        <div class="campaings-header">
+                            <div class="row">
+                                <div class="col-md-4"><h3>keywords</h3></div>
+
+                                <div class="col-md-8 text-right campaings-nav">
+
+                                    
+                                        <a class="fa-download-icon" href="/Students/Home/KeywordDownloadExcel"><i class="fa fa-download" area-hidden="true"></i>  Download</a>
+                                    <span class="showTooltip visible-lg-inline-block" data-original-title="">
+                                        <a href="" data-toggle="modal" onclick="showKeywordPopup();" data-target="#myModal4" class="popup-btn disableItem"><img src="~/Content/images/plus-icon.png" alt="icon" />Add Keywords</a>
+                                    </span>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div id="Kewords_Result" class="loadSectn">
+
+                        </div>
+                    </div>
+                    <div id="RFA" class="tab-pane fade">
+                        <div class="campaings-header">
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="contant-campainge">
+                                        <p>
+                                            Lorem ipsum dolor sit amet, omnes noster atomorum ius id, omnis integre an pro. Liber bonorum deserunt vim no. Iriure regione ut quo. His utamur denique vituperatoribus in. Est ut fierent
+                                            splendide incorrupte, pro an unum partiendo contentiones.His utamur denique vituperatoribus in. Est ut fierent
+                                            splendide incorrupte, pro an unum partiendo contentiones.
+                                        </p>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div id="rfastatus" class="error-red erroor-boder">Current Request is Pending</div>
+                                </div>
+                            </div>
+                            <div class="go-btn">
+                                <span class="showTooltip visible-lg-inline-block" data-original-title="Request has been sent...">
+                                    <a id="linkreqsent" href="" class="popup-btn disableItem" onclick="return GoForAuction();"><img src="/Content/images/plus-icon.png" alt="icon">Go For Auction</a>
+                                </span>
+                            </div>
+
+                        </div>
+
+                        <div id="11">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+<div class="modal fade" id="myModal4" role="dialog">
+    <div class="modal-dialog modal-dialog1">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close close1" data-dismiss="modal">&times;</button>
+                <h4 id="TitlePopupKeyword" class="modal-title">Add Keyword</h4>
+            </div>
+            <form action="" method="post">
+                <div class="modal-body create-adgroup-modal-body">
+                    <table>
+                        <tr>
+                            <td class="textMiddle required">Campaign</td>
+                            <td>
+                                <div class="form-group">
+                                    <select class="form-control" id="ddlCampKey" name="ddlCampKey"></select>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="textMiddle required">Ad Group Name</td>
+                            <td>
+                                <div class="form-group">
+                                    <select class="form-control" id="ddlAdgrpKey" name="ddlAdgrpKey"> <option value="ALL">Select Ad Group</option></select>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="textMiddle required">Keyword</td>
+                            <td>
+                                <div class="form-group add-group-input-text">
+                                    <input class="form-control" id="txtAutoKey">
+                                </div>
+                                <button class="add-group-btn" id="btnMappKeyword" onclick="return AddKeywordstemp();">+</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <a href="/Students/Home/Tools" class="popup-btn1">Go To Keyword Planner</a>
+                            </td>
+
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="modal-body campaings-table table-responsive">
+                    <span id="spanmsgtble" class="text-danger" style="display:none; text-align:center">Please select campaign, Adgroup and Key before submit.</span>
+                    <div id="divkeywordmodel" class="keyword-model" style="display:none">
+                        <table id="tblKeywords">
+                            <tr>
+                                <th>S.No</th><th>Keyword/Pharses</th><th>Bid</th><th>Traffic</th><th>Setting</th>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="modal-body  create-adgroup-modal-body">
+                    <div id="divKeywordNotify" class="error-red erroor-boder">All fields are required</div>
+                </div>
+                @*@using (Html.BeginForm("MapKeywordsAD", "Home", FormMethod.Post, new { onsubmit = "return BatchValidation();" }))
+                    {*@
+                <input type="hidden" id="hdnKeywordFlag" value="CREATE" name="hdnKeywordFlag" />
+
+                <div class="modal-footer">
+                    <button id="btnCancel" type="button" class="btn btn-default cancel" data-dismiss="modal" >Cancel</button>
+                    <button id="btnKeyMappAddMain" type="button" class="btn btn-default save" onclick="return SaveMapKeywords();">Save</button>
+                </div>
+                @*}*@
+
+            </form>
+
+
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade" id="ModalBatchSuccess" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                @*<button type="button" class="close" data-dismiss="modal">&times;</button>*@
+                <h5 id="BatchSuccessHead" class="modal-title">Auction request accepted </h5>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Edit-->
+
+
+<script>
+    (function ($) {
+        $(window).load(function () {
+            BindCampaignDropdown();
+            location.hash = "#CAMPAIGNS";
+            window.location = location.hash;
+            BindStudentCampaignTab();
+        });
+    })(jQuery);
+    $(document).ready(function () {
+        //ShowResultStudentCampaignTab();
+        $("#liCampaigns").addClass("active");
+        $(".nav-tabs a").click(function ()
+        {
+            debugger;
+            $(this).tab('show');
+            //alert(this);
+        });
+        //li_ads
+        $('.nav-tabs a').on('shown.bs.tab', function (event) {
+            debugger;
+            var x = $(event.target).text();         // active tab
+            var y = $(event.relatedTarget).text();  // previous tab
+            $(".act span").text(x);
+            $(".prev span").text(y);
+           // alert(x);
+            // alert(y);
+            window.location.href = this;
+            BindStudentCampaignTab();
+        });
+
+        //$("#liCampaigns").addClass("active");
+        //var sURL = window.location.href;
+        //var currTab = sURL.split('#');
+
+        //if (currTab.length == 2)
+        //{
+        //    $('#ul_navTab li').removeClass("active");
+        //    $('#ul_navTab #li_' + currTab[1] + '').addClass("active");
+
+
+        //    $('.tab-content >div').removeClass("active in");
+        //    $('.tab-content #' + currTab[1] + '').addClass("active in");
+
+        //}
+        //else if (currTab.length > 2)
+        //{
+        //    $('#ul_navTab li').removeClass("active");
+        //    $('#ul_navTab #li_' + currTab[1] + '').addClass("active");
+
+        //    $('.tab-content >div').removeClass("active in");
+        //    $('.tab-content #' + currTab[1] + '').addClass("active in");
+
+        //    if (currTab[1] == 'adgroups') {
+        //        $('#ddlCampaign2').val(currTab[2]);
+        //        $('#ddlCampaign2').trigger('change');
+        //    }
+        //    else if (currTab[1] == 'ads') {
+        //        var currTab1 = currTab[2].split('~');
+        //        $('#ddlCampaignAD1').val(currTab1[0]);
+        //        $('#ddlCampaignAD1').trigger('change');
+        //        $('#ddlADGroupName1').val(currTab1[1]);
+        //        $('#ddlADGroupName1').trigger('change');
+        //    }
+        //}
+    });
+    function BindCampaignDropdown() {
+        $("#ddlUniqueAdGroups").css("pointer-events", "none");
+        $("#ddlUniqueAdGroups").css("opacity", "0.6");
+        $('#ddlUniqueCampaign').empty();
+        $('#ddlUniqueCampaign').append($('<option></option>').val("ALL").html("ALL Campaigns"));
+        $.ajax({
+            url: "/Students/Home/GetCampaigns",
+            method: 'GET',
+            //data: { cCode: '1' },
+            success: function (data) {
+                $.each(data, function (i, item) {
+                    $('#ddlUniqueCampaign').append($('<option></option>').val(item.CampaignCode).html(item.CampaignName));
+                });
+            }, async: false,
+            error: function (data) {
+            }
+        });
+    }
+    function BindStudentCampaignTab() {
+        debugger;
+        var UrlLength = window.location.href.toString().split("#").length;
+        if (window.location.href.toString().split("#")[1].toUpperCase() == "CAMPAIGNS" && UrlLength == 2) {
+            getCampaignsOnDemand();
+        }
+        if (window.location.href.toString().split("#")[1].toUpperCase() == "ADGROUPS" && UrlLength == 2) {
+            getADGroupsOnDemand();
+        }
+        if (window.location.href.toString().split("#")[1].toUpperCase() == "ADS" && UrlLength == 2) {
+            getCampaignAdsOnDemand();
+        }
+        if (window.location.href.toString().split("#")[1].toUpperCase() == "KEYWORDS" && UrlLength == 2) {
+            getMappedkeyWordsOnDemand();
+        }
+        else {
+            CheckStudentRFAStatus();
+        }
+    }
+    function closeCampaignPopup(data) {
+        debugger;
+        var JsonObj = data[0];
+        $('#divCampNotify').text(data[0]);
+        fadeOut("divCampNotify");
+        if (data[0] == "0") {
+            $('#hdnCampId').val('0');
+            $('#SuccessHead').text('New Campaign is added successfully.');
+        }
+        if (data[0] == "1") {
+            $('#hdnCampId').val('0');
+            $('#SuccessHead').text('Campaign is updated successfully.');
+        }
+        $("#btnCreateCamp").attr("disabled", false);
+        if (data[1] == "1") {
+            ClearCampaignPopup();
+            BindStudentCampaignTab();
+            $('#ModalSuccess').modal('show');
+            $('#hdnCampId').val('0');
+        }
+        BindCampaignDropdown();
+        getAllCamp();
+    }
+    function CloseAdgroupPopup(data) {
+        debugger;
+        var JsonObj = data[0];
+        $('#divAdgroupNotify').text(data[0]);
+        fadeOut("divAdgroupNotify");
+        if (data[0] == "0") {
+            $('#hdnAdGroupId').val('0');
+            $('#SuccessHead').text('New Ad group is added successfully.');
+        }
+        if (data[0] == "1") {
+            $('#hdnAdGroupId').val('0');
+            $('#SuccessHead').text('Ad group is updated successfully.');
+        }
+        $("#btnCreateAdgroups").attr("disabled", false);
+        if (data[1] == "1") {
+            ClearAdgroupPopup();
+            BindStudentCampaignTab();
+            $('#ModalSuccess').modal('show');
+            $('#hdnAdGroupId').val('0');
+        }
+    }
+    function CloseAdPopup(data) {
+        debugger;
+        var JsonObj = data[0];
+        $('#divAdNotify').text(data[0]);
+        fadeOut("divAdNotify");
+        if (data[0] == "0") {
+            $('#hdnAdId').val('0');
+            $('#SuccessHead').text('New Ad is added successfully.');
+        }
+        if (data[0] == "1") {
+            $('#hdnAdId').val('0');
+            $('#SuccessHead').text('Ad is updated successfully');
+        }
+        $("#btnCreateAds").attr("disabled", false);
+        if (data[1] == "1") {
+            ClearAdPopup();
+            BindStudentCampaignTab();
+            $('#ModalSuccess').modal('show');
+            $('#hdnAdId').val('0');
+        }
+    }
+    function Failure() {
+        alert('Some internal error occurs, please contact to administrator.');
+    }
+    function AjaxBegin() {
+        $("#btnCreateCamp").attr("disabled", true);
+        $("#btnCreateAdgroups").attr("disabled", true);
+        $("#btnCreateAds").attr("disabled", true);
+    }
+</script>
+
+
+<!---------------------  Content End  --------------------->

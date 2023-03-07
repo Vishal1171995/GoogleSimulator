@@ -1,0 +1,1860 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using Whisker.Models;
+using System.Web.Mvc.Ajax;
+using Whisker.App_Start;
+using Whisker.Areas.Admin.Models;
+using Whisker.CommonClass;
+using System.IO;
+using System.Data.OleDb;
+using System.Data;
+using System.Web.Script.Serialization;
+
+namespace Whisker.Areas.Admin.Controllers
+{
+    [SessionExpireFilterAttribute]
+    [ExceptionHandler]
+    public class ManageController : Controller
+    {
+        //
+        // GET: /Admin/ManageBatches/
+        WhiskersDBEntities objDBentity = new WhiskersDBEntities();
+        UserLoginInfo objUserInfo = new UserLoginInfo() ;
+        Batch BtchDtl = new Batch();
+        Student stdtDtl;
+        Account accDtl;
+        Keyword KeyDtl;
+        Phrase PhraseDtl;
+        CommonFunc cmnF = new CommonFunc();
+        public ActionResult Index()
+        {
+            try
+            {
+                ViewBag.TrainerDetails = objDBentity.prcUserDetailsOnDemand(1).ToArray();
+                ViewBag.Location = objDBentity.LocationMasters.ToList();
+                GetAccountDetails();
+                BindTime();
+                return View();
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        #region Batches
+        public ActionResult Batches()
+        {
+            try
+            {
+                ViewBag.TrainerDetails = objDBentity.prcUserDetailsOnDemand(1).ToArray();
+                ViewBag.Location = objDBentity.LocationMasters.ToList();
+                GetAccountDetails();
+                BindTime();
+                return View();
+            }
+            catch
+            {
+                return View();
+            }
+        }
+        public JsonResult getBatchesOnDemand(string BatchTime, string TrainerCode, string LocationCode)
+        {
+            try
+            {
+                string TmpTrainerCode = string.IsNullOrEmpty(TrainerCode) ? null : TrainerCode;
+                string TmpLocationCode = string.IsNullOrEmpty(LocationCode) ? null : LocationCode;
+
+                GetAccountDetails();
+                var getBatches = objDBentity.prcBatchesOnDemand(Convert.ToInt32(BatchTime), TmpTrainerCode, TmpLocationCode, null).ToArray();
+                return Json(getBatches, JsonRequestBehavior.AllowGet);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+        private void BindTime()
+        {
+            // Set the start time (00:00 means 12:00 AM)
+            DateTime StartTime = DateTime.ParseExact("00:00", "HH:mm", null);
+            // Set the end time (23:55 means 11:55 PM)
+            DateTime EndTime = DateTime.ParseExact("23:59", "HH:mm", null);
+            //Set 5 minutes interval
+            TimeSpan Interval = new TimeSpan(1, 0, 0);
+            //To set 1 hour interval
+            //TimeSpan Interval = new TimeSpan(1, 0, 0); 
+            List<SelectListItem> BindTime = new List<SelectListItem>();
+            while (StartTime <= EndTime)
+            {
+                BindTime.Add(new SelectListItem
+                { Text = StartTime.ToShortTimeString(), Value = Interval.ToString() });
+                StartTime = StartTime.Add(Interval);
+
+            }
+            ViewBag.BindTime = BindTime;
+        }
+        [HttpPost]
+        public ActionResult CreateBatch(FormCollection fc)
+        {
+            List<string> ContentResult = new List<string>();
+            if (string.IsNullOrEmpty(fc["txtBatchName"]) == true)
+            {
+                ContentResult.Add("Batch name is required.");
+                ContentResult.Add("0");
+                goto Exitlabel;
+                //return Content("Batch Name is required.");
+
+            }
+            if (string.IsNullOrEmpty(fc["txtLocation"]) == true)
+            {
+                ContentResult.Add("location is required.");
+                ContentResult.Add("0");
+                goto Exitlabel;
+            }
+            if (string.IsNullOrEmpty(fc["txtAdress"]) == true)
+            {
+                ContentResult.Add("Address is required.");
+                ContentResult.Add("0");
+                goto Exitlabel;
+            }
+            if (string.IsNullOrEmpty(fc["txtBxBatchStartDate"]) == true)
+            {
+                ContentResult.Add("Start date is required.");
+                ContentResult.Add("0");
+                goto Exitlabel;
+            }
+            if (string.IsNullOrEmpty(fc["txtBxBatchEndDate"]) == true)
+            {
+                ContentResult.Add("End date is required.");
+                ContentResult.Add("0");
+                goto Exitlabel;
+            }
+            //if (fc["dropBindTime"] == "")
+            //{
+            //    ContentResult.Add("Time is required.");
+            //    ContentResult.Add("0");
+            //    goto Exitlabel;
+            //}
+            BtchDtl.StartDate = cmnF.StringToDate(fc["txtBxBatchStartDate"]);
+            BtchDtl.EndDate = cmnF.StringToDate(fc["txtBxBatchEndDate"]);
+            if (BtchDtl.StartDate > BtchDtl.EndDate)
+            {
+                ContentResult.Add("Start date should be less than end date.");
+                ContentResult.Add("0");
+                goto Exitlabel;
+            }
+            BtchDtl.BatchName = fc["txtBatchName"].Trim();
+            BtchDtl.Location = fc["txtLocation"].Trim();
+            BtchDtl.Address = fc["txtAdress"].Trim();
+            BtchDtl.StringStartDate = fc["txtBxBatchStartDate"];
+            BtchDtl.StringEndDate = fc["txtBxBatchEndDate"];
+            BtchDtl.Time = fc["dropBindTime"];
+
+            var TempResult1 = cmnF.GetIntegerPrimaryKeyOnDataExist("BatchMaster", "BatchName", BtchDtl.BatchName, "BatchCode");
+            if (string.IsNullOrEmpty(TempResult1) != true)
+            {
+                var t1 = fc["hdnBatchCode"].ToUpper();
+                if (fc["hdnBatchCode"].ToUpper() == TempResult1.ToUpper())
+                {
+
+                }
+                else
+                {
+                    ContentResult.Add("This batch is already exist.");
+                    ContentResult.Add("0");
+                    goto Exitlabel;
+                }
+            }
+            var TempResult2 = cmnF.GetPrimaryKeyOnDataExist("LocationMaster", "LocationName", BtchDtl.Location, "LocationCode");
+            if (string.IsNullOrEmpty(TempResult2))
+            {
+                BtchDtl.LocationCode = null;
+            }
+            else
+            {
+                BtchDtl.LocationCode = TempResult2;
+            }
+            var u = fc["hdnBatchCode"].ToUpper();
+            if (fc["hdnBatchCode"].ToUpper() == "0")
+            {
+                objDBentity.prcCreateBatch(BtchDtl.BatchName, BtchDtl.Location, BtchDtl.Address, BtchDtl.StartDate, BtchDtl.EndDate, BtchDtl.LocationCode, null, null, "INSERT");
+                ContentResult.Add("0");
+                ContentResult.Add("1");
+            }
+            if (fc["hdnBatchCode"].ToUpper() != "0")
+            {
+                objDBentity.prcCreateBatch(BtchDtl.BatchName, BtchDtl.Location, BtchDtl.Address, BtchDtl.StartDate, BtchDtl.EndDate, BtchDtl.LocationCode, null, fc["hdnBatchCode"], "UPDATE");
+                ContentResult.Add("1");
+                ContentResult.Add("1");
+            }
+        Exitlabel:
+            return Json(ContentResult, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult getSingleBatchDetails(string BatchCode)
+        {
+            //GetAccountDetails();
+            if (BatchCode == null || BatchCode == "" || BatchCode == "undefined")
+            {
+                return null;
+            }
+            List<object> SingleBatchDetails = new List<object>();
+            var Detail1 = objDBentity.prcBatchesOnDemand(0, null, null, BatchCode).ToArray();
+            //var Detail1 = objDBentity.BatchMasters.Where(x => x.BatchCode == BatchCode);
+            SingleBatchDetails.Add(Detail1);
+            var vg = Json(SingleBatchDetails, JsonRequestBehavior.AllowGet);
+            return Json(SingleBatchDetails, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult deleteSingleBatch(string BatchCode)
+        {
+            List<string> ContentResult = new List<string>();
+            if (BatchCode == null || BatchCode == "" || BatchCode == "undefined")
+            {
+                return null;
+            }
+            string TmpBatchCode = string.IsNullOrEmpty(BatchCode) ? null : BatchCode;
+            Int32 TmpIntegerBatchCode = Convert.ToInt32(TmpBatchCode);
+            var TempResult1 = (from BSM in objDBentity.BatchAndStudentMappings
+                               where BSM.BatchCode == TmpIntegerBatchCode
+                               select BSM.BatchCode).ToList();
+            var TempResult2 = (from BSM in objDBentity.BatchAndTrainerMappings
+                               where BSM.BatchCode == TmpIntegerBatchCode
+                               select BSM.BatchCode).ToList();
+            if (TempResult1.Count > 0 || TempResult2.Count > 0)
+            {
+                ContentResult.Add("0");
+                ContentResult.Add("0");
+                goto Exitlabel;
+            }
+            if (TempResult1.Count <= 0 && TempResult2.Count <= 0)
+            {
+                objDBentity.prcCreateBatch(null, null, null, null, null, null, null, BatchCode, "DELETE");
+                ContentResult.Add("1");
+                ContentResult.Add("1");
+            }
+            Exitlabel:
+            return Json(ContentResult, JsonRequestBehavior.AllowGet);
+        }
+
+
+
+        #region BatchView
+        public ActionResult BatchView()
+        {
+            GetAccountDetails();
+            return View();
+        }
+        public JsonResult getStudentToBatch(string StudentName)
+        {
+            var StudentToBatch = from UM in objDBentity.UserMasters
+                                 join BSM in objDBentity.BatchAndStudentMappings
+                                 on UM.UserID equals BSM.UserID into Info
+                                 from temp in Info.DefaultIfEmpty()
+                                 where UM.UserType == 0 && UM.IsActive==true && temp.BatchCode == null && (UM.FirstName + " ( " + UM.Email + " ) ").ToLower().Contains(StudentName.ToLower())
+                                 select new
+                                 {
+                                     ID = UM.UserID,
+                                     Name = UM.FirstName + " ( " + UM.Email + " )",
+                                 };
+            return Json(StudentToBatch, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult getTrainerToBatch(string TrainerName, string BatchCode)
+        {
+            string TmpTrainerName = string.IsNullOrEmpty(TrainerName) ? null : TrainerName;
+            string TmpBatchCode = string.IsNullOrEmpty(BatchCode) ? null : BatchCode;
+            var TrainerToBatch = objDBentity.getTrainerToBatch(TmpTrainerName, TmpBatchCode).ToArray();
+            return Json(TrainerToBatch, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult getAssignedStudentsPerBatch(string BatchCode)
+        {
+            string TmpBatchCode = string.IsNullOrEmpty(BatchCode) ? null : BatchCode;
+            var getBatches = objDBentity.getAssignedStudentsPerBatch(TmpBatchCode, "STUDENT").ToArray();
+            return Json(getBatches, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult getAssignedTrainersPerBatch(string BatchCode)
+        {
+            string TmpBatchCode = string.IsNullOrEmpty(BatchCode) ? null : BatchCode;
+            var getBatches = objDBentity.getAssignedStudentsPerBatch(TmpBatchCode, "TRAINER").ToArray();
+            return Json(getBatches, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult AssignedStudentPerBatch(string BatchCode, string UserID)
+        {
+            string TmpBatchCode = string.IsNullOrEmpty(BatchCode) ? null : BatchCode;
+            string TmpUserID = string.IsNullOrEmpty(UserID) ? null : UserID;
+
+            var getBatches = objDBentity.prcAssignedStudentsAndTrainer(TmpBatchCode, TmpUserID, "STUDENT", "0", "");
+            return Json(getBatches, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult AssignedTrainerPerBatch(string BatchCode, string UserID)
+        {
+            string TmpBatchCode = string.IsNullOrEmpty(BatchCode) ? null : BatchCode;
+            string TmpUserID = string.IsNullOrEmpty(UserID) ? null : UserID;
+
+            var getBatches = objDBentity.prcAssignedStudentsAndTrainer(TmpBatchCode, TmpUserID, "TRAINER", "0", "");
+            return Json(getBatches, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult deleteAssignedStudentPerBatch(string BatchCode, string UserID)
+        {
+            string TmpBatchCode = string.IsNullOrEmpty(BatchCode) ? null : BatchCode;
+            string TmpUserID = string.IsNullOrEmpty(UserID) ? null : UserID;
+
+            var getBatches = objDBentity.prcAssignedStudentsAndTrainer(TmpBatchCode, TmpUserID, "STUDENT", "", "DELETE");
+            return Json(getBatches, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult deleteAssignedTrainerPerBatch(string BatchCode, string UserID)
+        {
+            string TmpBatchCode = string.IsNullOrEmpty(BatchCode) ? null : BatchCode;
+            string TmpUserID = string.IsNullOrEmpty(UserID) ? null : UserID;
+
+            var getBatches = objDBentity.prcAssignedStudentsAndTrainer(TmpBatchCode, TmpUserID, "TRAINER", "", "DELETE");
+            return Json(getBatches, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult FinalAssignStudentAndTrainersToBatch(string BatchCode)
+        {
+            List<string> ContentResult = new List<string>();
+
+            string TmpBatchCode = string.IsNullOrEmpty(BatchCode) ? null : BatchCode;
+            Int32 TmpIntegerBatchCode = Convert.ToInt32(TmpBatchCode);
+
+            var TempResult1 = (from BSM in objDBentity.BatchAndStudentMappings
+                               where BSM.BatchCode == TmpIntegerBatchCode
+                               where BSM.isMappingActive == false
+                               select BSM.BatchCode).ToList();
+            var TempResult2 = (from BSM in objDBentity.BatchAndTrainerMappings
+                               where BSM.BatchCode == TmpIntegerBatchCode
+                               where BSM.isMappingActive == false
+                               select BSM.BatchCode).ToList();
+            if (TempResult1.Count <= 0 && TempResult2.Count <= 0)
+            {
+                ContentResult.Add("0");
+                ContentResult.Add("0");
+                goto Exitlabel;
+            }
+            if (TempResult1.Count > 0 || TempResult2.Count > 0)
+            {
+                var AssignedStudents = objDBentity.prcAssignedStudentsAndTrainer(TmpBatchCode, "", "STUDENT", "1", "");
+                var AssignedTrainers = objDBentity.prcAssignedStudentsAndTrainer(TmpBatchCode, "", "TRAINER", "1", "");
+                ContentResult.Add("1");
+                ContentResult.Add("1");
+            }
+        Exitlabel:
+            return Json(ContentResult, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+        #endregion
+
+        #region Trainers
+        public ActionResult Trainers()
+        {
+
+            try
+            {
+                ViewBag.TrainerDetails = objDBentity.prcUserDetailsOnDemand(1).ToArray();
+                ViewBag.BatchDetails = objDBentity.BatchMasters.Where(x => x.isActive == true).OrderBy(x => x.BatchName).ToList();
+                ViewBag.Location = objDBentity.LocationMasters.ToList();
+                GetAccountDetails();
+                return View();
+            }
+            catch
+            {
+                return View();
+            }
+
+        }
+        public JsonResult getTrainersOnDemand(string TrainerCode, string BatchCode, string LocationCode)
+        {
+            try
+            {
+                string TmpTrainerCode = string.IsNullOrEmpty(TrainerCode) ? null : TrainerCode;
+                string TmpBatchCode = string.IsNullOrEmpty(BatchCode) ? null : BatchCode;
+                string TmpLocationCode = string.IsNullOrEmpty(LocationCode) ? null : LocationCode;
+
+                GetAccountDetails();
+                var getTrainers = objDBentity.prcTrainerOnDemand(TmpBatchCode, TmpLocationCode, TmpTrainerCode).ToArray();
+                return Json(getTrainers, JsonRequestBehavior.AllowGet);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+        [HttpPost]
+        public ActionResult CreateTrainer(FormCollection fc)
+        {
+            stdtDtl = new Student();
+            List<string> ContentResult = new List<string>();
+            if (string.IsNullOrEmpty(fc["txtFirstName"]) == true)
+            {
+                ContentResult.Add("First Name is required.");//to show error calidation message
+                ContentResult.Add("0");                      //to show response of stored procedure has not executed
+                goto Exitlabel;
+                //return Content("Batch Name is required.");
+
+            }
+            //if (string.IsNullOrEmpty(fc["txtMiddleName"]) == true)
+            //{
+            //    ContentResult.Add("Middle Name is required.");
+            //    ContentResult.Add("0");
+            //    goto Exitlabel;
+            //    //return Content("Batch Name is required.");
+
+            //}
+            if (string.IsNullOrEmpty(fc["txtLastName"]) == true)
+            {
+                ContentResult.Add("Last Name is required.");
+                ContentResult.Add("0");
+                goto Exitlabel;
+                //return Content("Batch Name is required.");
+
+            }
+            if (string.IsNullOrEmpty(fc["txtLocation"]) == true)
+            {
+                ContentResult.Add("Location is required.");
+                ContentResult.Add("0");
+                goto Exitlabel;
+            }
+            if (string.IsNullOrEmpty(fc["txtEmail"]) == true)
+            {
+                ContentResult.Add("Email is required.");
+                ContentResult.Add("0");
+                goto Exitlabel;
+            }
+            if (string.IsNullOrEmpty(fc["txtContact"]) == true)
+            {
+
+                ContentResult.Add("Contact is required.");
+                ContentResult.Add("0");
+                goto Exitlabel;
+            }
+            stdtDtl.FirstName = fc["txtFirstName"].Trim();
+            stdtDtl.MiddleName = fc["txtMiddleName"].Trim();
+            stdtDtl.LastName = fc["txtLastName"].Trim();
+            stdtDtl.Location = fc["txtLocation"].Trim();
+            stdtDtl.Email = fc["txtEmail"].Trim();
+            stdtDtl.Contact = fc["txtContact"].Trim();
+
+            var TempResult1 = cmnF.GetPrimaryKeyOnDataExist("UserMaster", "Email", fc["txtEmail"].Trim(), "UserID");
+            if (string.IsNullOrEmpty(TempResult1) != true)
+            {
+                if (fc["hdnTrainerCode"].ToUpper() == TempResult1.ToUpper())
+                {
+
+                }
+                else
+                {
+                    ContentResult.Add("This EmailID is already exist.");
+                    ContentResult.Add("0");
+                    goto Exitlabel;
+                }
+            }
+
+            var TempResult2 = cmnF.GetPrimaryKeyOnDataExist("LocationMaster", "LocationName", stdtDtl.Location, "LocationCode");
+            if (string.IsNullOrEmpty(TempResult2))
+            {
+                stdtDtl.LocationCode = null;
+            }
+            else
+            {
+                stdtDtl.LocationCode = TempResult2;
+            }
+            var u = fc["hdnTrainerCode"].ToUpper();
+
+            //if hidden field- fc["hdnStudentCode"] value is zero means create code will work
+            //if hidden field- fc["hdnStudentCode"] value is zero means Edit code will work
+            if (fc["hdnTrainerCode"].ToUpper() == "0")
+            {
+                objDBentity.prcCreateTrainer(stdtDtl.FirstName, stdtDtl.MiddleName, stdtDtl.LastName, stdtDtl.Location, stdtDtl.Email, stdtDtl.Contact, stdtDtl.LocationCode, null, "INSERT");
+                ContentResult.Add("0");//to show response of create message
+                ContentResult.Add("1");//to show response of stored procedure working correctly
+            }
+            if (fc["hdnTrainerCode"].ToUpper() != "0")
+            {
+                objDBentity.prcCreateTrainer(stdtDtl.FirstName, stdtDtl.MiddleName, stdtDtl.LastName, stdtDtl.Location, stdtDtl.Email, stdtDtl.Contact, stdtDtl.LocationCode, fc["hdnTrainerCode"], "UPDATE");
+                ContentResult.Add("1");//to show response of edit message
+                ContentResult.Add("1");//to show response of stored procedure working correctly
+            }
+        Exitlabel:
+            return Json(ContentResult, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult getSingleTrainerDetails(string TrainerCode)
+        {
+            //GetAccountDetails();
+            if (TrainerCode == null || TrainerCode == "" || TrainerCode == "undefined")
+            {
+                return null;
+            }
+            List<object> SingleTrainerDetails = new List<object>();
+            var Detail1 = objDBentity.prcTrainerOnDemand(null, null, TrainerCode).ToArray();
+            //var Detail1 = objDBentity.BatchMasters.Where(x => x.BatchCode == BatchCode);
+            SingleTrainerDetails.Add(Detail1);
+            var vg = Json(SingleTrainerDetails, JsonRequestBehavior.AllowGet);
+            return Json(SingleTrainerDetails, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult deleteSingleTrainer(string TrainerCode)
+        {
+            List<string> ContentResult = new List<string>();
+            if (TrainerCode == null || TrainerCode == "" || TrainerCode == "undefined")
+            {
+                return null;
+            }
+            string TmpTrainerCode = string.IsNullOrEmpty(TrainerCode) ? null : TrainerCode;
+            var TempResult2 = (from BTM in objDBentity.BatchAndTrainerMappings
+                               where BTM.UserID == TmpTrainerCode
+                               select BTM.BatchCode).ToList();
+            if (TempResult2.Count > 0)
+            {
+                ContentResult.Add("0");
+                ContentResult.Add("0");
+                goto Exitlabel;
+            }
+            if (TempResult2.Count <= 0)
+            {
+                objDBentity.prcCreateTrainer(null, null, null, null, null, null, null, TrainerCode, "DELETE");
+                ContentResult.Add("1");
+                ContentResult.Add("1");
+            }
+        Exitlabel:
+            return Json(ContentResult, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public ActionResult SaveTrainerExcel(FormCollection fc, IEnumerable<HttpPostedFileBase> excelfile)
+        {
+            var ExcelImagePath = "";
+            var FileExtension = "";
+            var fileName = "";
+            var newPath = "";
+            DataSet ds = new DataSet();
+            stdtDtl = new Student();
+
+            HttpPostedFileBase UploadedFile = excelfile.FirstOrDefault();
+            List<string> ContentResult = new List<string>();
+            if (UploadedFile == null && fc["hdnIdenType"].ToUpper() != "TRAINER")
+            {
+                ContentResult.Add("Please Upload Excel");//to show error calidation message
+                ContentResult.Add("0");                           //to show response of stored procedure has not executed
+                goto Exitlabel;
+            }
+            if (UploadedFile != null)
+            {
+                if (UploadedFile.ContentLength > 0)
+                {
+                    int MaxContentLength = 1024 * 1024 * 4; //Size = 4 MB
+                    string[] AllowedFileExtensions = new string[] { ".xls", ".xlsx", ".csv" };
+                    if (!AllowedFileExtensions.Contains
+                       (UploadedFile.FileName.Substring(UploadedFile.FileName.LastIndexOf('.'))))
+                    {
+                        ContentResult.Add("Choose valid file types are: " + string.Join(", ", AllowedFileExtensions));//to show error calidation message
+                        ContentResult.Add("0");                           //to show response of stored procedure has not executed
+                        goto Exitlabel;
+
+                    }
+                    else if (UploadedFile.ContentLength > MaxContentLength)
+                    {
+                        ContentResult.Add("Your file is too large, maximum allowed size is: " + MaxContentLength + " MB");//to show error calidation message
+                        ContentResult.Add("0");                           //to show response of stored procedure has not executed
+                        goto Exitlabel;
+                    }
+                    fileName = Path.GetFileName(UploadedFile.FileName);
+                    newPath = DateTime.Now.ToString("yyyyMMddHHmmss") + '_' + fileName;
+                    FileExtension = (UploadedFile.FileName.Substring(UploadedFile.FileName.LastIndexOf('.')));
+                }
+            }
+            ExcelImagePath = "/ExcelFiles/" + newPath;
+            if (fc["hdnIdenType"].ToUpper() == "TRAINER")
+            {
+                var path = Path.Combine(Server.MapPath("~/ExcelFiles/"), newPath);
+                if (System.IO.File.Exists(path))
+                {
+                    System.IO.File.Delete(path);
+                }
+                UploadedFile.SaveAs(path);
+                string excelConnectionString = string.Empty;
+                excelConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + path + ";Extended Properties=\"Excel 12.0;HDR=Yes;IMEX=2\"";
+                //connection String for xls file format.
+                if (FileExtension == ".xls")
+                {
+                    excelConnectionString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + path + ";Extended Properties=\"Excel 8.0;HDR=Yes;IMEX=2\"";
+                }
+                //connection String for xlsx file format.
+                else if (FileExtension == ".xlsx")
+                {
+                    excelConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + path + ";Extended Properties=\"Excel 12.0;HDR=Yes;IMEX=2\"";
+                }
+                //Create Connection to Excel work book and add oledb namespace
+                OleDbConnection excelConnection = new OleDbConnection(excelConnectionString);
+                excelConnection.Open();
+                DataTable dt = new DataTable();
+
+                dt = excelConnection.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, null);
+                if (dt == null)
+                {
+                    return null;
+                }
+                String[] excelSheets = new String[dt.Rows.Count];
+                int t = 0;
+                int mailuid = 0; ;
+                //excel data saves in temp file here.
+                foreach (DataRow row in dt.Rows)
+                {
+                    excelSheets[t] = row["TABLE_NAME"].ToString();
+                    t++;
+                }
+                OleDbConnection excelConnection1 = new OleDbConnection(excelConnectionString);
+
+                string query = string.Format("Select * from [{0}]", excelSheets[0]);
+                using (OleDbDataAdapter dataAdapter = new OleDbDataAdapter(query, excelConnection1))
+                {
+                    dataAdapter.Fill(ds);
+                }
+                List<string> TempContentResult = new List<string>();
+                List<string> InCorrectRows = new List<string>();
+                int unsuccessfulCount = 0;
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                {
+                    stdtDtl.FirstName = ds.Tables[0].Rows[i]["FirstName"].ToString();
+                    stdtDtl.MiddleName = ds.Tables[0].Rows[i]["MiddleName"].ToString();
+                    stdtDtl.LastName = ds.Tables[0].Rows[i]["LastName"].ToString();
+                    stdtDtl.Location = ds.Tables[0].Rows[i]["Location"].ToString();
+                    stdtDtl.Email = ds.Tables[0].Rows[i]["Email"].ToString();
+                    stdtDtl.Contact = ds.Tables[0].Rows[i]["Contact"].ToString();
+                    TempContentResult = CheckValidStudent();
+                    if (TempContentResult[0] == "1")
+                    {
+                        objDBentity.prcCreateTrainer(stdtDtl.FirstName, stdtDtl.MiddleName, stdtDtl.LastName, stdtDtl.Location, stdtDtl.Email, stdtDtl.Contact, stdtDtl.LocationCode, null, "INSERT");
+                    }
+                    if (TempContentResult[0] == "0")
+                    {
+                        InCorrectRows.Add((i + 1).ToString());
+                        unsuccessfulCount++;
+                    }
+                }
+                ContentResult.Add("1");
+                ContentResult.Add("Total rows " + ds.Tables[0].Rows.Count);
+                ContentResult.Add("Successful rows " + (Convert.ToInt32(ds.Tables[0].Rows.Count) - unsuccessfulCount).ToString());
+                ContentResult.Add("Unsuccessful rows " + InCorrectRows.Count);
+                if (InCorrectRows.Count > 0)
+                {
+                    ContentResult.Add("Incorrect rows index are  " + string.Join(", ", InCorrectRows));
+                }
+                else
+                {
+                    ContentResult.Add("");
+                }
+                excelConnection.Close();
+                // objDBentity.prcCreateAccount(accDtl.AccountName, accDtl.ImagePath, accDtl.AccountDescription, null, "INSERT");
+                // ContentResult.Add("0");//to show response of create message
+                //  ContentResult.Add("1");//to show response of stored procedure working correctly
+            }
+        Exitlabel:
+            return Json(ContentResult, JsonRequestBehavior.AllowGet);
+        }
+        public List<string> CheckValidStudent()
+        {
+            //1 means true and zero means false
+            List<string> ContentResult = new List<string>();
+            if (string.IsNullOrEmpty(stdtDtl.FirstName) == true)
+            {
+                ContentResult.Add("0");
+                ContentResult.Add("");
+                goto Exitlabel;
+            }
+            if (string.IsNullOrEmpty(stdtDtl.LastName) == true)
+            {
+                ContentResult.Add("0");
+                ContentResult.Add("");
+                goto Exitlabel;
+            }
+            if (string.IsNullOrEmpty(stdtDtl.Location) == true)
+            {
+                ContentResult.Add("0");
+                ContentResult.Add("");
+                goto Exitlabel;
+            }
+            if (string.IsNullOrEmpty(stdtDtl.Email) == true)
+            {
+                ContentResult.Add("0");
+                ContentResult.Add("");
+                goto Exitlabel;
+            }
+            if (string.IsNullOrEmpty(stdtDtl.Contact) == true && stdtDtl.Contact.Length < 10)
+            {
+                ContentResult.Add("0");
+                ContentResult.Add("");
+                goto Exitlabel;
+            }
+            var TempResult1 = cmnF.GetPrimaryKeyOnDataExist("UserMaster", "Email", stdtDtl.Email, "UserID");
+            if (string.IsNullOrEmpty(TempResult1) != true)
+            {
+                ContentResult.Add("0");
+                ContentResult.Add("");
+                goto Exitlabel;
+            }
+            var TempResult2 = cmnF.GetPrimaryKeyOnDataExist("LocationMaster", "LocationName", stdtDtl.Location, "LocationCode");
+            if (string.IsNullOrEmpty(TempResult2))
+            {
+                stdtDtl.LocationCode = null;
+            }
+            else
+            {
+                stdtDtl.LocationCode = TempResult2;
+            }
+            ContentResult.Add("1");
+            ContentResult.Add(stdtDtl.LocationCode);
+        Exitlabel:
+            return ContentResult;
+        }
+        #endregion
+
+        #region Students
+        public ActionResult Students()
+        {
+            try
+            {
+                ViewBag.BatchDetails = objDBentity.BatchMasters.Where(x => x.isActive == true).OrderBy(x => x.BatchName).ToList();
+                ViewBag.Location = objDBentity.LocationMasters.ToList();
+                GetAccountDetails();
+                return View();
+            }
+            catch
+            {
+                return View();
+            }
+        }
+        public JsonResult getStudentsOnDemand(string BatchCode, string LocationCode)
+        {
+            try
+            {
+
+                string TmpBatchCode = string.IsNullOrEmpty(BatchCode) ? null : BatchCode;
+                string TmpLocationCode = string.IsNullOrEmpty(LocationCode) ? null : LocationCode;
+
+                GetAccountDetails();
+                var getStudents = objDBentity.prcStudentOnDemand(TmpBatchCode, TmpLocationCode, null).ToArray();
+                return Json(getStudents, JsonRequestBehavior.AllowGet);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+        [HttpPost]
+        public ActionResult CreateStudent(FormCollection fc)
+        {
+            stdtDtl = new Student();
+            List<string> ContentResult = new List<string>();
+            if (string.IsNullOrEmpty(fc["txtFirstName"]) == true)
+            {
+                ContentResult.Add("First name is required.");//to show error calidation message
+                ContentResult.Add("0");                      //to show response of stored procedure has not executed
+                goto Exitlabel;
+                //return Content("Batch Name is required.");
+
+            }
+            //if (string.IsNullOrEmpty(fc["txtMiddleName"]) == true)
+            //{
+            //    ContentResult.Add("Middle Name is required.");
+            //    ContentResult.Add("0");
+            //    goto Exitlabel;
+            //    //return Content("Batch Name is required.");
+
+            //}
+            if (string.IsNullOrEmpty(fc["txtLastName"]) == true)
+            {
+                ContentResult.Add("Last name is required.");
+                ContentResult.Add("0");
+                goto Exitlabel;
+                //return Content("Batch Name is required.");
+
+            }
+            if (string.IsNullOrEmpty(fc["txtLocation"]) == true)
+            {
+                ContentResult.Add("Location is required.");
+                ContentResult.Add("0");
+                goto Exitlabel;
+            }
+            if (string.IsNullOrEmpty(fc["txtEmail"]) == true)
+            {
+                ContentResult.Add("Email is required.");
+                ContentResult.Add("0");
+                goto Exitlabel;
+            }
+            if (string.IsNullOrEmpty(fc["txtContact"]) == true)
+            {
+
+                ContentResult.Add("Contact is required.");
+                ContentResult.Add("0");
+                goto Exitlabel;
+            }
+            stdtDtl.FirstName = fc["txtFirstName"].Trim();
+            stdtDtl.MiddleName = fc["txtMiddleName"].Trim();
+            stdtDtl.LastName = fc["txtLastName"].Trim();
+            stdtDtl.Location = fc["txtLocation"].Trim();
+            stdtDtl.Email = fc["txtEmail"].Trim();
+            stdtDtl.Contact = fc["txtContact"].Trim();
+
+            var TempResult1 = cmnF.GetPrimaryKeyOnDataExist("UserMaster", "Email", fc["txtEmail"].Trim(), "UserID");
+            if (string.IsNullOrEmpty(TempResult1) != true)
+            {
+                if (fc["hdnStudentCode"].ToUpper() == TempResult1.ToUpper())
+                {
+
+                }
+                else
+                {
+                    ContentResult.Add("This email id is already exist.");
+                    ContentResult.Add("0");
+                    goto Exitlabel;
+                }
+            }
+
+            var TempResult2 = cmnF.GetPrimaryKeyOnDataExist("LocationMaster", "LocationName", stdtDtl.Location, "LocationCode");
+            if (string.IsNullOrEmpty(TempResult2))
+            {
+                stdtDtl.LocationCode = null;
+            }
+            else
+            {
+                stdtDtl.LocationCode = TempResult2;
+            }
+            var u = fc["hdnStudentCode"].ToUpper();
+
+            //if hidden field- fc["hdnStudentCode"] value is zero means create code will work
+            //if hidden field- fc["hdnStudentCode"] value is zero means Edit code will work
+            if (fc["hdnStudentCode"].ToUpper() == "0")
+            {
+                objDBentity.prcCreateStudent(stdtDtl.FirstName, stdtDtl.MiddleName, stdtDtl.LastName, stdtDtl.Location, stdtDtl.Email, stdtDtl.Contact, stdtDtl.LocationCode, null, "INSERT");
+                ContentResult.Add("0");//to show response of create message
+                ContentResult.Add("1");//to show response of stored procedure working correctly
+            }
+            if (fc["hdnStudentCode"].ToUpper() != "0")
+            {
+                objDBentity.prcCreateStudent(stdtDtl.FirstName, stdtDtl.MiddleName, stdtDtl.LastName, stdtDtl.Location, stdtDtl.Email, stdtDtl.Contact, stdtDtl.LocationCode, fc["hdnStudentCode"], "UPDATE");
+                ContentResult.Add("1");//to show response of edit message
+                ContentResult.Add("1");//to show response of stored procedure working correctly
+            }
+        Exitlabel:
+            return Json(ContentResult, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult getSingleStudentDetails(string StudentCode)
+        {
+            //GetAccountDetails();
+            if (StudentCode == null || StudentCode == "" || StudentCode == "undefined")
+            {
+                return null;
+            }
+            List<object> SingleStudentDetails = new List<object>();
+            var Detail1 = objDBentity.prcStudentOnDemand(null, null, StudentCode).ToArray();
+            //var Detail1 = objDBentity.BatchMasters.Where(x => x.BatchCode == BatchCode);
+            SingleStudentDetails.Add(Detail1);
+            var vg = Json(SingleStudentDetails, JsonRequestBehavior.AllowGet);
+            return Json(SingleStudentDetails, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult deleteSingleStudent(string StudentCode)
+        {
+            List<string> ContentResult = new List<string>();
+            if (StudentCode == null || StudentCode == "" || StudentCode == "undefined")
+            {
+                return null;
+            }
+            string TmpStudentCode = string.IsNullOrEmpty(StudentCode) ? null : StudentCode;
+            var TempResult2 = (from BSM in objDBentity.BatchAndStudentMappings
+                               where BSM.UserID == TmpStudentCode
+                               select BSM.BatchCode).ToList();
+            if (TempResult2.Count > 0)
+            {
+                ContentResult.Add("0");
+                ContentResult.Add("0");
+                goto Exitlabel;
+            }
+            if (TempResult2.Count <= 0)
+            {
+                objDBentity.prcCreateStudent(null, null, null, null, null, null, null, StudentCode, "DELETE");
+                ContentResult.Add("1");
+                ContentResult.Add("1");
+            }
+        Exitlabel:
+            return Json(ContentResult, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public ActionResult SaveStudentExcel(FormCollection fc, IEnumerable<HttpPostedFileBase> excelfile)
+        {
+            var ExcelImagePath = "";
+            var FileExtension = "";
+            var fileName = "";
+            var newPath = "";
+            var path = "";
+            DataSet ds = new DataSet();
+            stdtDtl = new Student();
+
+            HttpPostedFileBase UploadedFile = excelfile.FirstOrDefault();
+            List<string> ContentResult = new List<string>();
+            if (UploadedFile == null && fc["hdnIdenType"].ToUpper() != "STUDENT")
+            {
+                ContentResult.Add("Please Upload Excel");//to show error calidation message
+                ContentResult.Add("0");                           //to show response of stored procedure has not executed
+                goto Exitlabel;
+            }
+            if (UploadedFile != null)
+            {
+                if (UploadedFile.ContentLength > 0)
+                {
+                    int MaxContentLength = 1024 * 1024 * 4; //Size = 4 MB
+                    string[] AllowedFileExtensions = new string[] { ".xls", ".xlsx", ".csv" };
+                    if (!AllowedFileExtensions.Contains
+                       (UploadedFile.FileName.Substring(UploadedFile.FileName.LastIndexOf('.'))))
+                    {
+                        ContentResult.Add("Choose valid file types are: " + string.Join(", ", AllowedFileExtensions));//to show error calidation message
+                        ContentResult.Add("0");                           //to show response of stored procedure has not executed
+                        goto Exitlabel;
+
+                    }
+                    else if (UploadedFile.ContentLength > MaxContentLength)
+                    {
+                        ContentResult.Add("Your file is too large, maximum allowed size is: " + MaxContentLength + " MB");//to show error calidation message
+                        ContentResult.Add("0");                           //to show response of stored procedure has not executed
+                        goto Exitlabel;
+                    }
+                    fileName = Path.GetFileName(UploadedFile.FileName);
+                    newPath = DateTime.Now.ToString("yyyyMMddHHmmss") + '_' + fileName;
+                    FileExtension = (UploadedFile.FileName.Substring(UploadedFile.FileName.LastIndexOf('.')));
+                }
+            }
+            ExcelImagePath = "/ExcelFiles/" + newPath;
+            if (fc["hdnIdenType"].ToUpper() == "STUDENT")
+            {
+                path = Path.Combine(Server.MapPath("~/ExcelFiles/"), newPath);
+                if (System.IO.File.Exists(path))
+                {
+                    System.IO.File.Delete(path);
+                }
+                UploadedFile.SaveAs(path);
+                string excelConnectionString = string.Empty;
+                excelConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + path + ";Extended Properties=\"Excel 12.0;HDR=Yes;IMEX=2\"";
+                //connection String for xls file format.
+                if (FileExtension == ".xls")
+                {
+                    excelConnectionString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + path + ";Extended Properties=\"Excel 8.0;HDR=Yes;IMEX=2\"";
+                }
+                //connection String for xlsx file format.
+                else if (FileExtension == ".xlsx")
+                {
+                    excelConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + path + ";Extended Properties=\"Excel 12.0;HDR=Yes;IMEX=2\"";
+                }
+                //Create Connection to Excel work book and add oledb namespace
+                OleDbConnection excelConnection = new OleDbConnection(excelConnectionString);
+                excelConnection.Open();
+                DataTable dt = new DataTable();
+
+                dt = excelConnection.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, null);
+                if (dt == null)
+                {
+                    return null;
+                }
+                String[] excelSheets = new String[dt.Rows.Count];
+                int t = 0;
+                int mailuid = 0;
+                //excel data saves in temp file here.
+                foreach (DataRow row in dt.Rows)
+                {
+                    excelSheets[t] = row["TABLE_NAME"].ToString();
+                    t++;
+                }
+                OleDbConnection excelConnection1 = new OleDbConnection(excelConnectionString);
+
+                string query = string.Format("Select * from [{0}]", excelSheets[0]);
+                using (OleDbDataAdapter dataAdapter = new OleDbDataAdapter(query, excelConnection1))
+                {
+                    dataAdapter.Fill(ds);
+                }
+                List<string> TempContentResult = new List<string>();
+                List<string> InCorrectRows = new List<string>();
+                int unsuccessfulCount = 0;
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                {
+                    stdtDtl.FirstName = ds.Tables[0].Rows[i]["FirstName"].ToString();
+                    stdtDtl.MiddleName = ds.Tables[0].Rows[i]["MiddleName"].ToString();
+                    stdtDtl.LastName = ds.Tables[0].Rows[i]["LastName"].ToString();
+                    stdtDtl.Location = ds.Tables[0].Rows[i]["Location"].ToString();
+                    stdtDtl.Email = ds.Tables[0].Rows[i]["Email"].ToString();
+                    stdtDtl.Contact = ds.Tables[0].Rows[i]["Contact"].ToString();
+                    TempContentResult = CheckValidStudent();
+                    if (TempContentResult[0] == "1")
+                    {
+                        objDBentity.prcCreateStudent(stdtDtl.FirstName, stdtDtl.MiddleName, stdtDtl.LastName, stdtDtl.Location, stdtDtl.Email, stdtDtl.Contact, stdtDtl.LocationCode, null, "INSERT");
+                    }
+                    if (TempContentResult[0] == "0")
+                    {
+                        InCorrectRows.Add((i + 1).ToString());
+                        unsuccessfulCount++;
+                    }
+                }
+                ContentResult.Add("1");
+                ContentResult.Add("Total rows " + ds.Tables[0].Rows.Count);
+                ContentResult.Add("Successful rows " + (Convert.ToInt32(ds.Tables[0].Rows.Count) - unsuccessfulCount).ToString());
+                ContentResult.Add("Unsuccessful rows " + InCorrectRows.Count);
+                if (InCorrectRows.Count > 0)
+                {
+                    ContentResult.Add("Incorrect rows index are  " + string.Join(", ", InCorrectRows));
+                }
+                else
+                {
+                    ContentResult.Add("");
+                }
+                excelConnection.Close();
+                // objDBentity.prcCreateAccount(accDtl.AccountName, accDtl.ImagePath, accDtl.AccountDescription, null, "INSERT");
+                // ContentResult.Add("0");//to show response of create message
+                //  ContentResult.Add("1");//to show response of stored procedure working correctly
+            }
+        Exitlabel:
+            if (System.IO.File.Exists(path))
+            {
+                System.IO.File.Delete(path);
+            }
+            return Json(ContentResult, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+
+        #region Keywords
+        public ActionResult Keywords()
+        {
+            GetAccountDetails();
+            return View();
+        }
+        public JsonResult getKeywordsOnDemand()
+        {
+            try
+            {
+                var getKeywords = objDBentity.KeywordMasters.Where(x => x.IsActive == true).OrderByDescending(x => x.KeyCode).ToList();
+                return Json(getKeywords, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        [HttpPost]
+        public ActionResult CreateKeyword(FormCollection fc)
+        {
+            KeyDtl = new Keyword();
+            List<string> ContentResult = new List<string>();
+            if (string.IsNullOrEmpty(fc["txtKeywordName"]) == true)
+            {
+                ContentResult.Add("Keyword name is required.");
+                ContentResult.Add("0");
+                goto Exitlabel;
+
+            }
+            if (string.IsNullOrEmpty(fc["txtKeywordAvgMonthSearch"]) == true)
+            {
+                ContentResult.Add("Keyword average monthly search field is required.");
+                ContentResult.Add("0");
+                goto Exitlabel;
+            }
+            if (string.IsNullOrEmpty(fc["txtKeywordCompetition"]) == true)
+            {
+                ContentResult.Add("Keyword Competition field is required.");
+                ContentResult.Add("0");
+                goto Exitlabel;
+            }
+            if (string.IsNullOrEmpty(fc["txtKeywordSuggestBid"]) == true)
+            {
+                ContentResult.Add("Keyword suggested bid is required.");
+                ContentResult.Add("0");
+                goto Exitlabel;
+            }
+            int value = 0;
+            if (!int.TryParse(fc["txtKeywordSuggestBid"], out value))
+            {
+                ContentResult.Add("Keyword suggested bid should be numeric.");
+                ContentResult.Add("0");
+                goto Exitlabel;
+            }
+            KeyDtl.KeywordName = fc["txtKeywordName"].Trim();
+            KeyDtl.KeywordAvgMonthSearch = fc["txtKeywordAvgMonthSearch"].Trim();
+            KeyDtl.KeywordCompetition = fc["txtKeywordCompetition"].Trim();
+            KeyDtl.KeywordSuggestBid = fc["txtKeywordSuggestBid"];
+
+            var TempResult1 = cmnF.GetIntegerPrimaryKeyOnDataExist("KeywordMaster", "KeyName", KeyDtl.KeywordName, "KeyCode");
+            if (string.IsNullOrEmpty(TempResult1) != true)
+            {
+                var t1 = fc["hdnKeywordCode"].ToUpper();
+                if (fc["hdnKeywordCode"].ToUpper() == TempResult1.ToUpper())
+                {
+
+                }
+                else
+                {
+                    ContentResult.Add("This Keyword is already exist.");
+                    ContentResult.Add("0");
+                    goto Exitlabel;
+                }
+            }
+            var u = fc["hdnKeywordCode"].ToUpper();
+            if (fc["hdnKeywordCode"].ToUpper() == "0")
+            {
+                objDBentity.prcCreateKeyword(KeyDtl.KeywordName, KeyDtl.KeywordAvgMonthSearch, KeyDtl.KeywordCompetition, Convert.ToInt32(KeyDtl.KeywordSuggestBid), "0", null, "INSERT");
+                ContentResult.Add("0");
+                ContentResult.Add("1");
+            }
+            if (fc["hdnKeywordCode"].ToUpper() != "0")
+            {
+                objDBentity.prcCreateKeyword(KeyDtl.KeywordName, KeyDtl.KeywordAvgMonthSearch, KeyDtl.KeywordCompetition, Convert.ToInt32(KeyDtl.KeywordSuggestBid), "0", fc["hdnKeywordCode"], "UPDATE");
+                ContentResult.Add("1");
+                ContentResult.Add("1");
+            }
+        Exitlabel:
+            return Json(ContentResult, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult getSingleKeywordDetails(string KeywordCode)
+        {
+            //GetAccountDetails();
+            if (KeywordCode == null || KeywordCode == "" || KeywordCode == "undefined")
+            {
+                return null;
+            }
+            List<object> SingleKeywordDetails = new List<object>();
+            Int32 FKeywordCode = Convert.ToInt32(KeywordCode);
+            var Detail1 = objDBentity.KeywordMasters.Where(x => x.KeyCode == FKeywordCode && x.IsActive == true).OrderBy(x => x.KeyCode).FirstOrDefault();
+            //var Detail1 = objDBentity.prcAccountOnDemand(null, null, AccountCode).ToArray();
+            //var Detail1 = objDBentity.BatchMasters.Where(x => x.BatchCode == BatchCode);
+            SingleKeywordDetails.Add(Detail1);
+            var vg = Json(SingleKeywordDetails, JsonRequestBehavior.AllowGet);
+            return Json(SingleKeywordDetails, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult deleteSingleKeyword(string KeywordCode)
+        {
+            List<string> ContentResult = new List<string>();
+            if (KeywordCode == null || KeywordCode == "" || KeywordCode == "undefined")
+            {
+                return null;
+            }
+            string TmpKeywordCode = string.IsNullOrEmpty(KeywordCode) ? null : KeywordCode;
+            Int32 TmpIntegerKeywordCode = Convert.ToInt32(TmpKeywordCode);
+            var TempResult2 = (from MKAG in objDBentity.MapKeywordsAGs
+                               where MKAG.KeyCode == TmpIntegerKeywordCode
+                               select MKAG.KeyCode).ToList();
+            if (TempResult2.Count > 0)
+            {
+                ContentResult.Add("0");
+                ContentResult.Add("0");
+                goto Exitlabel;
+            }
+            if (TempResult2.Count <= 0)
+            {
+                objDBentity.prcCreateKeyword(null, null, null, null, null, KeywordCode, "DELETE");
+                ContentResult.Add("1");
+                ContentResult.Add("1");
+            }
+        Exitlabel:
+            return Json(ContentResult, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public ActionResult SaveKeywordExcel(FormCollection fc, IEnumerable<HttpPostedFileBase> excelfile)
+        {
+            GetAccountDetails();
+            var ExcelImagePath = "";
+            var FileExtension = "";
+            var fileName = "";
+            var newPath = "";
+            var path = "";
+            DataSet ds = new DataSet();
+            PhraseDtl = new Phrase();
+
+            HttpPostedFileBase UploadedFile = excelfile.FirstOrDefault();
+            List<string> ContentResult = new List<string>();
+            if (UploadedFile == null && fc["hdnIdenType"].ToUpper() != "KEYWORD")
+            {
+                ContentResult.Add("Please Upload Excel");//to show error calidation message
+                ContentResult.Add("0");                           //to show response of stored procedure has not executed
+                goto Exitlabel;
+            }
+            if (UploadedFile != null)
+            {
+                if (UploadedFile.ContentLength > 0)
+                {
+                    int MaxContentLength = 1024 * 1024 * 4; //Size = 4 MB
+                    string[] AllowedFileExtensions = new string[] { ".xls", ".xlsx", ".csv" };
+                    if (!AllowedFileExtensions.Contains
+                       (UploadedFile.FileName.Substring(UploadedFile.FileName.LastIndexOf('.'))))
+                    {
+                        ContentResult.Add("Choose valid file types are: " + string.Join(", ", AllowedFileExtensions));//to show error calidation message
+                        ContentResult.Add("0");                           //to show response of stored procedure has not executed
+                        goto Exitlabel;
+
+                    }
+                    else if (UploadedFile.ContentLength > MaxContentLength)
+                    {
+                        ContentResult.Add("Your file is too large, maximum allowed size is: " + MaxContentLength + " MB");//to show error calidation message
+                        ContentResult.Add("0");                           //to show response of stored procedure has not executed
+                        goto Exitlabel;
+                    }
+                    fileName = Path.GetFileName(UploadedFile.FileName);
+                    newPath = DateTime.Now.ToString("yyyyMMddHHmmss") + '_' + fileName;
+                    FileExtension = (UploadedFile.FileName.Substring(UploadedFile.FileName.LastIndexOf('.')));
+                }
+            }
+            ExcelImagePath = "/ExcelFiles/" + newPath;
+            if (fc["hdnIdenType"].ToUpper() == "KEYWORD")
+            {
+                path = Path.Combine(Server.MapPath("~/ExcelFiles/"), newPath);
+                if (System.IO.File.Exists(path))
+                {
+                    System.IO.File.Delete(path);
+                }
+                UploadedFile.SaveAs(path);
+                string excelConnectionString = string.Empty;
+                excelConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + path + ";Extended Properties=\"Excel 12.0;HDR=Yes;IMEX=2\"";
+                //connection String for xls file format.
+                if (FileExtension == ".xls")
+                {
+                    excelConnectionString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + path + ";Extended Properties=\"Excel 8.0;HDR=Yes;IMEX=2\"";
+                }
+                //connection String for xlsx file format.
+                else if (FileExtension == ".xlsx")
+                {
+                    excelConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + path + ";Extended Properties=\"Excel 12.0;HDR=Yes;IMEX=2\"";
+                }
+                //Create Connection to Excel work book and add oledb namespace
+                OleDbConnection excelConnection = new OleDbConnection(excelConnectionString);
+                excelConnection.Open();
+                DataTable dt = new DataTable();
+
+                dt = excelConnection.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, null);
+                if (dt == null)
+                {
+                    return null;
+                }
+                String[] excelSheets = new String[dt.Rows.Count];
+                int t = 0;
+                int mailuid = 0;
+                //excel data saves in temp file here.
+                foreach (DataRow row in dt.Rows)
+                {
+                    excelSheets[t] = row["TABLE_NAME"].ToString();
+                    t++;
+                }
+                OleDbConnection excelConnection1 = new OleDbConnection(excelConnectionString);
+
+                string query = string.Format("Select * from [{0}]", excelSheets[0]);
+                using (OleDbDataAdapter dataAdapter = new OleDbDataAdapter(query, excelConnection1))
+                {
+                    dataAdapter.Fill(ds);
+                }
+                List<string> TempContentResult = new List<string>();
+                List<string> InCorrectRows = new List<string>();
+                int unsuccessfulCount = 0;
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                {
+                    KeyDtl.KeywordName = ds.Tables[0].Rows[i]["KeywordName"].ToString();
+                    KeyDtl.KeywordAvgMonthSearch = ds.Tables[0].Rows[i]["Avg Monthely Searches"].ToString();
+                    KeyDtl.KeywordCompetition = ds.Tables[0].Rows[i]["Competition"].ToString();
+                    KeyDtl.KeywordSuggestBid = ds.Tables[0].Rows[i]["Suggested Bid"].ToString();
+
+                    TempContentResult = CheckValidKeyword();
+                    //, objUserInfo.UserID.ToString()
+                    if (TempContentResult[0] == "1")
+                    {
+                        objDBentity.prcCreateKeyword(KeyDtl.KeywordName, KeyDtl.KeywordAvgMonthSearch, KeyDtl.KeywordCompetition, Convert.ToInt32(KeyDtl.KeywordSuggestBid),"0", null, "INSERT");
+                    }
+                    if (TempContentResult[0] == "0")
+                    {
+                        InCorrectRows.Add((i + 1).ToString());
+                        unsuccessfulCount++;
+                    }
+                }
+                ContentResult.Add("1");
+                ContentResult.Add("Total rows " + ds.Tables[0].Rows.Count);
+                ContentResult.Add("Successful rows " + (Convert.ToInt32(ds.Tables[0].Rows.Count) - unsuccessfulCount).ToString());
+                ContentResult.Add("Unsuccessful rows " + InCorrectRows.Count);
+                if (InCorrectRows.Count > 0)
+                {
+                    ContentResult.Add("Incorrect rows index are  " + string.Join(", ", InCorrectRows));
+                }
+                else
+                {
+                    ContentResult.Add("");
+                }
+                excelConnection.Close();
+                // objDBentity.prcCreateAccount(accDtl.AccountName, accDtl.ImagePath, accDtl.AccountDescription, null, "INSERT");
+                // ContentResult.Add("0");//to show response of create message
+                //  ContentResult.Add("1");//to show response of stored procedure working correctly
+            }
+        Exitlabel:
+            if (System.IO.File.Exists(path))
+            {
+                System.IO.File.Delete(path);
+            }
+            return Json(ContentResult, JsonRequestBehavior.AllowGet);
+        }
+        public List<string> CheckValidKeyword()
+        {
+            //1 means true and zero means false
+            List<string> ContentResult = new List<string>();
+            if (string.IsNullOrEmpty(KeyDtl.KeywordName) == true)
+            {
+                ContentResult.Add("0");
+                ContentResult.Add("");
+                goto Exitlabel;
+            }
+            if (string.IsNullOrEmpty(KeyDtl.KeywordAvgMonthSearch) == true)
+            {
+                ContentResult.Add("0");
+                ContentResult.Add("");
+                goto Exitlabel;
+            }
+            if (string.IsNullOrEmpty(KeyDtl.KeywordCompetition) == true)
+            {
+                ContentResult.Add("0");
+                ContentResult.Add("");
+                goto Exitlabel;
+            }
+            if (string.IsNullOrEmpty(KeyDtl.KeywordSuggestBid) == true)
+            {
+                ContentResult.Add("0");
+                ContentResult.Add("");
+                goto Exitlabel;
+            }
+            int value = 0;
+            if (!int.TryParse(KeyDtl.KeywordSuggestBid, out value))
+            {
+                ContentResult.Add("0");
+                ContentResult.Add("");
+                goto Exitlabel;
+            }
+            ContentResult.Add("1");
+            ContentResult.Add("1");
+        Exitlabel:
+            return ContentResult;
+        }
+        #endregion
+
+        #region Phrases
+        public ActionResult Phrases()
+        {
+            GetAccountDetails();
+            return View();
+        }
+        [HttpPost]
+        public JsonResult getPhrasesOnDemand()
+        {
+            //// get Start (paging start index) and length (page size for paging)
+            //var draw = Request.Form.GetValues("draw").FirstOrDefault();
+            //var start = Request.Form.GetValues("start").FirstOrDefault();
+            //var length = Request.Form.GetValues("length").FirstOrDefault();
+            ////Get Sort columns value
+            //var sortColumn = Request.Form.GetValues("columns[" + Request.Form.GetValues("order[0][column]").FirstOrDefault() + "][name]").FirstOrDefault();
+            //var sortColumnDir = Request.Form.GetValues("order[0][dir]").FirstOrDefault();
+
+            //int pageSize = length != null ? Convert.ToInt32(length) : 0;
+            //int skip = start != null ? Convert.ToInt32(start) : 0;
+            //int totalRecords = 0;
+            //var getKeywords = objDBentity.prcPhraseOnDemand().ToList();
+            //var trmp = Json(getKeywords, JsonRequestBehavior.AllowGet);
+            //var hg = getKeywords.OrderBy(x => x.Id);
+            //using (WhiskersDBEntities dc = new WhiskersDBEntities())
+            //{
+            //    var v = (from a in dc.SearchQueryMasters select a);
+            //    //Sorting
+            //    if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDir)))
+            //    {
+            //        //  var d = v.OrderBy(sortColumn + " " + sortColumnDir);
+            //    }
+            //    totalRecords = v.Count();
+            //    var data1 = v.ToList();
+            //    var data = hg.Skip(skip).Take(pageSize).ToList();
+            //    return Json(new { draw = draw, recordsFiltered = totalRecords, recordsTotal = totalRecords, data = data }, JsonRequestBehavior.AllowGet);
+            //}
+
+            try
+            {
+                var getKeywords = objDBentity.prcPhraseOnDemand().ToList();
+                var trmp = Json(getKeywords, JsonRequestBehavior.AllowGet);
+                return Json(getKeywords, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        [HttpPost]
+        public ActionResult CreatePhrase(FormCollection fc)
+        {
+            GetAccountDetails();
+            PhraseDtl = new Phrase();
+            List<string> ContentResult = new List<string>();
+            if (string.IsNullOrEmpty(fc["txtPhraseName"]) == true)
+            {
+                ContentResult.Add("Phrase name is required.");
+                ContentResult.Add("0");
+                goto Exitlabel;
+
+            }
+            if (string.IsNullOrEmpty(fc["txtPhraseTraffic"]) == true)
+            {
+                ContentResult.Add("Traffic field is required.");
+                ContentResult.Add("0");
+                goto Exitlabel;
+            }
+            int value = 0;
+            if (!int.TryParse(fc["txtPhraseTraffic"], out value))
+            {
+                ContentResult.Add("Traffic field should be numeric.");
+                ContentResult.Add("0");
+                goto Exitlabel;
+            }
+
+            PhraseDtl.PhraseName = fc["txtPhraseName"].Trim();
+            PhraseDtl.Traffic = fc["txtPhraseTraffic"].Trim();
+            PhraseDtl.CreatedOn = cmnF.StringToDate(DateTime.Now.Date.ToString());
+
+            var TempResult1 = cmnF.GetIntegerPrimaryKeyOnDataExist("SearchQueryMaster", "SearchQuery", PhraseDtl.PhraseName, "Id");
+            if (string.IsNullOrEmpty(TempResult1) != true)
+            {
+                var t1 = fc["hdnPhraseCode"].ToUpper();
+                if (fc["hdnPhraseCode"].ToUpper() == TempResult1.ToUpper())
+                {
+
+                }
+                else
+                {
+                    ContentResult.Add("This Phrase is already exist.");
+                    ContentResult.Add("0");
+                    goto Exitlabel;
+                }
+            }
+            var u = fc["hdnPhraseCode"].ToUpper();
+            if (fc["hdnPhraseCode"].ToUpper() == "0")
+            {
+                objDBentity.prcCreatePhrase(PhraseDtl.PhraseName, PhraseDtl.CreatedOn, objUserInfo.UserID.ToString(), Convert.ToInt32(PhraseDtl.Traffic), null, "INSERT");
+                ContentResult.Add("0");
+                ContentResult.Add("1");
+            }
+            if (fc["hdnPhraseCode"].ToUpper() != "0")
+            {
+                objDBentity.prcCreatePhrase(PhraseDtl.PhraseName,null,null, Convert.ToInt32(PhraseDtl.Traffic), fc["hdnPhraseCode"], "UPDATE");
+                ContentResult.Add("1");
+                ContentResult.Add("1");
+            }
+        Exitlabel:
+            return Json(ContentResult, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult getSinglePhraseDetails(string PhraseCode)
+        {
+            //GetAccountDetails();
+            if (PhraseCode == null || PhraseCode == "" || PhraseCode == "undefined")
+            {
+                return null;
+            }
+            List<object> SinglePhraseDetails = new List<object>();
+            Int32 FPhraseCode = Convert.ToInt32(PhraseCode);
+            var Detail1 = objDBentity.SearchQueryMasters.Where(x => x.Id == FPhraseCode).OrderBy(x => x.Id).FirstOrDefault();
+            //var Detail1 = objDBentity.prcAccountOnDemand(null, null, AccountCode).ToArray();
+            //var Detail1 = objDBentity.BatchMasters.Where(x => x.BatchCode == BatchCode);
+            SinglePhraseDetails.Add(Detail1);
+            var vg = Json(SinglePhraseDetails, JsonRequestBehavior.AllowGet);
+            return Json(SinglePhraseDetails, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult deleteSinglePhrase(string PhraseCode)
+        {
+            List<string> ContentResult = new List<string>();
+            if (PhraseCode == null || PhraseCode == "" || PhraseCode == "undefined")
+            {
+                return null;
+            }
+            string TmpPhraseCode = string.IsNullOrEmpty(PhraseCode) ? null : PhraseCode;
+            Int32 TmpIntegerPhraseCode = Convert.ToInt32(TmpPhraseCode);
+            //var TempResult2 = (from MKAG in objDBentity.MapKeywordsAGs
+            //                   where MKAG.KeyCode == TmpIntegerPhraseCode
+            //                   select MKAG.KeyCode).ToList();
+            //if (TempResult2.Count > 0)
+            //{
+            //    ContentResult.Add("0");
+            //    ContentResult.Add("0");
+            //    goto Exitlabel;
+            //}
+            //if (TempResult2.Count <= 0)
+            //{
+                objDBentity.prcCreatePhrase(null, null, null, null, PhraseCode, "DELETE");
+                ContentResult.Add("1");
+                ContentResult.Add("1");
+            //}
+        //Exitlabel:
+            return Json(ContentResult, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public ActionResult SavePhraseExcel(FormCollection fc, IEnumerable<HttpPostedFileBase> excelfile)
+        {
+            GetAccountDetails();
+            var ExcelImagePath = "";
+            var FileExtension = "";
+            var fileName = "";
+            var newPath = "";
+            var path = "";
+            DataSet ds = new DataSet();
+            PhraseDtl = new Phrase();
+
+            HttpPostedFileBase UploadedFile = excelfile.FirstOrDefault();
+            List<string> ContentResult = new List<string>();
+            if (UploadedFile == null && fc["hdnIdenType"].ToUpper() != "PHRASE")
+            {
+                ContentResult.Add("Please Upload Excel");//to show error calidation message
+                ContentResult.Add("0");                           //to show response of stored procedure has not executed
+                goto Exitlabel;
+            }
+            if (UploadedFile != null)
+            {
+                if (UploadedFile.ContentLength > 0)
+                {
+                    int MaxContentLength = 1024 * 1024 * 4; //Size = 4 MB
+                    string[] AllowedFileExtensions = new string[] { ".xls", ".xlsx", ".csv" };
+                    if (!AllowedFileExtensions.Contains
+                       (UploadedFile.FileName.Substring(UploadedFile.FileName.LastIndexOf('.'))))
+                    {
+                        ContentResult.Add("Choose valid file types are: " + string.Join(", ", AllowedFileExtensions));//to show error calidation message
+                        ContentResult.Add("0");                           //to show response of stored procedure has not executed
+                        goto Exitlabel;
+
+                    }
+                    else if (UploadedFile.ContentLength > MaxContentLength)
+                    {
+                        ContentResult.Add("Your file is too large, maximum allowed size is: " + MaxContentLength + " MB");//to show error calidation message
+                        ContentResult.Add("0");                           //to show response of stored procedure has not executed
+                        goto Exitlabel;
+                    }
+                    fileName = Path.GetFileName(UploadedFile.FileName);
+                    newPath = DateTime.Now.ToString("yyyyMMddHHmmss") + '_' + fileName;
+                    FileExtension = (UploadedFile.FileName.Substring(UploadedFile.FileName.LastIndexOf('.')));
+                }
+            }
+            ExcelImagePath = "/ExcelFiles/" + newPath;
+            if (fc["hdnIdenType"].ToUpper() == "PHRASE")
+            {
+                path = Path.Combine(Server.MapPath("~/ExcelFiles/"), newPath);
+                if (System.IO.File.Exists(path))
+                {
+                    System.IO.File.Delete(path);
+                }
+                UploadedFile.SaveAs(path);
+                string excelConnectionString = string.Empty;
+                excelConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + path + ";Extended Properties=\"Excel 12.0;HDR=Yes;IMEX=2\"";
+                //connection String for xls file format.
+                if (FileExtension == ".xls")
+                {
+                    excelConnectionString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + path + ";Extended Properties=\"Excel 8.0;HDR=Yes;IMEX=2\"";
+                }
+                //connection String for xlsx file format.
+                else if (FileExtension == ".xlsx")
+                {
+                    excelConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + path + ";Extended Properties=\"Excel 12.0;HDR=Yes;IMEX=2\"";
+                }
+                //Create Connection to Excel work book and add oledb namespace
+                OleDbConnection excelConnection = new OleDbConnection(excelConnectionString);
+                excelConnection.Open();
+                DataTable dt = new DataTable();
+
+                dt = excelConnection.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, null);
+                if (dt == null)
+                {
+                    return null;
+                }
+                String[] excelSheets = new String[dt.Rows.Count];
+                int t = 0;
+                int mailuid = 0;
+                //excel data saves in temp file here.
+                foreach (DataRow row in dt.Rows)
+                {
+                    excelSheets[t] = row["TABLE_NAME"].ToString();
+                    t++;
+                }
+                OleDbConnection excelConnection1 = new OleDbConnection(excelConnectionString);
+
+                string query = string.Format("Select * from [{0}]", excelSheets[0]);
+                using (OleDbDataAdapter dataAdapter = new OleDbDataAdapter(query, excelConnection1))
+                {
+                    dataAdapter.Fill(ds);
+                }
+                List<string> TempContentResult = new List<string>();
+                List<string> InCorrectRows = new List<string>();
+                int unsuccessfulCount = 0;
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                {
+                    PhraseDtl.PhraseName = ds.Tables[0].Rows[i]["SearchQuery"].ToString();
+                    PhraseDtl.Traffic = ds.Tables[0].Rows[i]["Traffic"].ToString();
+                    TempContentResult = CheckValidPhrase();
+                    PhraseDtl.CreatedOn = cmnF.StringToDate(DateTime.Now.Date.ToString());
+                    //, objUserInfo.UserID.ToString()
+                    if (TempContentResult[0] == "1")
+                    {
+                        objDBentity.prcCreatePhrase(PhraseDtl.PhraseName, PhraseDtl.CreatedOn, objUserInfo.UserID.ToString(), Convert.ToInt32(PhraseDtl.Traffic), null, "INSERT");
+                    }
+                    if (TempContentResult[0] == "0")
+                    {
+                        InCorrectRows.Add((i + 1).ToString());
+                        unsuccessfulCount++;
+                    }
+                }
+                ContentResult.Add("1");
+                ContentResult.Add("Total rows " + ds.Tables[0].Rows.Count);
+                ContentResult.Add("Successful rows " + (Convert.ToInt32(ds.Tables[0].Rows.Count) - unsuccessfulCount).ToString());
+                ContentResult.Add("Unsuccessful rows " + InCorrectRows.Count);
+                if (InCorrectRows.Count > 0)
+                {
+                    ContentResult.Add("Incorrect rows index are  " + string.Join(", ", InCorrectRows));
+                }
+                else
+                {
+                    ContentResult.Add("");
+                }
+                excelConnection.Close();
+                // objDBentity.prcCreateAccount(accDtl.AccountName, accDtl.ImagePath, accDtl.AccountDescription, null, "INSERT");
+                // ContentResult.Add("0");//to show response of create message
+                //  ContentResult.Add("1");//to show response of stored procedure working correctly
+            }
+        Exitlabel:
+            if (System.IO.File.Exists(path))
+            {
+                System.IO.File.Delete(path);
+            }
+            return Json(ContentResult, JsonRequestBehavior.AllowGet);
+        }
+        public List<string> CheckValidPhrase()
+        {
+            //1 means true and zero means false
+            List<string> ContentResult = new List<string>();
+            if (string.IsNullOrEmpty(PhraseDtl.PhraseName) == true)
+            {
+                ContentResult.Add("0");
+                ContentResult.Add("");
+                goto Exitlabel;
+            }
+            if (string.IsNullOrEmpty(PhraseDtl.Traffic) == true)
+            {
+                ContentResult.Add("0");
+                ContentResult.Add("");
+                goto Exitlabel;
+            }
+            int value = 0;
+            if (!int.TryParse(PhraseDtl.Traffic, out value))
+            {
+                ContentResult.Add("0");
+                ContentResult.Add("");
+                goto Exitlabel;
+            }
+            ContentResult.Add("1");
+            ContentResult.Add("1");
+        Exitlabel:
+            return ContentResult;
+        }
+        #endregion
+
+        #region Accounts
+        public ActionResult Accounts()
+        {
+            GetAccountDetails();
+            return View();
+        }
+        public JsonResult getAccountsOnDemand()
+        {
+            try
+            {
+                var getAccounts = objDBentity.AccountsMasters.Where(x => x.IsActive == true).OrderByDescending(x => x.AccCode).ToList();
+                return Json(getAccounts, JsonRequestBehavior.AllowGet);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+        [HttpPost]
+        public ActionResult CreateAccount(FormCollection fc, IEnumerable<HttpPostedFileBase> file)
+        {
+            accDtl = new Account();
+            var fileName = "";
+            var newPath = "";
+            HttpPostedFileBase UploadedFile = file.FirstOrDefault();
+            List<string> ContentResult = new List<string>();
+            if (string.IsNullOrEmpty(fc["txtAccountName"]) == true)
+            {
+                ContentResult.Add("Account name is required.");//to show error calidation message
+                ContentResult.Add("0");                      //to show response of stored procedure has not executed
+                goto Exitlabel;
+                //return Content("Batch Name is required.");
+
+            }
+            if (UploadedFile == null && fc["hdnAccountCode"].ToUpper() == "0")
+            {
+                ContentResult.Add("Please upload account image");//to show error calidation message
+                ContentResult.Add("0");                           //to show response of stored procedure has not executed
+                goto Exitlabel;
+            }
+            if (UploadedFile != null)
+            {
+                if (UploadedFile.ContentLength > 0)
+                {
+                    int MaxContentLength = 1024 * 1024 * 4; //Size = 4 MB
+                    string[] AllowedFileExtensions = new string[] { ".jpg", ".JPG", ".PNG", ".png", ".jpeg", ".JPEG" };
+                    if (!AllowedFileExtensions.Contains
+                       (UploadedFile.FileName.Substring(UploadedFile.FileName.LastIndexOf('.'))))
+                    {
+                        ContentResult.Add("Choose valid file types are: " + string.Join(", ", AllowedFileExtensions));//to show error calidation message
+                        ContentResult.Add("0");                           //to show response of stored procedure has not executed
+                        goto Exitlabel;
+
+                    }
+                    else if (UploadedFile.ContentLength > MaxContentLength)
+                    {
+                        ContentResult.Add("Your file is too large, maximum allowed size is: " + MaxContentLength + " MB");//to show error calidation message
+                        ContentResult.Add("0");                           //to show response of stored procedure has not executed
+                        goto Exitlabel;
+                    }
+                    fileName = Path.GetFileName(UploadedFile.FileName);
+                    newPath = DateTime.Now.ToString("yyyyMMddHHmmss") + '_' + fileName;
+                }
+            }
+            if (string.IsNullOrEmpty(fc["txtAccountDesrpsn"]) == true)
+            {
+                ContentResult.Add("Account description is required.");
+                ContentResult.Add("0");
+                goto Exitlabel;
+            }
+            accDtl.AccountName = fc["txtAccountName"].Trim();
+            accDtl.ImagePath = "/Content/images/admin/" + newPath;
+            accDtl.AccountDescription = fc["txtAccountDesrpsn"].Trim();
+            var TempResult1 = cmnF.GetIntegerPrimaryKeyOnDataExist("AccountsMaster", "AccName", accDtl.AccountName, "AccCode");
+            if (string.IsNullOrEmpty(TempResult1) != true)
+            {
+                var t1 = fc["hdnAccountCode"].ToUpper();
+                if (fc["hdnAccountCode"].ToUpper() == TempResult1.ToUpper())
+                {
+
+                }
+                else
+                {
+                    ContentResult.Add("This account is already exist.");
+                    ContentResult.Add("0");
+                    goto Exitlabel;
+                }
+            }
+
+            //var TempResult2 = cmnF.GetPrimaryKeyOnDataExist("LocationMaster", "LocationName", stdtDtl.Location, "LocationCode");
+            //if (string.IsNullOrEmpty(TempResult2))
+            //{
+            //    stdtDtl.LocationCode = null;
+            //}
+            //else
+            //{
+            //    stdtDtl.LocationCode = TempResult2;
+            //}
+            var u = fc["hdnAccountCode"].ToUpper();
+
+            //if hidden field- fc["hdnStudentCode"] value is zero means create code will work
+            //if hidden field- fc["hdnStudentCode"] value is zero means Edit code will work
+            if (fc["hdnAccountCode"].ToUpper() == "0")
+            {
+                var path = Path.Combine(Server.MapPath("~/Content/images/admin/"), newPath);
+                UploadedFile.SaveAs(path);
+
+                objDBentity.prcCreateAccount(accDtl.AccountName, accDtl.ImagePath, accDtl.AccountDescription, null, "INSERT");
+                ContentResult.Add("0");//to show response of create message
+                ContentResult.Add("1");//to show response of stored procedure working correctly
+            }
+            if (fc["hdnAccountCode"].ToUpper() != "0")
+            {
+                if (UploadedFile != null)
+                {
+                    var TempResult2 = cmnF.GetPrimaryKeyOnDataExist("AccountsMaster", "AccCode", fc["hdnAccountCode"], "ImagePath");
+                    if (!string.IsNullOrEmpty(TempResult2))
+                    {
+                        if (System.IO.File.Exists(Server.MapPath("~" + TempResult2)))
+                        {
+                            System.IO.File.Delete(Server.MapPath("~" + TempResult2));
+                        }
+                    }
+                    var path = Path.Combine(Server.MapPath("~/Content/images/admin/"), newPath);
+                    UploadedFile.SaveAs(path);
+                    objDBentity.prcCreateAccount(accDtl.AccountName, accDtl.ImagePath, accDtl.AccountDescription, fc["hdnAccountCode"], "UPDATE");
+                }
+
+                if (UploadedFile == null)
+                {
+                    objDBentity.prcCreateAccount(accDtl.AccountName, null, accDtl.AccountDescription, fc["hdnAccountCode"], "UPDATE");
+                }
+                ContentResult.Add("1");//to show response of edit message
+                ContentResult.Add("1");//to show response of stored procedure working correctly
+            }
+        Exitlabel:
+            return Json(ContentResult, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult getSingleAccountDetails(string AccountCode)
+        {
+            //GetAccountDetails();
+            if (AccountCode == null || AccountCode == "" || AccountCode == "undefined")
+            {
+                return null;
+            }
+            List<object> SingleAccountDetails = new List<object>();
+            Int32 FAccountCode = Convert.ToInt32(AccountCode);
+            var Detail1 = objDBentity.AccountsMasters.Where(x => x.AccCode == FAccountCode && x.IsActive == true).OrderBy(x => x.AccCode).FirstOrDefault();
+            //var Detail1 = objDBentity.prcAccountOnDemand(null, null, AccountCode).ToArray();
+            //var Detail1 = objDBentity.BatchMasters.Where(x => x.BatchCode == BatchCode);
+            SingleAccountDetails.Add(Detail1);
+            var vg = Json(SingleAccountDetails, JsonRequestBehavior.AllowGet);
+            return Json(SingleAccountDetails, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult deleteSingleAccount(string AccountCode)
+        {
+            //GetAccountDetails();
+            if (AccountCode == null || AccountCode == "" || AccountCode == "undefined")
+            {
+                return null;
+            }
+            var TempResult2 = cmnF.GetPrimaryKeyOnDataExist("AccountsMaster", "AccCode", AccountCode, "ImagePath");
+            if (!string.IsNullOrEmpty(TempResult2))
+            {
+                if (System.IO.File.Exists(Server.MapPath("~" + TempResult2)))
+                {
+                    System.IO.File.Delete(Server.MapPath("~" + TempResult2));
+                }
+            }
+            objDBentity.prcCreateAccount(null, null, null, AccountCode, "DELETE");
+            return Json('1', JsonRequestBehavior.AllowGet);
+        }
+
+        #endregion
+        private ActionResult GetAccountDetails()
+        {
+            if (Session["LoginInfo"] == null)
+            {
+                return RedirectToRoute("default");
+            }
+            else
+            {
+                objUserInfo = (UserLoginInfo)Session["LoginInfo"];
+                string unicornName = objUserInfo.EMAILID;
+                var userInfo = objDBentity.prcGetUserDetails(unicornName).FirstOrDefault();
+                ViewBag.FName = userInfo.FirstName;
+                ViewBag.AccCode = userInfo.AccCode;
+                ViewBag.AccName = userInfo.AccName;
+                ViewBag.ImagePath = userInfo.ImagePath;
+                ViewBag.Description = userInfo.Description;
+                ViewBag.AccFullName = userInfo.AccFullName;
+                ViewBag.UserID = userInfo.UserID;
+                return null;
+            }
+        }
+        protected override JsonResult Json(object data, string contentType, System.Text.Encoding contentEncoding, JsonRequestBehavior behavior)
+        {
+            return new JsonResult()
+            {
+                Data = data,
+                ContentType = "application/json; charset=utf-8",
+                ContentEncoding = contentEncoding,
+                JsonRequestBehavior = behavior,
+                MaxJsonLength = Int32.MaxValue
+            };
+        }
+    }
+}

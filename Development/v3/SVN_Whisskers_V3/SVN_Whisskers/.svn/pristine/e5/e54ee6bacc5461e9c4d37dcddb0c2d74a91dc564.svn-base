@@ -1,0 +1,805 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="WhiskersDBModelStoreContainer" CdmEntityContainer="WhiskersDBEntities">
+    <EntitySetMapping Name="BatchAndStudentMappings">
+      <EntityTypeMapping TypeName="WhiskersDBModel.BatchAndStudentMapping">
+        <MappingFragment StoreEntitySet="BatchAndStudentMapping">
+          <ScalarProperty Name="isMappingActive" ColumnName="isMappingActive" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="AccCode" ColumnName="AccCode" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="BatchCode" ColumnName="BatchCode" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="keyWordRanks">
+      <EntityTypeMapping TypeName="WhiskersDBModel.keyWordRank">
+        <MappingFragment StoreEntitySet="keyWordRank">
+          <ScalarProperty Name="AdgroupName" ColumnName="AdgroupName" />
+          <ScalarProperty Name="description2" ColumnName="description2" />
+          <ScalarProperty Name="description1" ColumnName="description1" />
+          <ScalarProperty Name="DisplayUrl" ColumnName="DisplayUrl" />
+          <ScalarProperty Name="Heading" ColumnName="Heading" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="LocationMasters">
+      <EntityTypeMapping TypeName="WhiskersDBModel.LocationMaster">
+        <MappingFragment StoreEntitySet="LocationMaster">
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+          <ScalarProperty Name="LocationCode" ColumnName="LocationCode" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MapKeywordsAGs">
+      <EntityTypeMapping TypeName="WhiskersDBModel.MapKeywordsAG">
+        <MappingFragment StoreEntitySet="MapKeywordsAG">
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="MappingId" ColumnName="MappingId" />
+          <ScalarProperty Name="NewBid" ColumnName="NewBid" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="KeyCode" ColumnName="KeyCode" />
+          <ScalarProperty Name="AdGroupCode" ColumnName="AdGroupCode" />
+          <ScalarProperty Name="CampaignCode" ColumnName="CampaignCode" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RFA_Percentage_Result">
+      <EntityTypeMapping TypeName="WhiskersDBModel.RFA_Percentage_Result">
+        <MappingFragment StoreEntitySet="RFA_Percentage_Result">
+          <ScalarProperty Name="AdGroupNamePercentCount" ColumnName="AdGroupNamePercentCount" />
+          <ScalarProperty Name="DispUrlPercentCount" ColumnName="DispUrlPercentCount" />
+          <ScalarProperty Name="Descline2PercentCount" ColumnName="Descline2PercentCount" />
+          <ScalarProperty Name="Descline1PercentCount" ColumnName="Descline1PercentCount" />
+          <ScalarProperty Name="HeadlinePercentCount" ColumnName="HeadlinePercentCount" />
+          <ScalarProperty Name="KeyNamePercentCount" ColumnName="KeyNamePercentCount" />
+          <ScalarProperty Name="Parent" ColumnName="Parent" />
+          <ScalarProperty Name="CampaignCode" ColumnName="CampaignCode" />
+          <ScalarProperty Name="AdGroupCode" ColumnName="AdGroupCode" />
+          <ScalarProperty Name="KeyCode" ColumnName="KeyCode" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RFA_Result">
+      <EntityTypeMapping TypeName="WhiskersDBModel.RFA_Result">
+        <MappingFragment StoreEntitySet="RFA_Result">
+          <ScalarProperty Name="RFA_Id" ColumnName="RFA_Id" />
+          <ScalarProperty Name="ImpressionShare" ColumnName="ImpressionShare" />
+          <ScalarProperty Name="RevNewImpression" ColumnName="RevNewImpression" />
+          <ScalarProperty Name="RevNewClicks" ColumnName="RevNewClicks" />
+          <ScalarProperty Name="RevActualCost" ColumnName="RevActualCost" />
+          <ScalarProperty Name="CostPerConversions" ColumnName="CostPerConversions" />
+          <ScalarProperty Name="CPC" ColumnName="CPC" />
+          <ScalarProperty Name="RFAId" ColumnName="RFAId" />
+          <ScalarProperty Name="CVR" ColumnName="CVR" />
+          <ScalarProperty Name="Position" ColumnName="Position" />
+          <ScalarProperty Name="CTR" ColumnName="CTR" />
+          <ScalarProperty Name="Impressions" ColumnName="Impressions" />
+          <ScalarProperty Name="AdGroupNamePercentCount" ColumnName="AdGroupNamePercentCount" />
+          <ScalarProperty Name="DispUrlMatchCount" ColumnName="DispUrlMatchCount" />
+          <ScalarProperty Name="Descline2MatchCount" ColumnName="Descline2MatchCount" />
+          <ScalarProperty Name="Descline1MatchCount" ColumnName="Descline1MatchCount" />
+          <ScalarProperty Name="HeadlineMatchCount" ColumnName="HeadlineMatchCount" />
+          <ScalarProperty Name="AdGroupCode" ColumnName="AdGroupCode" />
+          <ScalarProperty Name="AdRank" ColumnName="AdRank" />
+          <ScalarProperty Name="MatchCountKTADs" ColumnName="MatchCountKTADs" />
+          <ScalarProperty Name="MatchCountKTSQ" ColumnName="MatchCountKTSQ" />
+          <ScalarProperty Name="KeyCode" ColumnName="KeyCode" />
+          <ScalarProperty Name="AdCode" ColumnName="AdCode" />
+          <ScalarProperty Name="CampaignCode" ColumnName="CampaignCode" />
+          <ScalarProperty Name="AccCode" ColumnName="AccCode" />
+          <ScalarProperty Name="BatchCode" ColumnName="BatchCode" />
+          <ScalarProperty Name="SearchQuery" ColumnName="SearchQuery" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="sysdiagrams">
+      <EntityTypeMapping TypeName="WhiskersDBModel.sysdiagram">
+        <MappingFragment StoreEntitySet="sysdiagrams">
+          <ScalarProperty Name="definition" ColumnName="definition" />
+          <ScalarProperty Name="version" ColumnName="version" />
+          <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+          <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserMasters">
+      <EntityTypeMapping TypeName="WhiskersDBModel.UserMaster">
+        <MappingFragment StoreEntitySet="UserMaster">
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="Contact" ColumnName="Contact" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="Location" ColumnName="Location" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="UserType" ColumnName="UserType" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="DOB" ColumnName="DOB" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AccountsMasters">
+      <EntityTypeMapping TypeName="WhiskersDBModel.AccountsMaster">
+        <MappingFragment StoreEntitySet="AccountsMaster">
+          <ScalarProperty Name="AccFullName" ColumnName="AccFullName" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="ImagePath" ColumnName="ImagePath" />
+          <ScalarProperty Name="AccName" ColumnName="AccName" />
+          <ScalarProperty Name="AccCode" ColumnName="AccCode" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AdGroups">
+      <EntityTypeMapping TypeName="WhiskersDBModel.AdGroup">
+        <MappingFragment StoreEntitySet="AdGroups">
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="AdGroupName" ColumnName="AdGroupName" />
+          <ScalarProperty Name="AccCode" ColumnName="AccCode" />
+          <ScalarProperty Name="CampaignCode" ColumnName="CampaignCode" />
+          <ScalarProperty Name="AdGroupCode" ColumnName="AdGroupCode" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="BatchAndTrainerMappings">
+      <EntityTypeMapping TypeName="WhiskersDBModel.BatchAndTrainerMapping">
+        <MappingFragment StoreEntitySet="BatchAndTrainerMapping">
+          <ScalarProperty Name="isMappingActive" ColumnName="isMappingActive" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="BatchCode" ColumnName="BatchCode" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="BatchMasters">
+      <EntityTypeMapping TypeName="WhiskersDBModel.BatchMaster">
+        <MappingFragment StoreEntitySet="BatchMaster">
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="Time" ColumnName="Time" />
+          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+          <ScalarProperty Name="StratDate" ColumnName="StratDate" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="Location" ColumnName="Location" />
+          <ScalarProperty Name="BatchName" ColumnName="BatchName" />
+          <ScalarProperty Name="BatchCode" ColumnName="BatchCode" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CampaignMasters">
+      <EntityTypeMapping TypeName="WhiskersDBModel.CampaignMaster">
+        <MappingFragment StoreEntitySet="CampaignMaster">
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="AccCode" ColumnName="AccCode" />
+          <ScalarProperty Name="Budget" ColumnName="Budget" />
+          <ScalarProperty Name="Location" ColumnName="Location" />
+          <ScalarProperty Name="NetWorkType" ColumnName="NetWorkType" />
+          <ScalarProperty Name="CampaignName" ColumnName="CampaignName" />
+          <ScalarProperty Name="CampaignCode" ColumnName="CampaignCode" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="KeywordMasters">
+      <EntityTypeMapping TypeName="WhiskersDBModel.KeywordMaster">
+        <MappingFragment StoreEntitySet="KeywordMaster">
+          <ScalarProperty Name="FromMaster" ColumnName="FromMaster" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="CTR" ColumnName="CTR" />
+          <ScalarProperty Name="SuggestedBid" ColumnName="SuggestedBid" />
+          <ScalarProperty Name="Competition" ColumnName="Competition" />
+          <ScalarProperty Name="AvgMonthlySrch" ColumnName="AvgMonthlySrch" />
+          <ScalarProperty Name="KeyName" ColumnName="KeyName" />
+          <ScalarProperty Name="KeyCode" ColumnName="KeyCode" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RFA_Result_bak">
+      <EntityTypeMapping TypeName="WhiskersDBModel.RFA_Result_bak">
+        <MappingFragment StoreEntitySet="RFA_Result_bak">
+          <ScalarProperty Name="CostPerConversion" ColumnName="CostPerConversion" />
+          <ScalarProperty Name="Conversions" ColumnName="Conversions" />
+          <ScalarProperty Name="Avg_Cpc" ColumnName="Avg_Cpc" />
+          <ScalarProperty Name="COST" ColumnName="COST" />
+          <ScalarProperty Name="CTR" ColumnName="CTR" />
+          <ScalarProperty Name="Clicks" ColumnName="Clicks" />
+          <ScalarProperty Name="Impressions" ColumnName="Impressions" />
+          <ScalarProperty Name="AdGroupNamePercentCount" ColumnName="AdGroupNamePercentCount" />
+          <ScalarProperty Name="DispUrlMatchCount" ColumnName="DispUrlMatchCount" />
+          <ScalarProperty Name="Descline2MatchCount" ColumnName="Descline2MatchCount" />
+          <ScalarProperty Name="Descline1MatchCount" ColumnName="Descline1MatchCount" />
+          <ScalarProperty Name="HeadlineMatchCount" ColumnName="HeadlineMatchCount" />
+          <ScalarProperty Name="ParentAdGroupCode" ColumnName="ParentAdGroupCode" />
+          <ScalarProperty Name="AdRank" ColumnName="AdRank" />
+          <ScalarProperty Name="MatchCountKTADs" ColumnName="MatchCountKTADs" />
+          <ScalarProperty Name="MatchCountKTSQ" ColumnName="MatchCountKTSQ" />
+          <ScalarProperty Name="KeyCode" ColumnName="KeyCode" />
+          <ScalarProperty Name="AdGroupCode" ColumnName="AdGroupCode" />
+          <ScalarProperty Name="CampaignCode" ColumnName="CampaignCode" />
+          <ScalarProperty Name="AccCode" ColumnName="AccCode" />
+          <ScalarProperty Name="BatchCode" ColumnName="BatchCode" />
+          <ScalarProperty Name="SearchQuery" ColumnName="SearchQuery" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RFAMasters">
+      <EntityTypeMapping TypeName="WhiskersDBModel.RFAMaster">
+        <MappingFragment StoreEntitySet="RFAMaster">
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="AccountCode" ColumnName="AccountCode" />
+          <ScalarProperty Name="BatchCode" ColumnName="BatchCode" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblAds">
+      <EntityTypeMapping TypeName="WhiskersDBModel.tblAd">
+        <MappingFragment StoreEntitySet="tblAds">
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="FinalUrl" ColumnName="FinalUrl" />
+          <ScalarProperty Name="DispUrl" ColumnName="DispUrl" />
+          <ScalarProperty Name="DescLine2" ColumnName="DescLine2" />
+          <ScalarProperty Name="DescLine1" ColumnName="DescLine1" />
+          <ScalarProperty Name="HeadLine" ColumnName="HeadLine" />
+          <ScalarProperty Name="ADText" ColumnName="ADText" />
+          <ScalarProperty Name="ADCode" ColumnName="ADCode" />
+          <ScalarProperty Name="AdGroupCode" ColumnName="AdGroupCode" />
+          <ScalarProperty Name="CampaignCode" ColumnName="CampaignCode" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="CheckRFAStatus" FunctionName="WhiskersDBModel.Store.CheckRFAStatus">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="WhiskersDBModel.CheckRFAStatus_Result">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="BatchCode" ColumnName="BatchCode" />
+          <ScalarProperty Name="AccountCode" ColumnName="AccountCode" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="GetAccountReport" FunctionName="WhiskersDBModel.Store.GetAccountReport">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="WhiskersDBModel.GetAccountReport_Result">
+          <ScalarProperty Name="AccCode" ColumnName="AccCode" />
+          <ScalarProperty Name="AccFullName" ColumnName="AccFullName" />
+          <ScalarProperty Name="AccName" ColumnName="AccName" />
+          <ScalarProperty Name="Impressions" ColumnName="Impressions" />
+          <ScalarProperty Name="CTR" ColumnName="CTR" />
+          <ScalarProperty Name="Clicks" ColumnName="Clicks" />
+          <ScalarProperty Name="CPC" ColumnName="CPC" />
+          <ScalarProperty Name="COST" ColumnName="COST" />
+          <ScalarProperty Name="Conversions" ColumnName="Conversions" />
+          <ScalarProperty Name="CostPerConversion" ColumnName="CostPerConversion" />
+          <ScalarProperty Name="ImpressionShare" ColumnName="ImpressionShare" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="getADGroupsOnDemand" FunctionName="WhiskersDBModel.Store.getADGroupsOnDemand">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="WhiskersDBModel.getADGroupsOnDemand_Result">
+          <ScalarProperty Name="CampaignName" ColumnName="CampaignName" />
+          <ScalarProperty Name="AdGroupName" ColumnName="AdGroupName" />
+          <ScalarProperty Name="Location" ColumnName="Location" />
+          <ScalarProperty Name="Budget" ColumnName="Budget" />
+          <ScalarProperty Name="NetWorkType" ColumnName="NetWorkType" />
+          <ScalarProperty Name="CampaignCode" ColumnName="CampaignCode" />
+          <ScalarProperty Name="AdGroupCode" ColumnName="AdGroupCode" />
+          <ScalarProperty Name="Impressions" ColumnName="Impressions" />
+          <ScalarProperty Name="CTR" ColumnName="CTR" />
+          <ScalarProperty Name="Clicks" ColumnName="Clicks" />
+          <ScalarProperty Name="CPC" ColumnName="CPC" />
+          <ScalarProperty Name="COST" ColumnName="COST" />
+          <ScalarProperty Name="Conversions" ColumnName="Conversions" />
+          <ScalarProperty Name="CostPerConversion" ColumnName="CostPerConversion" />
+          <ScalarProperty Name="ImpressionShare" ColumnName="ImpressionShare" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="getAssignedStudentsPerBatch" FunctionName="WhiskersDBModel.Store.getAssignedStudentsPerBatch">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="WhiskersDBModel.getAssignedStudentsPerBatch_Result">
+          <ScalarProperty Name="FullName" ColumnName="FullName" />
+          <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Contact" ColumnName="Contact" />
+          <ScalarProperty Name="StudentCode" ColumnName="StudentCode" />
+          <ScalarProperty Name="BatchCode" ColumnName="BatchCode" />
+          <ScalarProperty Name="isMappingActive" ColumnName="isMappingActive" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="getCampaignAdsOnDemand" FunctionName="WhiskersDBModel.Store.getCampaignAdsOnDemand">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="WhiskersDBModel.getCampaignAdsOnDemand_Result">
+          <ScalarProperty Name="CampaignCode" ColumnName="CampaignCode" />
+          <ScalarProperty Name="CampaignName" ColumnName="CampaignName" />
+          <ScalarProperty Name="Location" ColumnName="Location" />
+          <ScalarProperty Name="Budget" ColumnName="Budget" />
+          <ScalarProperty Name="NetWorkType" ColumnName="NetWorkType" />
+          <ScalarProperty Name="AdCode" ColumnName="AdCode" />
+          <ScalarProperty Name="AdGroupName" ColumnName="AdGroupName" />
+          <ScalarProperty Name="ADText" ColumnName="ADText" />
+          <ScalarProperty Name="HeadLine" ColumnName="HeadLine" />
+          <ScalarProperty Name="DescLine1" ColumnName="DescLine1" />
+          <ScalarProperty Name="DescLine2" ColumnName="DescLine2" />
+          <ScalarProperty Name="DispUrl" ColumnName="DispUrl" />
+          <ScalarProperty Name="FinalUrl" ColumnName="FinalUrl" />
+          <ScalarProperty Name="AdGroupCode" ColumnName="AdGroupCode" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="GetIndustryReport_TopKey" FunctionName="WhiskersDBModel.Store.GetIndustryReport_TopKey">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="WhiskersDBModel.GetIndustryReport_TopKey_Result">
+          <ScalarProperty Name="KeyName" ColumnName="KeyName" />
+          <ScalarProperty Name="batchcode" ColumnName="batchcode" />
+          <ScalarProperty Name="KeyCode" ColumnName="KeyCode" />
+          <ScalarProperty Name="ImpressionShare" ColumnName="ImpressionShare" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="GetMappedkeyWords" FunctionName="WhiskersDBModel.Store.GetMappedkeyWords">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="WhiskersDBModel.GetMappedkeyWords_Result">
+          <ScalarProperty Name="CampaignCode" ColumnName="CampaignCode" />
+          <ScalarProperty Name="AdGroupCode" ColumnName="AdGroupCode" />
+          <ScalarProperty Name="KeyCode" ColumnName="KeyCode" />
+          <ScalarProperty Name="CampaignName" ColumnName="CampaignName" />
+          <ScalarProperty Name="AdGroupName" ColumnName="AdGroupName" />
+          <ScalarProperty Name="KeyName" ColumnName="KeyName" />
+          <ScalarProperty Name="Budget" ColumnName="Budget" />
+          <ScalarProperty Name="NetWorkType" ColumnName="NetWorkType" />
+          <ScalarProperty Name="Location" ColumnName="Location" />
+          <ScalarProperty Name="NewBid" ColumnName="NewBid" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="getMappedkeyWordsOnDemand" FunctionName="WhiskersDBModel.Store.getMappedkeyWordsOnDemand">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="WhiskersDBModel.getMappedkeyWordsOnDemand_Result">
+          <ScalarProperty Name="CampaignCode" ColumnName="CampaignCode" />
+          <ScalarProperty Name="AdGroupCode" ColumnName="AdGroupCode" />
+          <ScalarProperty Name="KeyCode" ColumnName="KeyCode" />
+          <ScalarProperty Name="CampaignName" ColumnName="CampaignName" />
+          <ScalarProperty Name="AdGroupName" ColumnName="AdGroupName" />
+          <ScalarProperty Name="KeyName" ColumnName="KeyName" />
+          <ScalarProperty Name="Budget" ColumnName="Budget" />
+          <ScalarProperty Name="NetWorkType" ColumnName="NetWorkType" />
+          <ScalarProperty Name="Location" ColumnName="Location" />
+          <ScalarProperty Name="NewBid" ColumnName="NewBid" />
+          <ScalarProperty Name="Impressions" ColumnName="Impressions" />
+          <ScalarProperty Name="CTR" ColumnName="CTR" />
+          <ScalarProperty Name="Clicks" ColumnName="Clicks" />
+          <ScalarProperty Name="CPC" ColumnName="CPC" />
+          <ScalarProperty Name="COST" ColumnName="COST" />
+          <ScalarProperty Name="Conversions" ColumnName="Conversions" />
+          <ScalarProperty Name="CostPerConversion" ColumnName="CostPerConversion" />
+          <ScalarProperty Name="ImpressionShare" ColumnName="ImpressionShare" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="getSingleKeywordDetails" FunctionName="WhiskersDBModel.Store.getSingleKeywordDetails">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="WhiskersDBModel.getSingleKeywordDetails_Result">
+          <ScalarProperty Name="CampaignCode" ColumnName="CampaignCode" />
+          <ScalarProperty Name="AdGroupCode" ColumnName="AdGroupCode" />
+          <ScalarProperty Name="KeywordCode" ColumnName="KeywordCode" />
+          <ScalarProperty Name="KeywordBid" ColumnName="KeywordBid" />
+          <ScalarProperty Name="KeywordName" ColumnName="KeywordName" />
+          <ScalarProperty Name="KeywordFromMaster" ColumnName="KeywordFromMaster" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="getTrainerToBatch" FunctionName="WhiskersDBModel.Store.getTrainerToBatch">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="WhiskersDBModel.getTrainerToBatch_Result">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="prcAccountsPerBatches" FunctionName="WhiskersDBModel.Store.prcAccountsPerBatches">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="WhiskersDBModel.prcAccountsPerBatches_Result">
+          <ScalarProperty Name="AccCode" ColumnName="AccCode" />
+          <ScalarProperty Name="ImagePath" ColumnName="ImagePath" />
+          <ScalarProperty Name="AccName" ColumnName="AccName" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="prcAssignedStudentsAndTrainer" FunctionName="WhiskersDBModel.Store.prcAssignedStudentsAndTrainer" />
+    <FunctionImportMapping FunctionImportName="prcBatchesOnDemand" FunctionName="WhiskersDBModel.Store.prcBatchesOnDemand">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="WhiskersDBModel.prcBatchesOnDemand_Result">
+          <ScalarProperty Name="BatchName" ColumnName="BatchName" />
+          <ScalarProperty Name="TrainerName" ColumnName="TrainerName" />
+          <ScalarProperty Name="StudentCount" ColumnName="StudentCount" />
+          <ScalarProperty Name="Location" ColumnName="Location" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+          <ScalarProperty Name="Time" ColumnName="Time" />
+          <ScalarProperty Name="BatchCode" ColumnName="BatchCode" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="prcCheckKeywordFromMapKeywordsAG" FunctionName="WhiskersDBModel.Store.prcCheckKeywordFromMapKeywordsAG">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="WhiskersDBModel.prcCheckKeywordFromMapKeywordsAG_Result">
+          <ScalarProperty Name="KeyCode" ColumnName="KeyCode" />
+          <ScalarProperty Name="CampaignCode" ColumnName="CampaignCode" />
+          <ScalarProperty Name="AdGroupCode" ColumnName="AdGroupCode" />
+          <ScalarProperty Name="MappingId" ColumnName="MappingId" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="prcCreateAccount" FunctionName="WhiskersDBModel.Store.prcCreateAccount" />
+    <FunctionImportMapping FunctionImportName="prcCreateAD" FunctionName="WhiskersDBModel.Store.prcCreateAD" />
+    <FunctionImportMapping FunctionImportName="prcCreateADGroup" FunctionName="WhiskersDBModel.Store.prcCreateADGroup" />
+    <FunctionImportMapping FunctionImportName="prcCreateBatch" FunctionName="WhiskersDBModel.Store.prcCreateBatch" />
+    <FunctionImportMapping FunctionImportName="prcCreateCampaign" FunctionName="WhiskersDBModel.Store.prcCreateCampaign" />
+    <FunctionImportMapping FunctionImportName="prcCreateKeyword" FunctionName="WhiskersDBModel.Store.prcCreateKeyword" />
+    <FunctionImportMapping FunctionImportName="prcCreateMappedKeywords" FunctionName="WhiskersDBModel.Store.prcCreateMappedKeywords" />
+    <FunctionImportMapping FunctionImportName="prcCreateStudent" FunctionName="WhiskersDBModel.Store.prcCreateStudent" />
+    <FunctionImportMapping FunctionImportName="prcCreateTrainer" FunctionName="WhiskersDBModel.Store.prcCreateTrainer" />
+    <FunctionImportMapping FunctionImportName="prcGetAdGroups" FunctionName="WhiskersDBModel.Store.prcGetAdGroups" />
+    <FunctionImportMapping FunctionImportName="prcGetAdGroupsByID" FunctionName="WhiskersDBModel.Store.prcGetAdGroupsByID">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="WhiskersDBModel.prcGetAdGroupsByID_Result">
+          <ScalarProperty Name="CampaignName" ColumnName="CampaignName" />
+          <ScalarProperty Name="AdGroupName" ColumnName="AdGroupName" />
+          <ScalarProperty Name="ADText" ColumnName="ADText" />
+          <ScalarProperty Name="HeadLine" ColumnName="HeadLine" />
+          <ScalarProperty Name="DescLine1" ColumnName="DescLine1" />
+          <ScalarProperty Name="DescLine2" ColumnName="DescLine2" />
+          <ScalarProperty Name="DispUrl" ColumnName="DispUrl" />
+          <ScalarProperty Name="FinalUrl" ColumnName="FinalUrl" />
+          <ScalarProperty Name="Location" ColumnName="Location" />
+          <ScalarProperty Name="Budget" ColumnName="Budget" />
+          <ScalarProperty Name="NetWorkType" ColumnName="NetWorkType" />
+          <ScalarProperty Name="CampaignCode" ColumnName="CampaignCode" />
+          <ScalarProperty Name="ADCode" ColumnName="ADCode" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="prcGetAdGroupsByID_old" FunctionName="WhiskersDBModel.Store.prcGetAdGroupsByID_old" />
+    <FunctionImportMapping FunctionImportName="prcGetCampaign" FunctionName="WhiskersDBModel.Store.prcGetCampaign">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="WhiskersDBModel.prcGetCampaign_Result">
+          <ScalarProperty Name="CampaignCode" ColumnName="CampaignCode" />
+          <ScalarProperty Name="CampaignName" ColumnName="CampaignName" />
+          <ScalarProperty Name="Location" ColumnName="Location" />
+          <ScalarProperty Name="Budget" ColumnName="Budget" />
+          <ScalarProperty Name="NetWorkType" ColumnName="NetWorkType" />
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="BatchCode" ColumnName="BatchCode" />
+          <ScalarProperty Name="AccCode" ColumnName="AccCode" />
+          <ScalarProperty Name="Impressions" ColumnName="Impressions" />
+          <ScalarProperty Name="CTR" ColumnName="CTR" />
+          <ScalarProperty Name="Clicks" ColumnName="Clicks" />
+          <ScalarProperty Name="CPC" ColumnName="CPC" />
+          <ScalarProperty Name="COST" ColumnName="COST" />
+          <ScalarProperty Name="Conversions" ColumnName="Conversions" />
+          <ScalarProperty Name="CostPerConversion" ColumnName="CostPerConversion" />
+          <ScalarProperty Name="ImpressionShare" ColumnName="ImpressionShare" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="prcGetCampaignAds" FunctionName="WhiskersDBModel.Store.prcGetCampaignAds" />
+    <FunctionImportMapping FunctionImportName="prcGetCurrentBatches" FunctionName="WhiskersDBModel.Store.prcGetCurrentBatches">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="WhiskersDBModel.prcGetCurrentBatches_Result">
+          <ScalarProperty Name="BatchName" ColumnName="BatchName" />
+          <ScalarProperty Name="Location" ColumnName="Location" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+          <ScalarProperty Name="Time" ColumnName="Time" />
+          <ScalarProperty Name="TrainerName" ColumnName="TrainerName" />
+          <ScalarProperty Name="BatchCode" ColumnName="BatchCode" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="prcGetDistAdGroups" FunctionName="WhiskersDBModel.Store.prcGetDistAdGroups">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="WhiskersDBModel.prcGetDistAdGroups_Result">
+          <ScalarProperty Name="AdGroupName" ColumnName="AdGroupName" />
+          <ScalarProperty Name="AdGroupCode" ColumnName="AdGroupCode" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="prcGetKeywords" FunctionName="WhiskersDBModel.Store.prcGetKeywords">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="WhiskersDBModel.prcGetKeywords_Result">
+          <ScalarProperty Name="KeyName" ColumnName="KeyName" />
+          <ScalarProperty Name="KeyCode" ColumnName="KeyCode" />
+          <ScalarProperty Name="Competition" ColumnName="Competition" />
+          <ScalarProperty Name="CTR" ColumnName="CTR" />
+          <ScalarProperty Name="SuggestedBid" ColumnName="SuggestedBid" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="prcGetKeywordsbyCampCode" FunctionName="WhiskersDBModel.Store.prcGetKeywordsbyCampCode">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="WhiskersDBModel.prcGetKeywordsbyCampCode_Result">
+          <ScalarProperty Name="CampaignCode" ColumnName="CampaignCode" />
+          <ScalarProperty Name="AdGroupCode" ColumnName="AdGroupCode" />
+          <ScalarProperty Name="KeyCode" ColumnName="KeyCode" />
+          <ScalarProperty Name="NewBid" ColumnName="NewBid" />
+          <ScalarProperty Name="MappingId" ColumnName="MappingId" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="KeyName" ColumnName="KeyName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="prcGetUserDetails" FunctionName="WhiskersDBModel.Store.prcGetUserDetails">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="WhiskersDBModel.prcGetUserDetails_Result">
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="UserType" ColumnName="UserType" />
+          <ScalarProperty Name="AccCode" ColumnName="AccCode" />
+          <ScalarProperty Name="AccName" ColumnName="AccName" />
+          <ScalarProperty Name="ImagePath" ColumnName="ImagePath" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="AccFullName" ColumnName="AccFullName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="prcMappedKeyword" FunctionName="WhiskersDBModel.Store.prcMappedKeyword" />
+    <FunctionImportMapping FunctionImportName="prcSaveAccount" FunctionName="WhiskersDBModel.Store.prcSaveAccount" />
+    <FunctionImportMapping FunctionImportName="prcSrudentsPerBatches" FunctionName="WhiskersDBModel.Store.prcSrudentsPerBatches">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="WhiskersDBModel.prcSrudentsPerBatches_Result">
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="AccCode" ColumnName="AccCode" />
+          <ScalarProperty Name="StudentFirstName" ColumnName="StudentFirstName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="prcStudentOnDemand" FunctionName="WhiskersDBModel.Store.prcStudentOnDemand">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="WhiskersDBModel.prcStudentOnDemand_Result">
+          <ScalarProperty Name="FullName" ColumnName="FullName" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Contact" ColumnName="Contact" />
+          <ScalarProperty Name="StudentCode" ColumnName="StudentCode" />
+          <ScalarProperty Name="BatchCode" ColumnName="BatchCode" />
+          <ScalarProperty Name="Location" ColumnName="Location" />
+          <ScalarProperty Name="BatchName" ColumnName="BatchName" />
+          <ScalarProperty Name="isMappingActive" ColumnName="isMappingActive" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="prcTrainerOnDemand" FunctionName="WhiskersDBModel.Store.prcTrainerOnDemand">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="WhiskersDBModel.prcTrainerOnDemand_Result">
+          <ScalarProperty Name="FullName" ColumnName="FullName" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Contact" ColumnName="Contact" />
+          <ScalarProperty Name="TrainerCode" ColumnName="TrainerCode" />
+          <ScalarProperty Name="BatchCode" ColumnName="BatchCode" />
+          <ScalarProperty Name="Location" ColumnName="Location" />
+          <ScalarProperty Name="BatchName" ColumnName="BatchName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="prcUpdateAdGroup" FunctionName="WhiskersDBModel.Store.prcUpdateAdGroup" />
+    <FunctionImportMapping FunctionImportName="prcUpdateAds" FunctionName="WhiskersDBModel.Store.prcUpdateAds" />
+    <FunctionImportMapping FunctionImportName="prcUpdateCampaign" FunctionName="WhiskersDBModel.Store.prcUpdateCampaign" />
+    <FunctionImportMapping FunctionImportName="prcUpdateMappedKeywords" FunctionName="WhiskersDBModel.Store.prcUpdateMappedKeywords" />
+    <FunctionImportMapping FunctionImportName="prcUserDetailsOnDemand" FunctionName="WhiskersDBModel.Store.prcUserDetailsOnDemand">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="WhiskersDBModel.prcUserDetailsOnDemand_Result">
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="FullName" ColumnName="FullName" />
+          <ScalarProperty Name="Location" ColumnName="Location" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Contact" ColumnName="Contact" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="RFA_Algorithm" FunctionName="WhiskersDBModel.Store.RFA_Algorithm" />
+    <FunctionImportMapping FunctionImportName="RFA_Calculation" FunctionName="WhiskersDBModel.Store.RFA_Calculation" />
+    <FunctionImportMapping FunctionImportName="RFA_Calculation_bak" FunctionName="WhiskersDBModel.Store.RFA_Calculation_bak" />
+    <FunctionImportMapping FunctionImportName="RFAAlgo" FunctionName="WhiskersDBModel.Store.RFAAlgo" />
+    <FunctionImportMapping FunctionImportName="RFAIniateByStudent" FunctionName="WhiskersDBModel.Store.RFAIniateByStudent" />
+    <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="WhiskersDBModel.Store.sp_alterdiagram" />
+    <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="WhiskersDBModel.Store.sp_creatediagram" />
+    <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="WhiskersDBModel.Store.sp_dropdiagram" />
+    <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="WhiskersDBModel.Store.sp_helpdiagramdefinition">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="WhiskersDBModel.sp_helpdiagramdefinition_Result">
+          <ScalarProperty Name="version" ColumnName="version" />
+          <ScalarProperty Name="definition" ColumnName="definition" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="WhiskersDBModel.Store.sp_helpdiagrams">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="WhiskersDBModel.sp_helpdiagrams_Result">
+          <ScalarProperty Name="Database" ColumnName="Database" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Owner" ColumnName="Owner" />
+          <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="WhiskersDBModel.Store.sp_renamediagram" />
+    <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="WhiskersDBModel.Store.sp_upgraddiagrams" />
+    <FunctionImportMapping FunctionImportName="prcGetRemainingAccounts" FunctionName="WhiskersDBModel.Store.prcGetRemainingAccounts">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="WhiskersDBModel.prcGetRemainingAccounts_Result">
+          <ScalarProperty Name="AccCode" ColumnName="AccCode" />
+          <ScalarProperty Name="ImagePath" ColumnName="ImagePath" />
+          <ScalarProperty Name="AccFullName" ColumnName="AccFullName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="prcGetAccntsDetails" FunctionName="WhiskersDBModel.Store.prcGetAccntsDetails">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="WhiskersDBModel.prcGetAccntsDetails_Result">
+          <ScalarProperty Name="UserNames" ColumnName="UserNames" />
+          <ScalarProperty Name="BatchCode" ColumnName="BatchCode" />
+          <ScalarProperty Name="BatchName" ColumnName="BatchName" />
+          <ScalarProperty Name="AccCode" ColumnName="AccCode" />
+          <ScalarProperty Name="ImagePath" ColumnName="ImagePath" />
+          <ScalarProperty Name="AccFullName" ColumnName="AccFullName" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="prcCreatePhrase" FunctionName="WhiskersDBModel.Store.prcCreatePhrase" />
+    <FunctionImportMapping FunctionImportName="prcPhraseOnDemand" FunctionName="WhiskersDBModel.Store.prcPhraseOnDemand">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="WhiskersDBModel.prcPhraseOnDemand_Result">
+          <ScalarProperty Name="SearchQuery" ColumnName="SearchQuery" />
+          <ScalarProperty Name="Traffic" ColumnName="Traffic" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <EntitySetMapping Name="SearchQueryMasters">
+      <EntityTypeMapping TypeName="WhiskersDBModel.SearchQueryMaster">
+        <MappingFragment StoreEntitySet="SearchQueryMaster">
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="Traffic" ColumnName="Traffic" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+          <ScalarProperty Name="SearchQuery" ColumnName="SearchQuery" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RFAHistories">
+      <EntityTypeMapping TypeName="WhiskersDBModel.RFAHistory">
+        <MappingFragment StoreEntitySet="RFAHistory">
+          <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="BatchCode" ColumnName="BatchCode" />
+          <ScalarProperty Name="RFAId" ColumnName="RFAId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="GetAccountAdGrpReport" FunctionName="WhiskersDBModel.Store.GetAccountAdGrpReport">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="WhiskersDBModel.GetAccountAdGrpReport_Result">
+          <ScalarProperty Name="CampaignName" ColumnName="CampaignName" />
+          <ScalarProperty Name="AdGroupName" ColumnName="AdGroupName" />
+          <ScalarProperty Name="Location" ColumnName="Location" />
+          <ScalarProperty Name="Budget" ColumnName="Budget" />
+          <ScalarProperty Name="BatchCode" ColumnName="BatchCode" />
+          <ScalarProperty Name="NetWorkType" ColumnName="NetWorkType" />
+          <ScalarProperty Name="CampaignCode" ColumnName="CampaignCode" />
+          <ScalarProperty Name="AdGroupCode" ColumnName="AdGroupCode" />
+          <ScalarProperty Name="Impressions" ColumnName="Impressions" />
+          <ScalarProperty Name="CTR" ColumnName="CTR" />
+          <ScalarProperty Name="Clicks" ColumnName="Clicks" />
+          <ScalarProperty Name="CPC" ColumnName="CPC" />
+          <ScalarProperty Name="COST" ColumnName="COST" />
+          <ScalarProperty Name="Conversions" ColumnName="Conversions" />
+          <ScalarProperty Name="CostPerConversion" ColumnName="CostPerConversion" />
+          <ScalarProperty Name="ImpressionShare" ColumnName="ImpressionShare" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="GetAccountCampReport" FunctionName="WhiskersDBModel.Store.GetAccountCampReport">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="WhiskersDBModel.GetAccountCampReport_Result">
+          <ScalarProperty Name="CampaignCode" ColumnName="CampaignCode" />
+          <ScalarProperty Name="CampaignName" ColumnName="CampaignName" />
+          <ScalarProperty Name="Location" ColumnName="Location" />
+          <ScalarProperty Name="Budget" ColumnName="Budget" />
+          <ScalarProperty Name="NetWorkType" ColumnName="NetWorkType" />
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="BatchCode" ColumnName="BatchCode" />
+          <ScalarProperty Name="AccCode" ColumnName="AccCode" />
+          <ScalarProperty Name="Impressions" ColumnName="Impressions" />
+          <ScalarProperty Name="CTR" ColumnName="CTR" />
+          <ScalarProperty Name="Clicks" ColumnName="Clicks" />
+          <ScalarProperty Name="CPC" ColumnName="CPC" />
+          <ScalarProperty Name="COST" ColumnName="COST" />
+          <ScalarProperty Name="Conversions" ColumnName="Conversions" />
+          <ScalarProperty Name="CostPerConversion" ColumnName="CostPerConversion" />
+          <ScalarProperty Name="ImpressionShare" ColumnName="ImpressionShare" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="GetBatchesOfTrainer" FunctionName="WhiskersDBModel.Store.GetBatchesOfTrainer">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="WhiskersDBModel.GetBatchesOfTrainer_Result">
+          <ScalarProperty Name="BatchCode" ColumnName="BatchCode" />
+          <ScalarProperty Name="BatchName" ColumnName="BatchName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="GetCampaignMatrix_Report" FunctionName="WhiskersDBModel.Store.GetCampaignMatrix_Report">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="WhiskersDBModel.GetCampaignMatrix_Report_Result">
+          <ScalarProperty Name="CampaignCode" ColumnName="CampaignCode" />
+          <ScalarProperty Name="CampaignName" ColumnName="CampaignName" />
+          <ScalarProperty Name="Location" ColumnName="Location" />
+          <ScalarProperty Name="Budget" ColumnName="Budget" />
+          <ScalarProperty Name="NetWorkType" ColumnName="NetWorkType" />
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="BatchCode" ColumnName="BatchCode" />
+          <ScalarProperty Name="AccCode" ColumnName="AccCode" />
+          <ScalarProperty Name="Impressions" ColumnName="Impressions" />
+          <ScalarProperty Name="CTR" ColumnName="CTR" />
+          <ScalarProperty Name="Clicks" ColumnName="Clicks" />
+          <ScalarProperty Name="CPC" ColumnName="CPC" />
+          <ScalarProperty Name="COST" ColumnName="COST" />
+          <ScalarProperty Name="Conversions" ColumnName="Conversions" />
+          <ScalarProperty Name="CostPerConversion" ColumnName="CostPerConversion" />
+          <ScalarProperty Name="ImpressionShare" ColumnName="ImpressionShare" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="GetTopAccount_Report" FunctionName="WhiskersDBModel.Store.GetTopAccount_Report">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="WhiskersDBModel.GetTopAccount_Report_Result">
+          <ScalarProperty Name="AccCode" ColumnName="AccCode" />
+          <ScalarProperty Name="AccName" ColumnName="AccName" />
+          <ScalarProperty Name="Impressions" ColumnName="Impressions" />
+          <ScalarProperty Name="CTR" ColumnName="CTR" />
+          <ScalarProperty Name="Clicks" ColumnName="Clicks" />
+          <ScalarProperty Name="CPC" ColumnName="CPC" />
+          <ScalarProperty Name="COST" ColumnName="COST" />
+          <ScalarProperty Name="Conversions" ColumnName="Conversions" />
+          <ScalarProperty Name="CostPerConversion" ColumnName="CostPerConversion" />
+          <ScalarProperty Name="ImpressionShare" ColumnName="ImpressionShare" />
+          <ScalarProperty Name="BatchCode" ColumnName="BatchCode" />
+          <ScalarProperty Name="Budget" ColumnName="Budget" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+  </EntityContainerMapping>
+</Mapping>

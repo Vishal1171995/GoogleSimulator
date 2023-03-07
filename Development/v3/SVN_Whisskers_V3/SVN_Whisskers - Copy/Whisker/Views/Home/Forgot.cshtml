@@ -1,0 +1,230 @@
+﻿<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
+    <link href="css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Content/css/Whisskers_MIx.css" rel="stylesheet" />
+    <link href="~/Content/css/login.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <style type="text/css">
+        .loading {
+            font-family: Arial;
+            font-size: 15pt;
+            display: none;
+            position: fixed;
+            background-color: White;
+            z-index: 99999;
+            top: 0;
+            left: 0;
+            opacity: 0.8;
+            filter: alpha(opacity=80);
+            -moz-opacity: 0.8;
+            min-height: 100%;
+            width: 100%;
+        }
+    </style>
+    <script type="text/javascript">
+    function forgotPassword() {
+        if ($('#txtUserId').val().length == 0) {
+            $('#RequiredFieldValidator1').html("Either email id or user id is required.");
+            $('#txtUserId').focus();
+            return false;
+        }
+        else {
+            debugger;
+            var SelectedData = JSON.stringify({
+                'UserId': $('#txtUserId').val(),
+            });
+            $.ajax({
+                url: "/Home/forgotPassword",
+                method: 'POST',
+                cache: false,
+                contentType: 'application/json; charset=utf-8',
+                data: SelectedData,
+                dataType: "json",
+                beforeSend: function () {
+                    $(".Loader").show();
+                },
+                complete: function () {
+                    $(".Loader").hide();
+                },
+                success: function (data) {
+                    debugger;
+                    if (data[0] == "0") {
+                        $('#RequiredFieldValidator1').html(data[1]);
+                    }
+                    if (data[0] == "1") {
+                        $('#forgotView').hide();
+                        $('#forgotSuccessMessage').show();
+                    }
+                }, async: true,
+                error: function (data) {
+                    alert("Error is : " + data);
+                }
+            });
+        }
+        return false;
+    }
+    </script>
+</head>
+
+
+<body>
+    <div class="loading Loader" align="center">
+        Loading. Please wait.<br />
+        <div id="msgDiv"></div>
+        <br />
+        <img src="~/Content/images/progressbar.gif" />
+    </div>
+    <div id="forgotView" class=" forgot-wrapper">
+        <div class="logo">
+            <a href="#a">
+                <img src="~/Content/images/logo.jpg" alt="logo" />
+            </a>
+        </div>
+        <form method="post">
+            <div>
+                <div id="Div3" class="passf-Area">
+                    <div id="Div4" class="passRightArea">
+                        <div class="passinfo">
+                            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <span id="Label4" style="font-weight: 700">Reset Your Password</span>
+                                        </td>
+                                    </tr>
+                                    @*<tr>
+                                            <td>
+                                                <span id="Label5" style="font-size:15px;">You can change or reset the password for your account by providing some information.</span>
+                                            </td>
+                                        </tr>*@
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="passLeftArea" id="divForget">
+                        <div class="formArea">
+                            <table width="100%" border="0" cellpadding="0" cellspacing="0" align="center">
+                                <tbody>
+                                    <tr>
+                                        <td><span id="Label66" style="font-size:14px; font-weight:700">Enter your Email Id</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <input name="txtUserId" type="text" maxlength="50" id="txtUserId" class="MainControl" required="">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <div class="error-box">
+                                                                <span id="RequiredFieldValidator1" class="error-red" style="display: inline;">
+                                                                </span>
+                                                            </div>
+                                                            <div class="button-box-2">
+                                                                <a href="/" class="btn btn-inverse cancel">Cancel</a>
+                                                                <input type="submit" name="btnNextDiv1" value="Submit" onclick="return forgotPassword();" id="btnNextDiv1" class="save">
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+    <div id="forgotSuccessMessage" class=" forgot-wrapper" style="display:none;">
+        <form action="/Home/Forgot" data-ajax="true" data-ajax-begin="onAjaxBegin" data-ajax-complete="TaskComplete" data-ajax-loading="#divLoading" data-ajax-mode="replace" data-ajax-update="#RequiredFieldValidator1" id="form0" method="post">
+            <div>
+                <div id="Div3" class="passf-Area">
+                    <div id="Div4" class="passRightArea">
+                        <div class="passinfo">
+                            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                                <tbody>
+
+                                    <tr>
+                                        <td>
+                                            <span id="Label5" style="font-size:15px;">A New Password has been sent to your registered email id.</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="passLeftArea" id="divForget">
+                        <div class="formArea">
+                            <table width="100%" border="0" cellpadding="0" cellspacing="0" align="center">
+                                <tbody>
+
+                                    <tr>
+                                        <td>
+                                            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                                                <tbody>
+
+                                                    <tr>
+                                                        <td>
+                                                            <div class="error-box">
+                                                                <span id="RequiredFieldValidator1" class="error" style="display: inline;">
+                                                                </span>
+                                                            </div>
+                                                            <div class="button-box-2">
+                                                                <a href="/" class="save">Go to login</a>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="ResetPassword" class="forgotPasswordArea" style="display: none;">
+                <div class="formArea">
+                    <table width="100%" border="0" cellpadding="0" cellspacing="0" align="center">
+                        <tbody>
+                            <tr>
+                                <td><strong><span id="Label6"> Please Check your email id to reset your password </span></strong></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="button-box-2">
+                                        <a href="/" class="btn btn-inverse cancel" style="margin-left:0px;">Ok</a>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+

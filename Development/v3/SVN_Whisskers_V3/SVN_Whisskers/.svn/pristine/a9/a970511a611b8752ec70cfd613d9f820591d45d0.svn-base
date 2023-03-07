@@ -1,0 +1,96 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
+    <link href="css/font-awesome.min.css" rel="stylesheet" />
+
+    <link href="~/Content/css/login.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="main-container">
+        <div class="login_01">
+            <!--here are slider-->
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-12 col-md-4 col-md-push-8 remove-padding">
+                        <div class="loginArea">
+                            <div class="logo"><a href="#"><img src="/Content/images/logo.jpg" alt="logo" /></a></div><!--logo-->
+                            <div class="loginPanel clearfix">
+
+                                <p>Welcome to </p>
+                                <h1>Digital <span>Marketing</span> Tool</h1>
+
+                                <div class="lock">
+                                    <img src="/Content/images/lock.png" />
+                                </div>
+
+
+                                @*@using (Html.BeginForm("Index", "Home", FormMethod.Post, new {@class="form-horizontal"}))
+                                    {
+                                *@
+
+                                @using (Ajax.BeginForm("Login", FormMethod.Post, new AjaxOptions { UpdateTargetId = "divInterestDeatils", InsertionMode = InsertionMode.Replace }, new { @class = "form-horizontal" }))
+                                {
+
+
+
+                                <div class="form-group">
+
+                                    <div class="col-xs-12 col-sm-12 col-md-12">
+                                        <input type="email" class="form-control" name="EmailId" id="EmailId" value="student@gmail.com" placeholder="Username" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+
+                                    <div class="col-xs-12 col-sm-12 col-md-12">
+                                        <input type="password" class="form-control" name="password" id="password" value="abc@123" placeholder="Password" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-xs-12 col-sm-12 col-md-12">
+                                        <button type="submit" class="btn btn-primary" onclick="">Sign In</button>
+                                    </div>
+                                </div>
+
+                                <div class="forgot-pw"><a href="home/Forgot">Forgot Password? </a></div>
+
+                                <span class="error" id="divInterestDeatils"></span>
+                                }
+
+                            </div>
+
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="~/Scripts/jquery-1.9.1.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+
+
+
+</body>
+</html>
+<script>
+    function preventBack() { window.history.forward(); }
+    setTimeout("preventBack()", 0);
+    window.onunload = function () { null };
+</script>

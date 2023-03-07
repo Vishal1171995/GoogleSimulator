@@ -1,0 +1,2327 @@
+﻿
+$(document).ready(function () {
+
+    var msg = "";
+
+    $("#ddlCampaign").change(function () {
+
+        getCamp(this.value);
+
+    });
+    $("#ddlCampaignAD1").change(function () {
+
+        getAds(this.value, 'ALL');
+        getAdGroupsOnly(this.value, '#ddlADGroupName1');
+
+    });
+    $("#ddlCampaignAD").change(function () {
+
+        getAdGroupsOnly(this.value);
+        getAdGroupsOnly(this.value, '#ddlADGroupName');
+
+    });
+    $("#ddlADGroupName").change(function () {
+        //  alert('sss');
+        // getAdGroupsOnly(this.value);
+        $("#hidADGName").val($("#ddlADGroupName option:selected").text());
+        // alert(  $("#ddlADGroupName option:selected").text());
+        // alert(this.is("selected").text());
+
+    });
+
+    $("#ddlCampaign2").change(function () {
+
+        getAdGroups(this.value);
+
+    });
+    //$("#ddlCampaignAD1").change(function () {
+
+    //    getAds(this.value, 'ALL');
+    //});
+    $("#ddlADGroupName1").change(function () {
+
+
+        getAds($("#ddlCampaignAD1").val(), this.value);
+    });
+
+
+    $("#ddlCampaignADKeyW").change(function () {
+
+        getAdGroupsOnly(this.value, '#ddlADGroupNameKeyW');
+        getAdGroupKeyWords(this.value, $("#ddlADGroupNameKeyW").val());
+    });
+
+
+    $("#ddlADGroupNameKeyW").change(function () {
+        getAdGroupKeyWords($("#ddlCampaignADKeyW").val(), this.value);
+    });
+
+    $("#ddlCampKey").change(function () {
+
+        if (this.value != "") {
+            getAdGroupsOnly(this.value, '#ddlAdgrpKey');
+        }
+    });
+    getAllCamp();
+});
+
+
+$(function () {
+    var getData = function (request, response) {
+        $.getJSON(
+            "/Students/Home/GetKeywords?Keywordtxt=" + $('#txtAutoKey').val() + "",
+            function (data) {
+                response(data);
+            });
+    };
+
+    var selectItem = function (event, ui) {
+        $("#txtAutoKey").val(ui.item.value);
+        return false;
+    }
+
+    $("#txtAutoKey").autocomplete({
+        source: getData,
+        select: selectItem,
+        minLength: 3,
+        change: function () {
+            // $("#txtAutoKey").val("").css("display", 2);
+            if ($("#txtAutoKey").val() != "") {
+            }
+        }
+
+    });
+
+
+});
+
+
+function clear_form_elements(ele) {
+
+    $(ele).find(':input').each(function () {
+        switch (this.type) {
+            case 'password':
+            case 'select-multiple':
+            case 'select-one':
+            case 'text':
+            case 'textarea':
+                $(this).val('');
+                break;
+            case 'span':
+                $(this).text('');
+                break;
+            case 'checkbox':
+            case 'radio':
+                this.checked = false;
+            case 'table':
+                $(this).html('');
+        }
+    });
+
+
+
+
+    $('.input-validation-error').removeClass('input-validation-error');
+    $('.mytextclass').text('');
+
+
+    //$("#formMapKeyword").find('input, select, textarea').qtip('destroy');
+    //$("#formMapKeyword").get(0).reset();
+}
+
+function getCamp(cCode) {
+
+    var htmlcontent = "";
+    $('#div_result').empty();
+    $.ajax({
+        url: "/Students/Home/GetCampaignData?cCode=" + cCode + "",
+        method: 'GET',
+        success: function (data) {
+
+            htmlcontent = '<div class="row">' +
+
+                               '<div class="col-md-12">' +
+                                '<div class="campaings-table-border table-responsive">' +
+                                '<table>' +
+                                '<tr>' +
+                                '<th>Campaigns</th>' +
+                                '<th>Budget</th>' +
+                                '<th>Status</th>' +
+                                '<th>Impressions</th>' +
+                                '<th>Clicks</th>' +
+                                '<th>CTR </th>' +
+                                '<th>Cost</th>' +
+                                '<th>Avg CPC</th>' +
+                                '<th>Conversions</th>' +
+                                '<th>Cost Per Conversion</th>' +
+                                '<th>Action</th>' +
+                                '</tr>';
+
+
+            $.each(data, function (i, item) {
+
+                htmlcontent += '<tr><td><a href=\'javascript:void(0)\' onclick="getgroup(\'' + item.CampaignCode + '\');" >' + item.CampaignName + '</a></td>' +
+                                '<td>' + item.Budget + '</td>' +
+                                "<td></td>" +
+                                '<td></td>' +
+                                '<td></td>' +
+                                '<td></td>' +
+                                '<td></td>' +
+                                '<td></td>' +
+                                '<td></td>' +
+                                '<td></td>' +
+                                //'<td><a href="#" class="popup-btn" data-toggle="modal" data-target="#myModalEdit"  onclick="getEditCamp(\'' + item.CampaignCode + '\');"><img src="/Content/images/plus-icon.png" alt="icon" />Edit</a></td></tr>	';
+                                '<td><a href="#"  data-toggle="modal" data-target="#myModal"  onclick="getEditCamp(\'' + item.CampaignCode + '\');"><img src="/Content/images/student/edit-icon.png" alt="delete" /></a></td></tr>	';
+
+
+            });
+        }, async: false,
+
+        error: function (data) {
+
+        }
+    });
+    htmlcontent += '</table></div></div></div>';
+    $('#div_result').html(htmlcontent);
+
+}
+
+function getgroup(cCode) {
+
+    location.href = "/Students/Home/Index#adgroups#" + cCode + "";
+    location.reload();
+    return true;
+}
+function getgroup_Ads(cCode, adGroup) {
+    //alert(cCode + ' ' + adGroup)
+    location.href = "/Students/Home/Index#ads#" + cCode + '~' + adGroup + "";
+    location.reload();
+    return true;
+}
+function getAllCamp() {
+
+    var htmlcontent = "";
+    $('#ddlCampaign').empty();
+    $('#ddlCampaign2').empty();
+    $('#ddlCampaignADGM').empty();
+    $('#ddlCampaignAD1').empty();
+    $('#ddlCampaignAD').empty();
+    $('#ddlCampaignADKeyW').empty();
+    $('#ddlCampKey').empty();
+
+    $('#ddlCampaign').append($('<option></option>').val("ALL").html("ALL Campaigns"));
+    $('#ddlCampaign2').append($('<option></option>').val("ALL").html("ALL Campaigns"));
+    $('#ddlCampaignADGM').append($('<option></option>').val("ALL").html("ALL Campaigns"));
+    $('#ddlCampaignAD1').append($('<option></option>').val("ALL").html("Select Campaign"));
+    $('#ddlCampaignAD').append($('<option></option>').val("ALL").html("ALL Campaigns"));
+    $('#ddlCampaignADKeyW').append($('<option></option>').val("ALL").html("Select Campaign"));
+    $('#ddlCampKey').append($('<option></option>').val("ALL").html("Select Campaign"));
+    $.ajax({
+        url: "/Students/Home/GetCampaigns",
+        method: 'GET',
+
+        //data: { cCode: '1' },
+        success: function (data) {
+
+            $.each(data, function (i, item) {
+
+                $('#ddlCampaign').append($('<option></option>').val(item.CampaignCode).html(item.CampaignName));
+                $('#ddlCampaign2').append($('<option></option>').val(item.CampaignCode).html(item.CampaignName));
+                $('#ddlCampaignADGM').append($('<option></option>').val(item.CampaignCode).html(item.CampaignName));
+                $('#ddlCampaignAD1').append($('<option></option>').val(item.CampaignCode).html(item.CampaignName));
+                $('#ddlCampaignAD').append($('<option></option>').val(item.CampaignCode).html(item.CampaignName));
+                $('#ddlCampaignADKeyW').append($('<option></option>').val(item.CampaignCode).html(item.CampaignName));
+                $('#ddlCampKey').append($('<option></option>').val(item.CampaignCode).html(item.CampaignName));
+
+            });
+        }, async: false,
+
+        error: function (data) {
+
+        }
+    });
+
+
+
+}
+
+function getAllCamp1() {
+
+    var htmlcontent = "";
+    $('#ddlCampaign').empty();
+    $('#ddlCampaign2').empty();
+    $('#ddlCampaignADGM').empty();
+    $('#ddlCampaignAD1').empty();
+    $('#ddlCampaignAD').empty();
+    $('#ddlCampaignADKeyW').empty();
+
+    $('#ddlCampaign').append($('<option></option>').val("ALL").html("ALL Campaigns"));
+    $('#ddlCampaign2').append($('<option></option>').val("ALL").html("ALL Campaigns"));
+    $('#ddlCampaignADGM').append($('<option></option>').val("").html("ALL Campaigns"));
+    $('#ddlCampaignAD1').append($('<option></option>').val("ALL").html("Select Campaign"));
+    $('#ddlCampaignAD').append($('<option></option>').val("").html("ALL Campaigns"));
+    $('#ddlCampaignADKeyW').append($('<option></option>').val("ALL").html("Select Campaign"));
+    $.ajax({
+        url: "/Students/Home/GetCampaigns",
+        method: 'GET',
+
+        //data: { cCode: '1' },
+        success: function (data) {
+
+
+
+
+            $.each(data, function (i, item) {
+
+                $('#ddlCampaign').append($('<option></option>').val(item.CampaignCode).html(item.CampaignName));
+                $('#ddlCampaign2').append($('<option></option>').val(item.CampaignCode).html(item.CampaignName));
+                $('#ddlCampaignADGM').append($('<option></option>').val(item.CampaignCode).html(item.CampaignName));
+                $('#ddlCampaignAD1').append($('<option></option>').val(item.CampaignCode).html(item.CampaignName));
+                $('#ddlCampaignAD').append($('<option></option>').val(item.CampaignCode).html(item.CampaignName));
+                $('#ddlCampaignADKeyW').append($('<option></option>').val(item.CampaignCode).html(item.CampaignName));
+            });
+        }, async: false,
+
+        error: function (data) {
+
+        }
+    });
+
+
+
+}
+function getAdGroups(cCode) {
+
+    var htmlcontent = "";
+    var htmlcontentRow = "";
+    $('#ADGroup_Result').empty();
+
+    $.ajax({
+        url: "/Students/Home/GetADGroupsData?cCode=" + cCode + "",
+        method: 'GET',
+
+        //data: { cCode: '1' },
+        success: function (data) {
+
+            htmlcontent = '<div class="row">' +
+             '<div class="col-md-12">' +
+
+               '<div class="campaings-table">' +
+
+                   '<div class="panel-group" id="accordion">';
+
+
+            var tempCampaign = '';
+            var tempADGroup = '';
+            var colapsCtr = 0;
+            $.each(data, function (i, item) {
+                if (tempCampaign != item.CampaignName && colapsCtr != 0) {
+                    htmlcontent += '</table></div></div></div>';
+                    htmlcontent += '</div>';
+                    // tempCampaign = item.CampaignName;
+                    htmlcontentRow = '';
+                }
+                if (tempCampaign != item.CampaignName) {
+                    tempCampaign = item.CampaignName;
+                    colapsCtr++;
+                    htmlcontent += '<div class="panel panel-default">';
+                    if (colapsCtr == 1) {
+                        htmlcontent += '<div class="panel-heading active-panel">';
+                    }
+                    else {
+                        htmlcontent += '<div class="panel-heading">';
+                    }
+                    htmlcontent += '<h4 class="panel-title">';
+                    if (colapsCtr == 1) {
+                        htmlcontent += '<a class="accordion-toggle" data-toggle="collapse" aria-expanded="true" data-parent="#accordion" href="#collapse' + colapsCtr + '">';
+                    }
+                    else {
+                        htmlcontent += '<a class="accordion-toggle" data-toggle="collapse" aria-expanded="false" data-parent="#accordion" href="#collapse' + colapsCtr + '">';
+                    }
+                    htmlcontent += '' + item.CampaignName + '' +
+                                   '<i class="indicator glyphicon glyphicon-chevron-down  pull-right"></i><i class="indicator glyphicon glyphicon-menu-hamburger  pull-right"></i>  <span class="pull-right">Netword Type: ' + item.NetWorkType + ', Location: ' + item.Location + ', Budget: $ ' + item.Budget + '</span> </a> ' +
+                                   '</h4> </div>';
+                    //}
+                    // alert(tempADGroup + ' # ' + item.AdGroupName)
+                    //if (tempADGroup != item.AdGroupName) {
+                    if (colapsCtr == 1) {
+                        htmlcontent += '<div id="collapse' + colapsCtr + '" class="panel-collapse collapse in">';
+                    }
+                    else {
+                        htmlcontent += '<div id="collapse' + colapsCtr + '" class="panel-collapse collapse">';
+                    }
+                    htmlcontent += '<div class="panel-body">' +
+                                   '<div class="campaings-table table-responsive">' +
+
+                               '<table>' +
+
+                                   '<tr>' +
+
+                                       '<th>Ad Groups</th>' +
+                                       '<th>Status</th>' +
+                                       '<th>Impressions</th>' +
+                                       '<th>Clicks</th>' +
+                                       '<th>CTR</th>' +
+                                       '<th>Cost</th>' +
+                                       '<th>Avg CPC</th>' +
+                                       '<th>Conversions</th>' +
+                                       '<th>Cost Per Conversion</th>' +
+                                       '<th>Action</th>' +
+                                   '</tr>';
+                }
+                //alert(item.AdGroupName)
+                htmlcontent += '<tr>' +
+
+      				'<td><a href=\'javascript:void(0)\' onclick="getgroup_Ads(\'' + item.CampaignCode + '\'' + ',' + '\'' + item.AdGroupCode + '\');" >' + item.AdGroupName + '</a></td>' +
+      				'<td></td>' +
+      				'<td></td>' +
+      				'<td></td>' +
+      				'<td></td>' +
+      				'<td></td>' +
+      				'<td></td>' +
+      				'<td></td>' +
+      				'<td></td>' +
+                    '<td><a href="#"  data-toggle="modal" data-target="#myModal1"  onclick="getEditAdgroup(\'' + item.CampaignCode + '\'' + ',' + ' \'' + item.AdGroupCode + '\');"><img src="/Content/images/student/edit-icon.png" alt="delete" /></a></td>' +
+      			'</tr>';
+
+
+
+
+                //if (tempADGroup != item.AdGroupName) {
+                //  htmlcontent += '</table></div></div></div>';
+                //   tempADGroup = item.AdGroupName;
+                //}
+
+
+
+
+                //if (tempCampaign != item.CampaignName ) {
+                //    htmlcontent += '</table></div></div></div>';
+                //    htmlcontent += '</div>';
+                //    tempCampaign = item.CampaignName;
+                //    htmlcontentRow = '';
+                //}
+
+
+            });
+        }, async: false,
+
+        error: function (data) {
+            alert(data);
+        }
+    });
+    htmlcontent += '</div></div></div></div>';
+
+    $('#ADGroup_Result').html(htmlcontent);
+
+}
+function getAds(cCode, adGroup) {
+    //alert(adGroup);
+    var htmlcontent = "";
+    var htmlcontentRow = "";
+    var commInfo = "";
+    $('#ADs_Result').empty();
+    $('#Cmp_Details_ADS').empty();
+
+    $.ajax({
+        url: "/Students/Home/GetADsData?cCode=" + cCode + "",
+        method: 'GET',
+
+        //data: { cCode: '1' },
+        success: function (data) {
+
+            htmlcontent = '<div class="row">' +
+             '<div class="col-md-12">' +
+
+               //'<div class="campaings-table">' +
+
+                   '<div class="panel-group" id="accordion1">';
+
+
+            var tempCampaign = '';
+            var tempADGroup = '';
+            var colapsCtr = 0;
+
+
+            AdGroupsResult = $.grep(data, function (element, index) {
+
+                return element.Parent == null && element.AdGroupCode == adGroup.replace('ALL', element.AdGroupCode);
+                // return element.CampaignCode == 'CC0001'; //null;
+
+
+            });
+
+            $.each(AdGroupsResult, function (i, item) {
+
+
+                colapsCtr = i;
+                htmlcontent += '<div class="panel panel-default">';
+                if (colapsCtr == 0) {
+                    //  commInfo = item.CampaignName + ' <span class="pull-right">Netword Type: ' + item.NetWorkType + ', Location: ' + item.Location + ', Budget: $ ' + item.Budget + '</span>'
+                    // $('#Cmp_Details_ADS').html(commInfo);
+                    htmlcontent += '<div class="panel-heading active-panel">';
+                }
+                else {
+                    htmlcontent += '<div class="panel-heading">';
+                }
+                htmlcontent += '<h4 class="panel-title">';
+                if (colapsCtr == 0) {
+                    htmlcontent += '<a class="accordion-toggle" data-toggle="collapse" aria-expanded="true" data-parent="#accordion1" href="#collapseAds' + colapsCtr + '">';
+                }
+                else {
+                    htmlcontent += '<a class="accordion-toggle" data-toggle="collapse" aria-expanded="false" data-parent="#accordion1" href="#collapseAds' + colapsCtr + '">';
+                }
+                htmlcontent += item.CampaignName + '>' + item.AdGroupName + '' +
+                               '<i class="indicator glyphicon glyphicon-chevron-down  pull-right"></i><i class="indicator glyphicon glyphicon-menu-hamburger  pull-right"></i>   </a> ' +
+                               '</h4> </div>';
+
+                if (colapsCtr == 0) {
+                    htmlcontent += '<div id="collapseAds' + colapsCtr + '" class="panel-collapse collapse in">';
+                }
+                else {
+                    htmlcontent += '<div id="collapseAds' + colapsCtr + '" class="panel-collapse collapse">';
+                }
+
+                htmlcontent += '<div class="panel-body">';
+
+
+                htmlcontent += '<div id="myCarousel' + i + '" class="carousel slide" data-ride="carousel">';
+                htmlcontent += '<div class="carousel-inner" role="listbox">';
+
+
+                AdGroupsResultChild = $.grep(data, function (element, index) {
+
+                    return element.Parent == item.AdGroupCode || element.AdGroupCode == item.AdGroupCode;
+
+                });
+
+
+                var l = 0;
+                $.each(AdGroupsResultChild, function (k, childItem) {
+
+                    //alert(childItem.AdGroupCode);
+                    if (l == 0) {
+                        htmlcontent += ' <div class="item active">' +
+                            '<div class="item-slider">';
+                    }
+                    else if (l != 0 & l % 3 == 0) {
+
+
+                        htmlcontent += '<div class="item">' +
+                                        '<div class="item-slider">';
+                    }
+
+
+
+                    htmlcontent += ' <div class="item-list col-md-4">' +
+                                                   '<a href=' + childItem.FinalUrl + '>' + childItem.HeadLine + '</a>' +
+                                                   '<span class="green-text">' + childItem.DispUrl + '</span>' +
+                                                   '<span class="item-text">' + childItem.DescLine1 + '' + childItem.DescLine2 + '</span>' +
+
+                                                   '<a href="#"  data-toggle="modal" data-target="#myModal2"  onclick="getEditAds(\'' + item.CampaignCode + '\'' + ',' + ' \'' + item.AdGroupCode + '\'' + ',' + '\'' + childItem.AdCode + '\');"><img src="/Content/images/student/edit-icon.png" alt="delete" /></a>' +
+                                               '</div>';
+                    l++;
+
+                    if (l != 0 & (l % 3 == 0 | l == AdGroupsResultChild.length)) {
+
+                        htmlcontent += '<div class="clearfix"></div>' +
+                    '</div>' +
+                '</div>';
+                    }
+                });
+
+                htmlcontent += '</div>';
+                if (l > 0) {
+                    htmlcontent += '<a class="left carousel-control" href="#myCarousel' + i + '" role="button" data-slide="prev">' +
+                                            '<img src="/Content/images/arrow-left.png" class="arrow" aria-hidden="true">' +
+
+                                            '<span class="sr-only">Previous</span>' +
+                                        '</a>' +
+                                        '<a class="right carousel-control" href="#myCarousel' + i + '" role="button" data-slide="next">' +
+                                            '<img src="/Content/images/arrow-right.png" class="arrow" aria-hidden="true">' +
+                                           ' <span class="sr-only">Next</span>' +
+                                       ' </a>';
+
+                    //'</div>';
+                }
+
+                htmlcontent += '</div></div></div></div>';
+
+
+
+            });
+            htmlcontent += '</div></div></div>';
+        }, async: false,
+
+        error: function (data) {
+            alert(data);
+        }
+    });
+
+
+    $('#ADs_Result').html(htmlcontent);
+
+}
+
+function getAdGroupKeyWords(cCode, adGroup) {
+    //alert(adGroup);
+    var htmlcontent = "";
+    var htmlcontentRow = "";
+    var commInfo = "";
+    $('#Kewords_Result').empty();
+    $('#Cmp_Details_Keywords').empty();
+
+    $.ajax({
+        url: "/Students/Home/GetKeywordsData?cCode=" + cCode + "",
+        method: 'GET',
+
+        //data: { cCode: '1' },
+        success: function (data) {
+
+            htmlcontent = '<div class="row">' +
+             '<div class="col-md-12">' +
+
+               '<div class="campaings-table">' +
+
+                   '<div class="panel-group" id="accordion3">';
+
+
+            var tempCampaign = '';
+            var tempADGroup = '';
+            var colapsCtr = 0;
+
+
+            AdGroupsResult = $.grep(data, function (element, index) {
+
+                return element.Parent == null && element.AdGroupCode == adGroup.replace('ALL', element.AdGroupCode);
+                //return element.CampaignCode == 'CC0001'; //null;
+
+            });
+            colapsCtr = 0;
+            var Adg = "";
+            $.each(AdGroupsResult, function (i, item) {
+
+                if (item.AdGroupCode != Adg) {
+                    Adg = item.AdGroupCode;
+                    //colapsCtr = i;
+                    htmlcontent += '<div class="panel panel-default">';
+                    if (colapsCtr == 0) {
+
+                        commInfo = item.CampaignName + ' <span class="pull-right">Netword Type: ' + item.NetWorkType + ', Location: ' + item.Location + ', Budget: $ ' + item.Budget + '</span>'
+                        $('#Cmp_Details_Keywords').html(commInfo);
+                        htmlcontent += '<div class="panel-heading active-panel">';
+                    }
+                    else {
+                        htmlcontent += '<div class="panel-heading">';
+                    }
+                    htmlcontent += '<h4 class="panel-title">';
+                    if (colapsCtr == 0) {
+                        htmlcontent += '<a class="accordion-toggle" data-toggle="collapse" aria-expanded="true" data-parent="#accordion3" href="#collapseKeyW' + colapsCtr + '">';
+                    }
+                    else {
+                        htmlcontent += '<a class="accordion-toggle" data-toggle="collapse" aria-expanded="false" data-parent="#accordion3" href="#collapseKeyW' + colapsCtr + '">';
+                    }
+
+                    htmlcontent += '' + item.AdGroupName + '' +
+                                   '<i class="indicator glyphicon glyphicon-chevron-down  pull-right"></i><i class="indicator glyphicon glyphicon-menu-hamburger  pull-right"></i>  </a> ' +
+                                   '</h4> </div>';
+
+                    if (colapsCtr == 0) {
+                        htmlcontent += '<div id="collapseKeyW' + colapsCtr + '" class="panel-collapse collapse in">';
+                    }
+                    else {
+                        htmlcontent += '<div id="collapseKeyW' + colapsCtr + '" class="panel-collapse collapse">';
+                    }
+
+                    htmlcontent += '<div class="panel-body">';
+
+
+                    //htmlcontent += '<div id="myCarousel' + i + '" class="carousel slide" data-ride="carousel">';
+                    //htmlcontent += '<div class="carousel-inner" role="listbox">';
+                    htmlcontent += '<div class="campaings-table table-responsive"> <table> <tr>' +
+                                    '<th>Keyword</th>' +
+                                    '<th>Status</th>' +
+                                    '<th>Impressions</th>' +
+                                    '<th>Clicks</th>' +
+                                    '<th>CTR</th>' +
+                                    '<th>Cost</th>' +
+                                    '<th>Avg CPC</th>' +
+                                    '<th>Conversions</th>' +
+                                    '<th>Cost Per Conversion</th>' +
+                                    '<th>Action</th>' +
+                                    '</tr>';
+
+
+                    AdGroupsResultChild = $.grep(data, function (element, index) {
+
+                        return element.AdGroupCode == item.AdGroupCode;
+
+                    });
+
+
+                    var l = 0;
+                    $.each(AdGroupsResultChild, function (k, childItem) {
+
+                        htmlcontent += ' <tr>' +
+
+                                                '<td>' + childItem.KeyName + '</td>' +
+                                                '<td></td>' +
+                                                '<td></td>' +
+                                                '<td></td>' +
+                                                '<td></td>' +
+                                                '<td></td>' +
+                                                '<td></td>' +
+                                                '<td></td>' +
+                                                '<td></td>' +
+                                                '<td><a href="#"  data-toggle="modal" data-target="#myModal4"  onclick="getEditKeyMapp(\'' + childItem.CampaignCode + '\'' + ',' + ' \'' + childItem.AdGroupCode + '\');"><img src="/Content/images/student/edit-icon.png" alt="delete" /></a></td>' +
+
+                                                ' </tr>';
+                    });
+
+                    htmlcontent += '</table></div>';
+
+
+
+                    htmlcontent += '</div></div></div>';
+
+                    colapsCtr++;
+                }// End if group name check
+
+            });
+            htmlcontent += '</div></div></div></div>'
+        }, async: false,
+
+        error: function (data) {
+            alert(data);
+        }
+    });
+
+
+    $('#Kewords_Result').html(htmlcontent);
+
+}
+function getAdGroupsOnly(cCode, ctrl) {
+
+    // $('#ddlADGroupName1').empty();
+    // $('#ddlADGroupName').empty();
+
+    $(ctrl).empty();
+
+    $(ctrl).append($('<option></option>').val("ALL").html("ALL Ad Groups"));
+
+    $.ajax({
+        url: "/Students/Home/GetADGroupsDataDistinct?cCode=" + cCode + "",
+        method: 'GET',
+        success: function (data) {
+
+
+            $.each(data, function (i, item) {
+
+
+                $(ctrl).append($('<option></option>').val(item.AdGroupCode).html(item.AdGroupName))
+
+
+
+            });
+        }, async: false,
+
+        error: function (data) {
+
+            alert(data);
+        }
+    });
+
+
+}
+
+
+//Edit functionality
+function getEditCamp(cCode) {
+
+    var htmlcontent = "";
+    var ddlval = "";
+    $('#CampaignStatus').show();
+    // $('#div_EditCamp').empty();
+    $.ajax({
+        url: "/Students/Home/GetCampaignData?cCode=" + cCode + "",
+        method: 'GET',
+
+        //data: { cCode: '1' },
+        success: function (data) {
+
+
+            $.each(data, function (i, item) {
+                ddlval = item.NetWorkType;
+                $('#txtCampaignName').val(item.CampaignName);
+                $('#ddlNetwordType option[value=' + ddlval + ']').attr('selected', 'selected');
+                $('#txtLocation').val(item.Location);
+                $('#txtBudget').val(item.Budget);
+                $('#hdnCampId').val(item.CampaignCode);
+                $("#someSwitchOptionDefault").prop('checked', item.isActive);
+                /* htmlcontent += '<table><tr><td>Campaign Name</td>' +
+                                 '<td><div class="form-group"><input type="text" id="txtCampaignNameEdit" name="txtCampaignNameEdit" value=\'' + item.CampaignName + '\'  maxlength="100" class="form-control" data-val="true" data-val-required="Campaign name is required." data-val-msg="Campaign name is required."> ' +
+                                 '<span id="msgvalidE1" class="field-validation-valid text-danger" data-valmsg-for="txtCampaignNameEdit" data-valmsg-replace="true"></span></div></td></tr>' +
+                                 '<tr><td>Network Type</td>' +
+                                 '<td><div class="form-group"><select class="form-control" id="ddlNetwordTypeEdit" name="ddlNetwordTypeEdit" data-val="true" data-val-required="Network Type is required." data-val-msg="Network Type is required."> <option value="">Select</option><option value="1">Type1</option><option value="2">Type2</option> </select> ' +
+                                 '<span id="msgvalidE2" class="field-validation-valid text-danger" data-valmsg-for="ddlNetwordTypeEdit" data-valmsg-replace="true"></span></div></td></tr>' +
+                                 '<tr><td>Location</td>' +
+                                 '<td><div class="form-group"><input type="text" id="txtLocationEdit" name="txtLocationEdit" value=\'' + item.Location + '\' class="form-control" data-val="true" data-val-required="Location is required." data-val-msg="Location is required.">' +
+                                 '<span id="msgvalidE3" class="field-validation-valid text-danger" data-valmsg-for="txtLocationEdit" data-valmsg-replace="true"></span></div></td></tr>' +
+                                 '<tr><td>Budget</td>' +
+                                 '<td><div class="form-group"><input type="text" id="txtBudgetEdit" name="txtBudgetEdit" value=\'' + item.Budget + '\'class="form-control" data-val="true" data-val-required="Budget is required." data-val-msg="Budget is required.">' +
+                                 '<span id="msgvalidE4" class="field-validation-valid text-danger" data-valmsg-for="txtBudgetEdit" data-valmsg-replace="true"></span></div> <input type="hidden" id="hdnCampId" name="hdnCampId" value=\'' + item.CampaignCode + '\' /></td></tr></table>';*/
+            });
+        }, async: false,
+
+        error: function (data) {
+
+        }
+    });
+
+
+
+}
+
+function getEditAdgroup(cCode, AdgroupCode) {
+
+    var htmlcontent = "";
+    var ddlval = "";
+    $('#ddlCampaignADGM').empty();
+    $.ajax({
+        url: "/Students/Home/GetADGroupsDataByID?cCode=" + cCode + "&AdgroupCode=" + AdgroupCode + "",
+        method: 'GET',
+
+
+        success: function (data) {
+
+
+            $.each(data, function (i, item) {
+                ddlval = item.CampaignCode;
+
+                $('#txtADGroupName').val(item.AdGroupName);
+                $('#txtADGroupText').val(item.ADText);
+                $('#txtADGroupHeadline').val(item.HeadLine);
+                $('#txtADGroupDesc1').val(item.DescLine1);
+                $('#txtADGroupDesc2').val(item.DescLine2);
+                $('#txtADGroupDespUrl').val(item.DispUrl);
+                $('#txtADGroupFinalUrl').val(item.FinalUrl);
+                $('#hdnAdGroupId').val(AdgroupCode);
+
+
+
+            });
+        }, async: false,
+
+        error: function (data) {
+
+        }
+    });
+
+
+
+    $('#ddlCampaignADGM').append($('<option></option>').val("").html("ALL Campaigns"));
+
+    $.ajax({
+        url: "/Students/Home/GetCampaigns",
+        method: 'GET',
+
+
+        success: function (data) {
+
+
+
+
+            $.each(data, function (i, item) {
+
+                $('#ddlCampaignADGM').append($('<option></option>').val(item.CampaignCode).html(item.CampaignName));
+
+
+            });
+        }, async: false,
+
+        error: function (data) {
+
+        }
+    });
+
+    //$('#ddlCampaignADGMEdit').val(ddlval);
+    $('#ddlCampaignADGM option[value=' + ddlval + ']').attr('selected', 'selected');
+
+
+
+}
+
+
+//Keyword -Aman
+function showKeywordPopup() {
+    $('#TitlePopupKeyword').text("Add Keyword");
+    ClearKeywordPopup();
+    $.ajax({
+        url: "/Students/Home/ClearKeywordSession",
+        method: 'POST',
+        cache: false,
+        contentType: 'application/json; charset=utf-8',
+        dataType: "json",
+        success: function (data) {
+        }, async: false,
+    });
+}
+function AddKeywordstemp() {
+    var CampKey = $("select#ddlCampKey").val();
+    var AdgrpKey = $("select#ddlAdgrpKey").val();
+    var txtAutoKey = $("#txtAutoKey").val();
+    //alert(ddl1 +'-'+ ddl2+'-'+ txtval);
+    if ($("select#ddlCampKey")[0].selectedIndex == 0) {
+        $("#divKeywordNotify").show();
+        $('#divKeywordNotify').text("Client Campaign is required");
+        $('#ddlCampKey').focus();
+        return false;
+    }
+    if ($("select#ddlAdgrpKey")[0].selectedIndex == 0) {
+        $("#divKeywordNotify").show();
+        $('#divKeywordNotify').text("Client Ad Group Name is required");
+        $('#ddlAdgrpKey').focus();
+        return false;
+    }
+    if (txtAutoKey == "") {
+        $("#divKeywordNotify").show();
+        $('#divKeywordNotify').text("Client Keyword is required");
+        $('#txtAutoKey').focus();
+        return false;
+    }
+    else {
+        $('#divKeywordNotify').text("All fields are required");
+        $("#divkeywordmodel").show();
+        var tempdata = getKeywordBidValue();
+        var data1 = tempdata.data1;
+        var SelectedData = JSON.stringify({
+            'CampaignCode': $("select#ddlCampKey").val(),
+            'AdGroupCode': $("select#ddlAdgrpKey").val(),
+            'Keywordtxt': $('#txtAutoKey').val(),
+            'alldata': data1,
+        });
+        var keybid = "";
+        //var keycodedb = "";
+        $.ajax({
+            //url: "/Students/Home/GetKeywordsAllData?Keywordtxt=" + $('#txtAutoKey').val() + "",
+            url: "/Students/Home/CheckKeywordsToKeywordDataTable",
+            method: 'POST',
+            cache: false,
+            contentType: 'application/json; charset=utf-8',
+            data: SelectedData,
+            dataType: "json",
+            //data: { cCode: '1' },
+            success: function (data) {
+                
+                if (data == "Already exist") {
+                    $('#divKeywordNotify').text("Already exist");
+                    $('#txtAutoKey').focus();
+                }
+                else {
+                    EmptyKeywordTable();
+                    hasDataKeywordtable(data);
+                    var json = $.parseJSON(data);
+                    var rowCount = $('#tblKeywords tr').length;
+                    var trKeywordId = "trKeywordId" + rowCount;
+                    var inputKeywordbid = "txtBid" + rowCount;
+                    var t = 1;
+                    for (var i = 0; i < json.length; ++i) {
+                        if (json[i].KeywordStatus != "DELETE") {
+                            var result = '<tr class="data-Map-Key" id="' + json[i].KeywordRowId + '"><td  id="' + "trKeywordId" + t + '" style="display:none">' + json[i].KeywordRowId + '</td><td>' + json[i].KeywordName + '';
+                            result += '<td><input type="text"  id="' + "txtBid" + t + '"   value="' + json[i].KeywordBid + '"  placeholder="Number" onkeypress="return isNumberKey(event)"/></td><td><a href="#keywords"><img src="/Content/images/student/delete.png" alt="delete"  onclick="return deleteKeywordRow(' + json[i].KeywordRowId + ')" /></a></td></tr>';
+                            $('#tblKeywords').append(result);
+                            t++;
+                        }
+                    }
+                }
+            }, async: false,
+
+            error: function (data) {
+
+            }
+        });
+        //var rowCount = $('#tblKeywords tr').length + 1;
+        //var row = "txtkey" + rowCount;
+        //var rowbid = "txtBid" + rowCount;
+        //var rowhide = "hdnkey" + rowCount;
+        //var trcount = "tr" + rowCount;
+        //var data = '<tr class="data-Map-Key" id="' + trcount + '"><td>' + $('#txtAutoKey').val() + '<input type="hidden" id="' + rowhide + '" name="' + rowhide + '" value="' + keycodedb + '" /><input type="hidden" id="' + row + '" name="' + row + '" value="' + $('#txtAutoKey').val() + '" /></td>';
+        //data += '<td><input type="text" id="' + rowbid + '"   value="' + keybid + '"  placeholder="Number" onkeypress="return isNumberKey(event)"/></td><td><a href="#"><img src="/Content/images/student/delete.png" alt="delete"  onclick="deleterow($(this)' + ',' + ' \'' + rowCount + '\')" /></a></td></tr>';
+        //$('#tblKeywords').append(data);
+    }
+    return false;
+    //row = '';
+    //rowbid = '';
+    //$('#txtAutoKey').val('');
+}
+
+function GettbleData() {
+    
+    var result;
+    var data = [];
+    //  $('tr.data-Map-Key').each(function () {
+
+    var roco = $('#tblKeywords tr').length;
+
+
+    if (roco == "1") {
+        $("#spanmsgtble").show();
+        return false;
+    }
+    else {
+        //alert(roco);
+        $("#spanmsgtble").hide();
+        for (var i = 2 ; i <= roco ; i++) {
+            var Key = $('tr.data-Map-Key').find('#hdnkey' + i).val();//Bind to the first name with class f-name01  
+            var keyBid = $('tr.data-Map-Key').find('#txtBid' + i).val();//Bind to the last name with class l-name01  
+            //var emailId = $(this).find('.email01').val();//Bind to the emailId with class email01  
+            //alert(Key + ' '  + i);
+            //alert(keyBid);
+            var alldata =
+            {
+                'KeyCode': Key, //FName as per Employee class name in .cs  
+                'keyBid': keyBid, //LName as per Employee class name in .cs  
+                'CampaignCode': $("#ddlCampKey option:selected").val(),
+                'AdGroupCode': $("#ddlAdgrpKey option:selected").val(),//'EmailId': emailId //EmailId as per Employee class name in .cs   
+            }
+
+            //alert(alldata);
+            data.push(alldata);
+            // break;
+        }
+        //});    
+        //console.log(data);//  
+        //return data;   
+
+        var data1 = JSON.stringify(data);
+        //console.log(data);    
+        $.ajax({
+            url: "/Students/Home/MapKeywordsAD",
+            type: 'POST',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify({ 'empdata': data1 }),
+            success: function (data) {
+                if (data == true) {
+                    alert('Success');
+                    window.location.href = '/Students/Home#keywords';
+                    //$("#divkeywordmodel").hide();
+                    getMappedkeyWordsOnDemand();
+                }
+                if (data == false) {
+                    alert('Error');
+                }
+                //$('#ModalBatchSuccess').show();
+            }, async: false,
+            error: function (data) {
+            }
+        });
+        $("#tblKeywords").html('');
+        result = true;
+
+        return false;
+    }
+    //$("#tblKeywords").find("tr:not(:first)").remove();
+
+
+    //getMappedkeyWordsOnDemand();
+    //getAdGroupKeyWords($("#ddlCampKey option:selected").val(), '');
+    //$('#ddlCampaignADKeyW option[value=' + $("#ddlCampKey option:selected").val() + ']').attr('selected', 'selected');
+
+}
+function deleteKeywordRow(ID) {
+
+    var tempdata = getKeywordBidValue();
+    var data1 = tempdata.data1;
+    var SelectedData = JSON.stringify({
+        'KeywordRowId': ID,
+        'alldata': data1,
+    });
+    $.ajax({
+        url: "/Students/Home/deleteKeywordRow",
+        method: 'POST',
+        cache: false,
+        contentType: 'application/json; charset=utf-8',
+        data: SelectedData,
+        dataType: "json",
+        success: function (data) {
+            
+            EmptyKeywordTable();
+            hasDataKeywordtable(data);
+            var json = $.parseJSON(data);
+            var rowCount = $('#tblKeywords tr').length + 1;
+            var trKeywordId = "trKeywordId" + rowCount;
+            var inputKeywordbid = "txtBid" + rowCount;
+            var t =1;
+            for (var i = 0; i < json.length; ++i)
+            {
+                if (json[i].KeywordStatus != "DELETE")
+                {
+                    var result = '<tr class="data-Map-Key" id="' + json[i].KeywordRowId + '"><td  id="' + "trKeywordId" + t + '" style="display:none">' + json[i].KeywordRowId + '</td><td>' + json[i].KeywordName + '';
+                    result += '<td><input type="text" id="' + "txtBid" + t + '"    value="' + json[i].KeywordBid + '"  placeholder="Number" onkeypress="return isNumberKey(event)"/></td><td><a href="#keywords"><img src="/Content/images/student/delete.png" alt="delete"  onclick="deleteKeywordRow(' + json[i].KeywordRowId + ')" /></a></td></tr>';
+                    $('#tblKeywords').append(result);
+                    t++;
+                }
+            }
+        }, async: false,
+
+        error: function (data) {
+
+        }
+    });
+    return false;
+}
+function getEditKeyMapp(campcode, gropcode) {
+    // alert(campcode + ' ' + gropcode)
+    
+
+    // $("#tblKeywords").find("tr:not(:first)").remove();
+    $("#divkeywordmodel").show();
+    $('#ddlCampKey option[value=' + campcode + ']').attr('selected', 'selected');
+    getAdGroupsOnly(campcode, "#ddlAdgrpKey");
+    $('#ddlAdgrpKey option[value=' + gropcode + ']').attr('selected', 'selected');
+
+    $.ajax({
+        url: "/Students/Home/GetKeywordsData?cCode=" + campcode + "",
+        method: 'GET',
+
+        //data: { cCode: '1' },
+        success: function (data) {
+
+            KeyResult = $.grep(data, function (element, index) {
+
+                return element.Parent == null && element.AdGroupCode == gropcode;
+                //return element.CampaignCode == 'CC0001'; //null;
+
+            });
+
+            $.each(KeyResult, function (k, item) {
+
+                var rowCount = $('#tblKeywords tr').length + 1;
+                var row = "txtkey" + rowCount;
+                var rowbid = "txtBid" + rowCount;
+                var rowhide = "hdnkey" + rowCount;
+                var trcount = "tr" + rowCount;
+                var newbid = ""
+                if (item.NewBid == null) {
+                    newbid = "N/A";
+                }
+                else
+                {
+                    newbid = item.NewBid;
+                }
+
+                //alert(item.KeyName)
+                var data = '<tr class="data-Map-Key" id="' + trcount + '"><td>' + item.KeyName + '<input type="hidden" id="' + rowhide + '" name="' + rowhide + '" value="' + item.KeyCode + '" /></td>';
+                data += '<td><input type="text" id="' + rowbid + '"   value="' + newbid + '"  placeholder="Number" onkeypress="return isNumberKey(event)"/></td><td><a href="#"><img src="/Content/images/student/delete.png" alt="delete"  onclick="deleterow($(this)' + ',' + '0,' + '\'' + campcode + '\'' + ',' + ' \'' + gropcode + '\'' + ',' + ' \'' + item.KeyCode + '\')" /></a></td></tr>';
+                $('#tblKeywords').append(data);
+
+
+            });
+        }, async: false,
+
+        error: function (data) {
+
+        }
+    });
+
+
+
+}
+function clearpopup() {
+
+    $("#divkeywordmodel").hide();
+    $("#tblKeywords").find("tr:not(:first)").remove();
+}
+function ClearKeywordPopup() {
+    $("select#ddlCampKey")[0].selectedIndex = 0;
+    $("select#ddlAdgrpKey")[0].selectedIndex = 0;
+    $('#txtAutoKey').val('');
+    $('#divKeywordNotify').text('All fields are required');
+    $("#btnKeyMappAddMain").attr("disabled", false);
+    $("#divkeywordmodel").hide();
+    $("select#ddlCampKey").attr("disabled", false);
+    $("select#ddlAdgrpKey").attr("disabled", false);
+    $('#hdnKeywordFlag').val('CREATE');
+    EmptyKeywordTable();
+}
+function EmptyKeywordTable() {
+    $('#tblKeywords').empty();
+    var result = '<tr><th>Keyword/Pharses</th><th style="display:none"></th><th>Bid</th><th></th></tr>';
+    $('#tblKeywords').append(result);
+}
+function hasDataKeywordtable(data) {
+    var count = 0;
+    var json = $.parseJSON(data);
+    for (var i = 0; i < json.length; ++i) {
+        if (json[i].KeywordStatus == "DELETE") {
+            count++;
+        }
+    }
+    if (count != json.length) {
+        $("select#ddlCampKey").attr("disabled", true);
+        $("select#ddlAdgrpKey").attr("disabled", true);
+    }
+    else {
+        $("select#ddlCampKey").attr("disabled", false);
+        $("select#ddlAdgrpKey").attr("disabled", false);
+    }
+}
+function ExistKeywordHTMLTable(KeywordText) {
+    var roco = $('#tblKeywords tr').length;
+    for (var i = 2 ; i <= roco ; i++) {
+        var Key = $('tr.data-Map-Key').find('#trKeywordName' + i).html();//Bind to the first name with class f-name01  
+        if (KeywordText.toUpperCase() == Key.toUpperCase()) {
+            return true;
+        }
+    }
+    return false;
+}
+function SaveMapKeywords() {
+    var data = [];
+    var roco = $('#tblKeywords tr').length;
+    if (roco == "1")
+    {
+        $('#divKeywordNotify').text('Atleast one keyword is required');
+        return false;
+    }
+    else
+    {
+        var tempdata = getKeywordBidValue();
+        var data1 = tempdata.data1;
+        var SelectedData = JSON.stringify({
+            'CampaignCode': $("select#ddlCampKey").val(),
+            'AdGroupCode': $("select#ddlAdgrpKey").val(),
+            'alldata': data1,
+            'hdnKeywordFlag': $('#hdnKeywordFlag').val(),
+            
+        });
+    }
+    $.ajax({
+        url: "/Students/Home/SaveMapKeywords",
+        method: 'POST',
+        cache: false,
+        contentType: 'application/json; charset=utf-8',
+        data: SelectedData,
+        dataType: "json",
+        success: function (data) {
+            alert('Success');
+            $("#myModal4").hide();
+            getMappedkeyWordsOnDemand();
+        }, async: false,
+    });
+    return false;
+}
+function getKeywordBidValue() {
+    
+    var data = [];
+    var roco = $('#tblKeywords tr').length;
+    for (var i = 1 ; i < roco ; i++) {
+        var temp = $('#trKeywordId' + i);
+        var RowId = $('#trKeywordId' + i)[0].innerText;
+        var BidValue = $('tr.data-Map-Key').find('#txtBid' + i).val();
+        var alldata =
+        {
+            'RowId': RowId,
+            'BidValue': BidValue,
+        }
+        data.push(alldata);
+    }
+    var data1 = JSON.stringify(data);
+    return {
+        data1
+    }
+}
+function getSingleKeywordDetails(campcode, gropcode) {
+    
+    ClearKeywordPopup();
+    $("#divkeywordmodel").show();
+    $('#TitlePopupKeyword').text("Edit Keyword");
+    $('#hdnKeywordFlag').val('0');
+    $('#hdnKeywordFlag').val('EDIT');
+    getAdGroupsOnly(campcode, "#ddlAdgrpKey");
+    $('#ddlCampKey').val(campcode).attr("selected", "selected");
+    $('#ddlAdgrpKey').val(gropcode).attr("selected", "selected");
+    var SelectedData = JSON.stringify({
+        'CampaignCode': campcode,
+        'AdGroupCode': gropcode,
+    });
+    $.ajax({
+        url: "/Students/Home/getSingleKeywordDetails",
+        method: 'POST',
+        cache: false,
+        contentType: 'application/json; charset=utf-8',
+        data: SelectedData,
+        dataType: "json",
+        success: function (data) {
+            EmptyKeywordTable();
+            hasDataKeywordtable(data);
+            var json = $.parseJSON(data);
+            var rowCount = $('#tblKeywords tr').length;
+            var trKeywordId = "trKeywordId" + rowCount;
+            var inputKeywordbid = "txtBid" + rowCount;
+            var t = 1;
+            for (var i = 0; i < json.length; ++i) {
+                if (json[i].KeywordStatus != "DELETE") {
+                    var result = '<tr class="data-Map-Key" id="' + json[i].KeywordRowId + '"><td  id="' + "trKeywordId" + t + '" style="display:none">' + json[i].KeywordRowId + '</td><td>' + json[i].KeywordName + '';
+                    result += '<td><input type="text"  id="' + "txtBid" + t + '"   value="' + json[i].KeywordBid + '"  placeholder="Number" onkeypress="return isNumberKey(event)"/></td><td><a href="#keywords"><img src="/Content/images/student/delete.png" alt="delete"  onclick="return deleteKeywordRow(' + json[i].KeywordRowId + ')" /></a></td></tr>';
+                    $('#tblKeywords').append(result);
+                    t++;
+                }
+            }
+        }, async: false,
+
+        error: function (data) {
+
+        }
+    });
+    return false;
+}
+//Keyword -Aman
+
+//$("#formMapKeyword").find('input, select, textarea').qtip('destroy');
+//$("#formMapKeyword").get(0).reset();
+//$("#btnKeyMappAdd").click(function () {
+//    debugger
+//    var data = JSON.stringify(getAllEmpData());    
+//    //console.log(data);    
+//    $.ajax({    
+//        url: "/Students/Home/MapKeywordsAD",
+//        type: 'POST',    
+//        dataType: 'json',    
+//        contentType: 'application/json; charset=utf-8',    
+//        data: JSON.stringify({ 'empdata': data }),    
+//        success: function () {    
+//            alert("Data Added Successfully");    
+//        },    
+//        error: function () {    
+//            alert("Error while inserting data");    
+//        }    
+//    });    
+//});  
+
+function IsNumeric(strString) {
+
+    var strValidChars = "0123456789";
+    var strChar;
+    var blnResult = true;
+    //var strSequence = document.frmQuestionDetail.txtSequence.value; 
+    //test strString consists of valid characters listed above 
+    if (strString.length == 0)
+        return false;
+    for (i = 0; i < strString.length && blnResult == true; i++) {
+        strChar = strString.charAt(i);
+        if (strValidChars.indexOf(strChar) == -1) {
+            blnResult = false;
+        }
+    }
+    if (blnResult == false) {
+        $("#msgspannum").show();
+    }
+    else {
+        $("#msgspannum").hide();
+    }
+    return blnResult;
+}
+
+function isNumber(evt, element) {
+
+    var charCode = (evt.which) ? evt.which : event.keyCode
+
+    if (
+        (charCode != 45 || $(element).val().indexOf('-') != -1) &&      // “-” CHECK MINUS, AND ONLY ONE.
+        (charCode != 46 || $(element).val().indexOf('.') != -1) &&      // “.” CHECK DOT, AND ONLY ONE.
+        (charCode < 48 || charCode > 57))
+        return false;
+
+    return true;
+}
+
+function isNumberKey(evt) {
+    var charCode = (evt.which) ? evt.which : event.keyCode;
+    if (charCode != 46 && charCode > 31
+    && (charCode < 48 || charCode > 57))
+        return false;
+
+    return true;
+}
+
+function validateURL(value) {
+    return /^(https?|ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i.test(value);
+}
+
+
+
+/*#start aman student region module js*/
+function HideCampaignPopup() {
+    $('#CampaignStatus').hide();
+}
+function BindCampaignDropdown() {
+    $('#ddlUniqueCampaign').empty();
+    $('#ddlUniqueCampaign').append($('<option></option>').val("ALL").html("ALL Campaigns"));
+    $.ajax({
+        url: "/Students/Home/GetCampaigns",
+        method: 'GET',
+        //data: { cCode: '1' },
+        success: function (data) {
+            $.each(data, function (i, item) {
+                $('#ddlUniqueCampaign').append($('<option></option>').val(item.CampaignCode).html(item.CampaignName));
+            });
+        }, async: false,
+        error: function (data) {
+        }
+    });
+}
+function CampaignDropdownChange(value)
+{
+    BindAdGroupsOnlyDropdown(value, '#ddlUniqueAdGroups');
+    BindStudentCampaignTab();
+}
+function AdGroupDropdownChange() {
+    ShowResultStudentCampaignTab();
+}
+function ShowResultStudentCampaignTab() {
+    getCampaignsOnDemand();
+    getADGroupsOnDemand();
+    getMappedkeyWordsOnDemand();
+    getCampaignAdsOnDemand();
+    CheckStudentRFAStatus();
+}
+function BindAdGroupsOnlyDropdown(cCode, ctrl) {
+    $(ctrl).empty();
+    $(ctrl).append($('<option></option>').val("ALL").html("ALL Ad Groups"));
+    if (cCode != 'ALL') {
+        $.ajax({
+            url: "/Students/Home/GetADGroupsDataDistinct?cCode=" + cCode + "",
+            method: 'GET',
+            success: function (data) {
+                $.each(data, function (i, item) {
+                    $(ctrl).append($('<option></option>').val(item.AdGroupCode).html(item.AdGroupName))
+                });
+            }, async: false,
+
+            error: function (data) {
+
+                alert(data);
+            }
+        });
+    }
+}
+function getCampaignsOnDemand() {
+    debugger;
+    var htmlcontent = "";
+    var SelectedData = JSON.stringify({
+        'CampaignCode': $('#ddlUniqueCampaign').val(),
+    });
+    $('#div_result').empty();
+    $.ajax({
+        //url: "/Students/Home/GetCampaignData",
+        url: "/Students/Home/getCampaignsOnDemand",
+        method: 'POST',
+        cache: false,
+        contentType: 'application/json; charset=utf-8',
+        data: SelectedData,
+        dataType: "json",
+        beforeSend: function () {
+            $(".Loader").show();
+        },
+        complete: function () {
+            $(".Loader").hide();
+        },
+        success: function (data) {
+          var Budget = 0;
+            var Imps = 0;
+            var Clicks = 0;
+            var CTR = 0;
+            var Cost = 0;
+            var CPC = 0;
+            var cnver = 0;
+            var CostCpc = 0;
+            var CountCamp = 0;
+
+            htmlcontent = '<div class="row">' +
+                               '<div class="col-md-12">' +
+                                '<div class="campaings-table-border table-responsive">' +
+                                '<table>' +
+                                '<tr>' +
+                                '<th>Campaigns</th>' +
+                                '<th>Budget</th>' +
+                                '<th>Status</th>' +
+                                '<th>Impressions</th>' +
+                                '<th>Clicks</th>' +
+                                '<th>CTR </th>' +
+                                '<th>Cost</th>' +
+                                '<th>Avg CPC</th>' +
+                                '<th>Conversions</th>' +
+                                '<th>CPC</th>' +
+                                '<th>Settings</th>' +
+                                '</tr>';
+            $.each(data, function (i, item) {
+                CountCamp = data.length;
+                htmlcontent += '<tr><td><a href=\'javascript:void(0)\'>' + item.CampaignName + '</a></td>' +
+                                '<td>' + item.Budget + '</td>' +
+                                 '<td></td>' +
+                                 '<td>' + item.Impressions + '</td>' +
+                                 '<td>' + item.Clicks + '</td>' +
+                                 '<td>' + item.CTR + '</td>' +
+                                 '<td>' + item.COST + '</td>' +
+                                 '<td>' + item.CPC + '</td>' +
+                                 '<td>' + item.Conversions + '</td>' +
+                                 '<td>' + item.CostPerConversion + '</td>' +
+                                //'<td><a href="#" class="popup-btn" data-toggle="modal" data-target="#myModalEdit"  onclick="getEditCamp(\'' + item.CampaignCode + '\');"><img src="/Content/images/plus-icon.png" alt="icon" />Edit</a></td></tr>	';
+                                '<td>' +
+                                '<span class="showTooltip visible-lg-inline-block" data-original-title="">' +
+                                '<a href="#"  data-toggle="modal" class="disableItem" data-target="#myModal"  onclick="getEditCamp(\'' + item.CampaignCode + '\');"><img src="/Content/images/student/edit-icon.png" alt="delete" /></a></span></td></tr>	';
+
+                Budget += parseFloat(checkint(item.Budget));
+                Imps += parseFloat(checkint(item.Impressions));
+                Clicks += parseFloat(checkint(item.Clicks));
+                CTR += parseFloat(checkint(item.CTR));
+                Cost += parseFloat(checkint(item.COST));
+                CPC += parseFloat(checkint(item.CPC));
+                cnver += parseFloat(checkint(item.Conversions));
+                CostCpc += parseFloat(checkint(item.CostPerConversion));
+            });
+
+            htmlcontent += '<tr><td><b>Total</b></td>' +
+                            '<td>' + Budget + '</td>' +
+                             '<td></td>' +
+                             '<td>' + parseFloat(Imps) + '</td>' +
+                          '<td>' + parseFloat(Clicks) + '</td>' +
+                          '<td>' + parseFloat(CTR) + '</td>' +
+                          '<td>' + parseFloat(Cost) + '</td>' +
+                          '<td></td>' +
+                          '<td>' + parseFloat(cnver) + '</td>' +
+                          '<td>' + parseFloat(CostCpc) + '</td>' +
+                             '<td></td></tr>';
+
+            htmlcontent += '<tr><td><b>Avg</b></td>' +
+                              '<td></td>' +
+                               '<td></td>' +
+                                '<td></td>' +
+                               '<td></td>' +
+                               '<td></td>' +
+                               '<td></td>' +
+                               '<td>' + parseFloat(CPC / CountCamp) + '</td>' +
+                               '<td></td>' +
+                               '<td></td>' +
+                               '<td></td></tr>';
+            htmlcontent += '</table></div></div></div>';
+            $('#div_result').html(htmlcontent);
+            $(".Loader").hide();
+        }, async: true,
+        error: function (data) {
+        }
+    });
+}
+function getADGroupsOnDemand() {
+    var htmlcontent = "";
+    var SelectedData = JSON.stringify({
+        'CampaignCode': $('#ddlUniqueCampaign').val(),
+        'AdGroupCode': $('#ddlUniqueAdGroups').val(),
+    });
+    $('#ADGroup_Result').empty();
+    $.ajax({
+        url: "/Students/Home/getADGroupsOnDemand",
+        method: 'POST',
+        cache: false,
+        contentType: 'application/json; charset=utf-8',
+        data: SelectedData,
+        dataType: "json",
+        beforeSend: function () {
+            $(".Loader").show();
+        },
+        complete: function () {
+            $(".Loader").hide();
+        },
+        success: function (data) {
+            var Budget = 0;
+            var Imps = 0;
+            var vClicks = 0.0;
+            var CTR = 0;
+            var Cost = 0;
+            var CPC = 0;
+            var cnver = 0;
+            var CostCpc = 0;
+            var CountCamp = 0;
+            htmlcontent = '<div class="row">' +
+
+                               '<div class="col-md-12">' +
+                                '<div class="campaings-table-border table-responsive">' +
+                                '<table>' +
+                               '<tr>' +
+                                       '<th>Campaign</th>' +
+                                       '<th>Ad Groups</th>' +
+                                       '<th>Status</th>' +
+                                       '<th>Impressions</th>' +
+                                       '<th>Clicks</th>' +
+                                       '<th>CTR</th>' +
+                                       '<th>Cost</th>' +
+                                       '<th>Avg CPC</th>' +
+                                       '<th>Conversions</th>' +
+                                       '<th>CPC</th>' +
+                                       '<th>Settings</th>' +
+                                   '</tr>';
+
+
+            $.each(data, function (i, item) {
+                //
+                CountCamp = data.length;
+                htmlcontent += '<tr>' +
+                    '<td>' + item.CampaignName + '</td>' +
+                     '<td><a href=\'javascript:void(0)\'>' + item.AdGroupName + '</a></td>' +
+                     '<td></td>' +
+                     '<td>' + item.Impressions + '</td>' +
+                     '<td>' + item.Clicks + '</td>' +
+                     '<td>' + item.CTR + '</td>' +
+                     '<td>' + item.COST + '</td>' +
+                     '<td>' + item.CPC + '</td>' +
+                     '<td>' + item.Conversions + '</td>' +
+                     '<td>' + item.CostPerConversion + '</td>' +
+                     '<td>' +
+                     '<span class="showTooltip visible-lg-inline-block" data-original-title="">' +
+                     '<a href="#"  class="disableItem" data-toggle="modal" data-target="#myModal1"  onclick="getEditAdgroup(\'' + item.CampaignCode + '\'' + ',' + ' \'' + item.AdGroupCode + '\');"><img src="/Content/images/student/edit-icon.png" alt="delete" /></a></span></td>' +
+                 '</tr>';
+
+                Budget += parseFloat(checkint(item.Budget));
+                Imps += parseFloat(checkint(item.Impressions));               
+                vClicks += parseFloat(checkint(item.Clicks));
+                CTR += parseFloat(checkint(item.CTR));
+                Cost += parseFloat(checkint(item.COST));
+                CPC += parseFloat(checkint(item.CPC));
+                cnver += parseFloat(checkint(item.Conversions));
+                CostCpc += parseFloat(checkint(item.CostPerConversion));
+            });
+          
+            htmlcontent += '<tr><td><b>Total</b></td>' +
+                         '<td></td>' +
+                         '<td></td>' +
+                          '<td>' + parseFloat(Imps) + '</td>' +
+                          '<td>' + parseFloat(vClicks) + '</td>' +
+                          '<td>' + parseFloat(CTR) + '</td>' +
+                          '<td>' + parseFloat(Cost) + '</td>' +
+                          '<td></td>' +
+                          '<td>' + parseFloat(cnver) + '</td>' +
+                          '<td>' + parseFloat(CostCpc) + '</td>' +
+                          '<td></td></tr>';
+
+            htmlcontent += '<tr><td><b>Avg</b></td>' +
+                              '<td></td>' +
+                              '<td></td>' +
+                               '<td></td>' +
+                               '<td></td>' +
+                               '<td></td>' +
+                               '<td></td>' +
+                               '<td>' + parseFloat(CPC / CountCamp) + '</td>' +
+                               '<td></td>' +
+                               '<td></td>' +
+                               '<td></td></tr>';
+            htmlcontent += '</table></div></div></div>';
+            $('#ADGroup_Result').html(htmlcontent);
+        }, async: true,
+        error: function (data) {
+        }
+    });
+
+}
+
+function checkint(val) {
+
+    if($.isNumeric(val))
+    {
+        val = val;
+    }
+    else
+    {
+        val= 0.0;
+
+    }
+    // alert(val);
+    return val;
+}
+function getMappedkeyWordsOnDemand()
+{
+    var htmlcontent = "";
+    var SelectedData = JSON.stringify({
+        'CampaignCode': $('#ddlUniqueCampaign').val(),
+        'AdGroupCode': $('#ddlUniqueAdGroups').val(),
+    });
+    $('#Kewords_Result').empty();
+    $.ajax({
+        url: "/Students/Home/getMappedkeyWordsOnDemand",
+        method: 'POST',
+        cache: false,
+        contentType: 'application/json; charset=utf-8',
+        data: SelectedData,
+        dataType: "json",
+        beforeSend: function () {
+            $(".Loader").show();
+        },
+        complete: function () {
+            $(".Loader").hide();
+        },
+        success: function (data) {
+            var Budget = 0;
+            var Imps = 0;
+            var Clicks = 0;
+            var CTR = 0;
+            var Cost = 0;
+            var CPC = 0;
+            var cnver = 0;
+            var CostCpc = 0;
+            var CountCamp = 0;
+            htmlcontent = '<div class="row">' +
+
+                               '<div class="col-md-12">' +
+                                '<div class="campaings-table-border table-responsive">' +
+                                '<table>' +
+                               '<tr>' +
+                                    '<th>Keyword</th>' +
+                                    '<th>Campaign</th>' +
+                                    '<th>Ad Group </th>' +
+                                    '<th>Status</th>' +
+                                    '<th>Impressions</th>' +
+                                    '<th>Clicks</th>' +
+                                    '<th>CTR</th>' +
+                                    '<th>Cost</th>' +
+                                    '<th>Avg CPC</th>' +
+                                    '<th>Conversions</th>' +
+                                    '<th>CPC</th>' +
+                                    '<th>Settings</th>' +
+                                   '</tr>';
+
+
+            $.each(data, function (i, item) {
+                //
+                 CountCamp = data.length;
+                htmlcontent += ' <tr>' +
+
+                                            '<td>' + item.KeyName + '</td>' +
+                                            '<td>' + item.CampaignName + '</td>' +
+                                            '<td>' + item.AdGroupName + '</td>' +
+                                            '<td></td>' +
+                                            '<td>' + item.Impressions + '</td>' +
+                                            '<td>' + item.Clicks + '</td>' +
+                                            '<td>' + item.CTR + '</td>' +
+                                            '<td>' + item.COST + '</td>' +
+                                            '<td>' + item.CPC + '</td>' +
+                                            '<td>' + item.Conversions + '</td>' +
+                                            '<td>' + item.CPC + '</td>' +
+                                            '<td>' +
+                                            '<span class="showTooltip visible-lg-inline-block" data-original-title="">' +
+                                            '<a href="#" class="disableItem"  data-toggle="modal" data-target="#myModal4"  onclick="getSingleKeywordDetails(\'' + item.CampaignCode + '\'' + ',' + ' \'' + item.AdGroupCode + '\');"><img src="/Content/images/student/edit-icon.png" alt="delete" /></a></span></td>' +
+                                            ' </tr>';
+                Budget += parseFloat(checkint(item.Budget));
+                Imps += parseFloat(checkint(item.Impressions));
+                Clicks += parseFloat(checkint(item.Clicks));
+                CTR += parseFloat(checkint(item.CTR));
+                Cost +=  parseFloat(checkint(item.COST));
+                CPC +=  parseFloat(checkint(item.CPC));
+                cnver +=  parseFloat(checkint(item.Conversions));
+                CostCpc +=  parseFloat(checkint(item.CostPerConversion));
+            });
+
+
+            htmlcontent += '<tr><td><b>Total</b></td>' +
+                         '<td></td>' +
+                           '<td></td>' +
+                             '<td></td>' +
+                          '<td>' + parseFloat(Imps) + '</td>' +
+                          '<td>' + parseFloat(Clicks) + '</td>' +
+                          '<td>' + parseFloat(CTR) + '</td>' +
+                          '<td>' + parseFloat(Cost) + '</td>' +
+                          '<td></td>' +
+                          '<td>' + parseFloat(cnver) + '</td>' +
+                          '<td>' + parseFloat(CostCpc) + '</td>' +
+                          '<td></td>' +
+                          '</tr>';
+
+            htmlcontent += '<tr><td><b>Avg</b></td>' +
+                              '<td></td>' +
+                                '<td></td>' +
+                                  '<td></td>' +
+                               '<td></td>' +
+                               '<td></td>' +
+                               '<td></td>' +
+                               '<td></td>' +
+                               '<td>' + parseFloat(CPC / CountCamp) + '</td>' +
+                               '<td></td>' +
+                               '<td></td>' +
+            '<td></td>' +
+    '</tr>';
+            htmlcontent += '</table></div></div></div>';
+            $('#Kewords_Result').html(htmlcontent);
+        }, async: true,
+        error: function (data) {
+        }
+    });
+
+}
+function getCampaignAdsOnDemand()
+{
+    var cCode = $('#ddlUniqueCampaign').val();
+    var adGroup = $('#ddlUniqueAdGroups').val();
+    var htmlcontent = "";
+    var htmlcontentRow = "";
+    var commInfo = "";
+    var oldAdgroupOld = "old";
+    var SelectedData = JSON.stringify({
+        'CampaignCode': $('#ddlUniqueCampaign').val(),
+        'AdGroupCode': $('#ddlUniqueAdGroups').val(),
+    });
+    $('#ADs_Result').empty();
+    $('#Cmp_Details_ADS').empty();
+
+    $.ajax({
+        url: "/Students/Home/getCampaignAdsOnDemand",
+        method: 'POST',
+        cache: false,
+        contentType: 'application/json; charset=utf-8',
+        data: SelectedData,
+        dataType: "json",
+        beforeSend: function () {
+            $(".Loader").show();
+        },
+        complete: function () {
+            $(".Loader").hide();
+        },
+        success: function (data) {
+            
+            htmlcontent = '<div class="row">' +
+             '<div class="col-md-12">' +
+             '<div class="panel-group" id="accordion1">';
+            var tempCampaign = '';
+            var tempADGroup = '';
+            var colapsCtr = 0;
+            AdGroupsResult = $.grep(data, function (element, index) {
+                return  element.AdGroupCode == adGroup.replace('ALL', element.AdGroupCode);
+                // return element.CampaignCode == 'CC0001'; //null;
+
+
+            });
+
+            $.each(AdGroupsResult, function (i, item) {
+
+                if (oldAdgroupOld != item.AdGroupCode)
+                {
+                    oldAdgroupOld = item.AdGroupCode;
+                    colapsCtr = i;
+                htmlcontent += '<div class="panel panel-default">';
+                if (colapsCtr == 0) {
+                    //  commInfo = item.CampaignName + ' <span class="pull-right">Netword Type: ' + item.NetWorkType + ', Location: ' + item.Location + ', Budget: $ ' + item.Budget + '</span>'
+                    // $('#Cmp_Details_ADS').html(commInfo);
+                    htmlcontent += '<div class="panel-heading active-panel">';
+                }
+                else {
+                    htmlcontent += '<div class="panel-heading">';
+                }
+                htmlcontent += '<h4 class="panel-title">';
+                if (colapsCtr == 0) {
+                    htmlcontent += '<a class="accordion-toggle" data-toggle="collapse" aria-expanded="true" data-parent="#accordion1" href="#collapseAds' + colapsCtr + '">';
+                }
+                else {
+                    htmlcontent += '<a class="accordion-toggle" data-toggle="collapse" aria-expanded="false" data-parent="#accordion1" href="#collapseAds' + colapsCtr + '">';
+                }
+                htmlcontent += item.CampaignName + '>' + item.AdGroupName + '' +
+                               '<i class="indicator glyphicon glyphicon-chevron-down  pull-right"></i><i class="indicator glyphicon glyphicon-menu-hamburger  pull-right"></i>   </a> ' +
+                               '</h4> </div>';
+
+                if (colapsCtr == 0) {
+                    htmlcontent += '<div id="collapseAds' + colapsCtr + '" class="panel-collapse collapse in">';
+                }
+                else {
+                    htmlcontent += '<div id="collapseAds' + colapsCtr + '" class="panel-collapse collapse">';
+                }
+
+                htmlcontent += '<div class="panel-body">';
+
+
+                htmlcontent += '<div id="myCarousel' + i + '" class="carousel slide" data-ride="carousel">';
+                htmlcontent += '<div class="carousel-inner" role="listbox">';
+
+
+                AdGroupsResultChild = $.grep(data, function (element, index) {
+
+                    return  element.AdGroupCode == item.AdGroupCode;
+
+                });
+
+
+                var l = 0;
+                $.each(AdGroupsResultChild, function (k, childItem) {
+
+                    //alert(childItem.AdGroupCode);
+                    if (l == 0) {
+                        htmlcontent += ' <div class="item active">' +
+                            '<div class="item-slider">';
+                    }
+                    else if (l != 0 & l % 3 == 0) {
+
+
+                        htmlcontent += '<div class="item">' +
+                                        '<div class="item-slider">';
+                    }
+
+
+
+                    htmlcontent += ' <div class="item-list col-md-4">' +
+                                                   '<a href=' + childItem.FinalUrl + '>' + childItem.HeadLine + '</a>' +
+                                                   '<span class="green-text">' + childItem.DispUrl + '</span>' +
+                                                   '<span class="item-text">' + childItem.DescLine1 + '' + childItem.DescLine2 + '</span>' +
+                                                   '<span class="showTooltip visible-lg-inline-block" data-original-title="">' +
+                                                   '<a class="disableItem" href="#"  data-toggle="modal" data-target="#myModal2"  onclick="getEditAds(\'' + item.CampaignCode + '\'' + ',' + ' \'' + item.AdGroupCode + '\'' + ',' + '\'' + childItem.AdCode + '\');"><img src="/Content/images/student/edit-icon.png" alt="delete" /></a></span>' +
+                                               '</div>';
+                    l++;
+
+                    if (l != 0 & (l % 3 == 0 | l == AdGroupsResultChild.length)) {
+
+                        htmlcontent += '<div class="clearfix"></div>' +
+                    '</div>' +
+                '</div>';
+                    }
+                });
+
+                htmlcontent += '</div>';
+                if (l > 0) {
+                    htmlcontent += '<a class="left carousel-control" href="#myCarousel' + i + '" role="button" data-slide="prev">' +
+                                            '<img src="/Content/images/arrow-left.png" class="arrow" aria-hidden="true">' +
+
+                                            '<span class="sr-only">Previous</span>' +
+                                        '</a>' +
+                                        '<a class="right carousel-control" href="#myCarousel' + i + '" role="button" data-slide="next">' +
+                                            '<img src="/Content/images/arrow-right.png" class="arrow" aria-hidden="true">' +
+                                           ' <span class="sr-only">Next</span>' +
+                                       ' </a>';
+
+                    //'</div>';
+                }
+
+                htmlcontent += '</div></div></div></div>';
+
+
+
+            }});
+            htmlcontent += '</div></div></div>';
+            $('#ADs_Result').html(htmlcontent);
+        }, async: true,
+
+        error: function (data) {
+            alert(data);
+        }
+    });
+}
+function getEditAds(cCode, AdgroupCode, AdCode) {
+    var htmlcontent = "";
+    var ddlval = "";
+    var ddlval1 = "";
+    
+    $('#hidadCode').val("0");
+
+    $('#ddlCampaignAD').empty();
+    $('#ddlADGroupName').empty();
+    var SelectedData = JSON.stringify({
+        'CampaignCode': cCode,
+        'AdGroupCode': AdgroupCode,
+        'AdCode': AdCode,
+    });
+
+    //$('#ADs_Result').empty();
+    //$('#Cmp_Details_ADS').empty();
+    $.ajax({
+        url: "/Students/Home/getCampaignAdsOnDemand",
+        method: 'POST',
+        cache: false,
+        contentType: 'application/json; charset=utf-8',
+        data: SelectedData,
+        dataType: "json",
+        success: function (data) {
+            data1 = $.grep(data, function (ele, index) {
+                //alert(cCode +" && " + AdgroupCode + " && " + AdCode);
+                return ele.CampaignCode == cCode && ele.Parent == AdgroupCode && ele.AdGroupCode == AdCode;
+            });
+            var l = 0;
+            $.each(data, function (k, childItem) {
+                
+                ddlval = childItem.CampaignCode;
+                ddlval1 = childItem.AdGroupCode;
+
+                $('#txtADText').val(childItem.ADText);
+                $('#txtADHeadline').val(childItem.HeadLine);
+                $('#txtADDesc1').val(childItem.DescLine1);
+                $('#txtADDesc2').val(childItem.DescLine2);
+                $('#txtADDespUrl').val(childItem.DispUrl);
+                $('#txtADFinalUrl').val(childItem.FinalUrl);
+                $('#hdnAdGrpId').val(childItem.AdGroupCode);
+                $('#hidadCode').val(childItem.AdCode);
+
+            });
+        }, async: false,
+
+        error: function (data) {
+
+        }
+    });
+
+
+
+
+    $('#ddlCampaignAD').append($('<option></option>').val("").html("ALL Campaigns"));
+
+    $.ajax({
+        url: "/Students/Home/GetCampaigns",
+        method: 'GET',
+
+        //data: { cCode: '1' },
+        success: function (data) {
+
+
+            $.each(data, function (i, item) {
+
+                $('#ddlCampaignAD').append($('<option></option>').val(item.CampaignCode).html(item.CampaignName));
+
+
+            });
+        }, async: false,
+
+        error: function (data) {
+
+        }
+    });
+    $('#ddlCampaignAD option[value=' + ddlval + ']').attr('selected', 'selected');
+
+
+    $.ajax({
+        url: "/Students/Home/GetADGroupsDataDistinct?cCode=" + cCode + "",
+        method: 'GET',
+        success: function (data) {
+
+
+            $.each(data, function (i, item) {
+
+                //$('#ddlADGroupName1').append($('<option></option>').val(item.AdGroupCode).html(item.AdGroupName))
+                $('#ddlADGroupName').append($('<option></option>').val(item.AdGroupCode).html(item.AdGroupName))
+
+
+            });
+        }, async: false,
+
+        error: function (data) {
+
+            alert(data);
+        }
+    });
+
+    $('#ddlADGroupName option[value=' + ddlval1 + ']').attr('selected', 'selected');
+
+}
+function EnableGoForAuction() {
+    $("#rfastatus").text('Current request submitted');
+    $("#rfastatus").css("color", "green");
+    $("#linkreqsent").text('Request Submitted');
+    $("#linkreqsent").css("pointer-events", "none");
+    $("#linkreqsent").css("opacity", "0.6");
+    $(".disableItem").each(function () {
+        //$(this).prop('disabled', true);
+        $(this).css("pointer-events", "none");
+        $(this).css("opacity", "0.6");
+    });
+    $(".showTooltip").attr('data-original-title', 'Request Submitted...');
+    $(".showTooltip").tooltip({
+        'placement': 'bottom'
+    });
+}
+function setDropdown(gg) {
+    alert(gg);
+    //$('#ddlUniqueCampaign').val(gg);
+}
+
+function KeyPlanDownloadExcel() {
+    debugger;
+    var htmlcontent = "";
+    //var SelectedData = JSON.stringify({
+    //    'CampaignCode': $('#ddlUniqueCampaign').val(),
+    //    'AdGroupCode': $('#ddlUniqueAdGroups').val(),
+    //});
+    $.ajax({
+        url: "/Admin/Manage/getKeywordsOnDemand",
+        method: 'POST',
+        cache: false,
+        contentType: 'application/json; charset=utf-8',
+        dataType: "json",
+        success: function (data) {
+            htmlcontent =
+                '<table border="2px" id="tempTablePhrase">' +
+                '<caption>All Keyword List</caption><colgroup align="left"></colgroup><colgroup span="5" align="left"></colgroup>' +
+                                '<thead><tr>' +
+                                '<th>Index</th>' +
+                                '<th>Keyword Name</th>' +
+                                '<th>Bid</th>' +
+                                '</thead></tr><tbody>';
+
+            if (data == '') {
+                htmlcontent += '<tr><td colspan="5">No Results Found</tr></td>';
+            }
+            $.each(data, function (i, item) {
+                debugger;
+                var index = i + 1;
+                htmlcontent += '<tr><td>' + index + '</td>' +
+                '<td>' + item.KeyName + '</td>' +
+                                '<td>' + item.SuggestedBid + '</td>';
+            });
+        }, async: false,
+
+        error: function (data) {
+            alert("Either internet slow or Internal Error");
+        }
+    });
+    htmlcontent += '</tbody></table>';
+    fnExcelReport(htmlcontent, "Download_KeywordPlanner");
+}
+function KeyPlanCampaignDropdownChange(value) {
+    BindAdGroupsOnlyDropdown(value, '#ddlUniqueAdGroups');
+    getKeywordPlannerOnDemand();
+}
+function KeyPlanAdGroupDropdownChange() {
+    getKeywordPlannerOnDemand();
+}
+function getKeywordPlannerOnDemand() {
+    var htmlcontent = "";
+    var SelectedData = JSON.stringify({
+        'CampaignCode': $('#ddlUniqueCampaign').val(),
+        'AdGroupCode': $('#ddlUniqueAdGroups').val(),
+    });
+    $('#Kewords_Result').empty();
+    $.ajax({
+        url: "/Students/Home/getMappedkeyWordsOnDemand",
+        method: 'POST',
+        cache: false,
+        contentType: 'application/json; charset=utf-8',
+        data: SelectedData,
+        dataType: "json",
+        success: function (data) {
+
+            htmlcontent = '<div class="row">' +
+
+                               '<div class="col-md-12">' +
+                                '<div class="campaings-table-border table-responsive">' +
+                                '<table id="tableKeyPlan">' +
+                                '<thead><tr>' +
+                                '<th>Campaign</th>' +
+                                '<th>Ad Group </th>' +
+                                '<th>Keyword</th>' +
+                                //'<th>Impressions</th>' +
+                                //'<th>Clicks</th>' +
+                                //'<th>CTR</th>' +
+                                //'<th>Cost</th>' +
+                                //'<th>Avg CPC</th>' +
+                                //'<th>Conversions</th>' +
+                                //'<th>CPC</th>' +
+                                 '<th>Bid</th>' +
+                                '</tr></thead><tbody>';
+
+
+            $.each(data, function (i, item) {
+                //
+                htmlcontent += ' <tr>' +
+                                            '<td>' + item.CampaignName + '</td>' +
+                                            '<td>' + item.AdGroupName + '</td>' +
+                                            '<td>' + item.KeyName + '</td>' +
+                                            //'<td></td>' +
+                                            //'<td>' + item.Impressions + '</td>' +
+                                            //'<td>' + item.Clicks + '</td>' +
+                                            //'<td>' + item.CTR + '</td>' +
+                                            //'<td>' + item.COST + '</td>' +
+                                            //'<td>' + item.CPC + '</td>' +
+                                            //'<td>' + item.Conversions + '</td>' +
+                                            //'<td>' + item.CPC + '</td>' +
+                                            '<td>' + item.NewBid + '</td>' +
+                                            ' </tr>';
+            });
+        }, async: false,
+        error: function (data) {
+        }
+    });
+    htmlcontent += '</tbody></table></div></div></div>';
+    $('#Kewords_Result').html(htmlcontent);
+    KeyPlanDataTable();
+}
+function SaveKeyPlanExcel() {
+    var hjjh = $('#excelUpload')[0];
+    hjjh = $('#excelUpload');
+    var formData = new FormData($('#excelUpload')[0]);
+    $.ajax({
+        url: '/Students/Home/SaveKeyPlanExcel',  //Server script to process data
+        type: 'POST',
+        data: formData,
+        //Options to tell jQuery not to process data or worry about content-type.
+        cache: false,
+        contentType: false,
+        processData: false,
+        beforeSend: function () {
+            $(".Loader").show();
+            debugger;
+        },
+        complete: function () {
+            $(".Loader").hide();
+        },
+        success: function (data)
+        {
+            getKeywordPlannerOnDemand();
+            CloseExcelPopup(data);
+        }, async: true,
+
+        error: function (data)
+        {
+            alert('something seems to be wrong. please contact to administrator');
+        }
+    });
+    return false;
+}
+
+//#region CommonFunction
+function fnExcelReport(htmlcontent, Name) {
+    debugger;
+    var tab_text = htmlcontent;
+    var textRange; var j = 0;
+
+    var ua = window.navigator.userAgent;
+    var msie = ua.indexOf("MSIE ");
+
+    if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
+    {
+        txtArea1.document.open("txt/html", "replace");
+        txtArea1.document.write(tab_text);
+        txtArea1.document.close();
+        txtArea1.focus();
+        sa = txtArea1.document.execCommand("SaveAs", true, Name + ".xls");
+    }
+    else //other browser not tested on IE 11
+        sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));
+    return (sa);
+}
+function fadeOut(id) {
+    debugger;
+    $("#" + id).fadeOut(function () {
+        $(this).fadeIn();
+    });
+}
+function OpenExcelPopup(Type1)
+{
+    debugger;
+    $('#hdnIdenType').val(Type1);
+    $('#excelCampaignName').text($('#ddlUniqueCampaign option:selected').text());
+    $('#excelAdGroupName').text($('#ddlUniqueAdGroups option:selected').text());
+    $('#hdnexcelCampaignValue').val($('#ddlUniqueCampaign').val());
+    $('#hdnexcelAdGroupValue').val($('#ddlUniqueAdGroups').val());
+    ClearExcelPopup();
+    ShowPopup();
+}
+function ExcelValidation() {
+    if ($('#excelfile').val().length == 0) {
+        $('#divExcelNotify').text("Excel file is required");
+        $('#excelfile').focus();
+        $('#divExcelNotify').show();
+        return false;
+    }
+    else {
+        //$("#btnCreateAccount").text('1');
+        //$("#btnCreateAccount").attr("disabled", true);
+        if (confirm('are you sure you want to continue?'))
+        {
+            if ($('#hdnIdenType').val() == 'KEYPLAN')
+            {
+                return SaveKeyPlanExcel();
+            }
+            else {
+                return null;
+            }
+
+        }
+        else {
+            return false;
+        }
+    }
+}
+
+
+
+//Table To Excel
+var tableToExcel = (function () {
+    //var uri = 'data:application/vnd.ms-excel;base64,'
+    //  , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+    //  , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
+    //  , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) }
+    //return function (table, name) {
+    //    if (!table.nodeType) table = document.getElementById(table)
+    //    var ctx = { worksheet: name || 'Worksheet', table: table.innerHTML }
+    //    window.location.href = uri + base64(format(template, ctx))
+    //}
+})()
+//#endregion CommonFunction
+
+
+
+/*#start aman student region module js*/
+function CheckStudentRFAStatus() {
+    var SelectedData = JSON.stringify({
+        'Status': "CHECK",
+    });
+    $.ajax({
+        url: "/Students/Home/GoForAuction",
+        method: 'POST',
+        cache: false,
+        contentType: 'application/json; charset=utf-8',
+        dataType: "json",
+        data: SelectedData,
+        beforeSend: function () {
+            $(".Loader").show();
+        },
+        complete: function () {
+            $(".Loader").hide();
+        },
+        success: function (data) {
+            if (data == true) {
+
+            }
+            if (data == false) {
+                EnableGoForAuction();
+            }
+            //$('#ModalBatchSuccess').show();
+        }, async: true,
+        error: function (data) {
+        }
+    });
+}
+
+function GoForAuction() {
+    if (confirm("Are you sure you want to continue...?") == true) {
+        var SelectedData = JSON.stringify({
+            'Status': "INSERT",
+        });
+        $.ajax({
+            url: "/Students/Home/GoForAuction",
+            method: 'POST',
+            cache: false,
+            contentType: 'application/json; charset=utf-8',
+            dataType: "json",
+            data: SelectedData,
+            success: function (data) {
+                if (data == true) {
+                    alert('Successfully');
+                    EnableGoForAuction();
+                }
+                if (data == false) {
+                    $('#BatchSuccessHead').text("Auction request is not accepted ");
+                    alert('Already Request Sent');
+                    EnableGoForAuction();
+                }
+                //$('#ModalBatchSuccess').show();
+            }, async: false,
+            error: function (data) {
+            }
+        });
+    }
+
+
+    return false;
+}

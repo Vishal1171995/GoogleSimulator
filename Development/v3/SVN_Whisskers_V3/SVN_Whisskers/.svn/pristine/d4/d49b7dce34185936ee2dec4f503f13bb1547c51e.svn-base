@@ -1,0 +1,312 @@
+﻿@{
+    Layout = "~/Areas/Admin/Views/Shared/Admin_Manage_Layout.cshtml";
+    //<div id="phrases2" class="tab-pane fade in active">
+    //<div class="col-md-3"><h3>All Search Phrases</h3></div>
+}
+<div class="admin-tab">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="tab-content">
+                    <div id="Phrase2" class="tab-pane fade in active">
+                        <div class="admin-manage-header">
+                            <div class="row">
+                                <div class="col-md-3"><h3>Search Query</h3></div>
+
+
+                                <div class="col-md-9 text-right">
+
+
+                                    <ul class="campaings-nav pull-right">
+
+                                        <li><a href="/Admin/Manage/PhraseDownloadExcel"><i class="fa fa-download" area-hidden="true"></i>  Download</a></li>
+                                        <li class="dropdown">
+                                            <img src="/content/images/excel.png" /> <a href="#" class="dropdown-toggle" onclick="OpenExcelPopup('PHRASE');" data-toggle="modal"> Import From Excel</a>
+                                        </li>
+                                        <li><a href="#" data-toggle="modal" onclick="showPhrasePopup();" data-target="#myModal29"><img src="/content/images/plus-icon.png" alt="icon">Add Search Query</a></li>
+
+
+
+                                    </ul>
+
+
+
+
+
+                                </div>
+                            </div>
+                            <div id="div_result6">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="campaings-table-border table-responsive">
+                                            <table id="tablePhrase">
+                                                <thead>
+                                                    <tr>
+                                                        <th width="30px;">Index</th>
+                                                        <th>SearchQuery</th>
+                                                        <th>Traffic</th>
+                                                        <th width="30px;">Edit</th>
+                                                        <th width="30px;">Delete</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="div_result6tbody"></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--add Phrases-->
+            @using (Ajax.BeginForm("CreatePhrase", "Manage", FormMethod.Post, new AjaxOptions { OnSuccess = "closepoup", OnBegin = "AjaxBegin", OnFailure = "Failure();" }))
+            {
+                <div class="modal fade" id="myModal29" role="dialog">
+                    <div class="modal-dialog">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">×</button>
+                                <h4 id="TitlePopupPhrase" class="modal-title">Add Search Query</h4>
+                            </div>
+                            <form action="" method="post">
+
+
+                                <div class="modal-body">
+
+                                    <div class="form-details">
+
+                                        <div class="row">
+
+
+                                            <div class="form-group">
+                                                <div class="col-xs-12 col-md-3"> <label class="lab_01 required">Search Query</label>   </div>
+                                                <div class="col-xs-12 col-md-9">
+                                                    <div class="form-group">
+                                                        <input type="text" id="txtPhraseName" name="txtPhraseName" class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="col-xs-12 col-md-3"> <label class="lab_01 required">Traffic</label>   </div>
+                                                <div class="col-xs-12 col-md-9">
+                                                    <div class="form-group">
+                                                        <input type="text" id="txtPhraseTraffic" name="txtPhraseTraffic" class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="clearfix"></div>
+
+                                        </div>
+
+                                        <div class="clearfix"></div>
+
+
+                                        <div id="divPhraseNotify" class="error-red erroor-boder">All Fields are required</div>
+                                        <input type="hidden" id="hdnPhraseCode" value="0" name="hdnPhraseCode" />
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" id="btnCancelPhrase" class="btn btn-default cancel" onclick="ClearPhrasePopup();">Cancel</button>
+                                    <button type="submit" id="btnCreatePhrase" class="btn btn-default save" onclick="return PhraseValidation();">Save</button>
+                                </div>
+
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            }
+            <div class="modal fade" id="ModalPhraseSuccess" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            @*<button type="button" class="close" data-dismiss="modal">&times;</button>*@
+                            <h5 id="PhraseSuccessHead" class="modal-title"></h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script>
+                $(document).ready(function () {
+                    $('#Phrase2').addClass("active");
+                    // getPhrasesOnDemand();
+                    PhraseServerSidedatatable();
+                });
+                function closepoup(data) {
+                    debugger;
+                    var JsonObj = data[0];
+                    $('#divPhraseNotify').text(data[0]);
+                    fadeOut("divPhraseNotify");
+                    if (data[0] == "0") {
+                        $('#hdnPhraseCode').val('0');
+                        $('#PhraseSuccessHead').text('You have created phrase successFully');
+                    }
+                    if (data[0] == "1") {
+                        $('#hdnPhraseCode').val('0');
+                        $('#PhraseSuccessHead').text('You have updated phrase successfully');
+                    }
+                    $("#btnCreatePhrase").attr("disabled", false);
+                    if (data[1] == "1") {
+                        ClearPhrasePopup();
+                        PhraseServerSidedatatable();
+                        $('#ModalPhraseSuccess').modal('show');
+                        $('#hdnPhraseCode').val('0');
+                    }
+                }
+                function Failure() {
+                    alert('Some internal error occurs, please contact to administrator.');
+                }
+                function AjaxBegin() {
+                    $("#btnCreatePhrase").attr("disabled", true);
+                }
+                function ClearPhrasePopup() {
+                    $('#txtPhraseName').val('');
+                    $('#txtPhraseTraffic').val('');
+                    $('#divPhraseNotify').text('All fields are required');
+                    $("#btnCreatePhrase").attr("disabled", false);
+                    $('#hdnPhraseCode').val('0');
+                    $('#myModal29').modal('hide');
+                }
+                function PhraseDataTable() {
+                    ////check admin.css DataTable section if you want to hide header paging
+                    //$('#tablePhrase').dataTable({
+                    //    "searching": false,
+                    //    //"iDisplayLength": 10,
+                    //    //scrollY: '50vh',
+                    //    //scrollCollapse: true,
+                    //    /*Remove sorting on index column
+                    //    order: [],
+                    //    columnDefs: [ { orderable: false, targets: [0]}],
+                    //    */
+                    //    "bLengthChange": true,
+                    //});
+                }
+                function PhraseDataTableNew()
+                {
+                    ////check admin.css DataTable section if you want to hide header paging
+                    //$('#tablePhrase').dataTable({
+
+                    //    "searching": true,
+                    //    "iDisplayLength": 10,
+                    //    scrollY: '50vh',
+                    //    scrollCollapse: true,
+                    //    /*Remove sorting on index column
+                    //    order: [],
+                    //    columnDefs: [ { orderable: false, targets: [0]}],
+                    //    */
+                    //    "bLengthChange": true,
+                    //    "sPaginationType": "full_numbers",
+                    //    processing: true,
+                    //    serverSide: true,
+                    //    ajax: {
+                    //        url: "/Admin/Manage/getPhrasesOnDemand",
+                    //        method: 'POST',
+                    //        cache: false,
+                    //        contentType: 'application/json; charset=utf-8',
+                    //        dataType: "json",
+                    //        //data: function (d)
+                    //        //{
+                    //        //    alert(JSON.stringify(d));
+                    //        //    debugger;
+                    //        //    // note: d is created by datatable, the structure of d is the same with DataTableParameters model above
+                    //        //    console.log(JSON.stringify(d));
+                    //        //    return JSON.stringify(d);
+                    //        //},
+                    //        //success: function (data) {
+                    //        //   // alert(JSON.stringify(data));
+                    //        //    //return JSON.stringify(data);
+                    //        //}
+                    //    }
+
+                    //});
+                }
+                function PhraseServerSidedatatable() {
+                    $("#div_result6").empty();
+                    var htmlcontent = '<div class="row">' +
+                                   '<div class="col-md-12">' +
+                                        '<div class="campaings-table-border table-responsive">' +
+                                            '<table id="tablePhrase">' +
+                                                '<thead>' +
+                                                    '<tr>' +
+                                                        '<th width="30px;">Index</th>' +
+                                                        '<th width="30px;">Id</th>' +
+                                                        '<th>SearchQuery</th>' +
+                                                        '<th>Traffic</th>' +
+                                                        '<th width="30px;">Edit</th>' +
+                                                        '<th width="30px;">Delete</th>' +
+                                                    '</tr>' +
+                                               '</thead>' +
+                                                '<tbody id="div_result6tbody">' +
+
+                                                '</tbody>' +
+                                           ' </table>' +
+                                     '</div>' +
+                                    '</div>' +
+                                '</div>';
+                    $("#div_result6").html(htmlcontent);
+                    $("#div_result6tbody").empty();
+                    var t = $("#tablePhrase").DataTable({
+                        "processing": true, // for show progress bar
+                        "serverSide": true, // for process server side
+                        "filter": false, // this is for disable filter (search box)
+                        "orderMulti": false, // for disable multiple column at once
+                        "ajax": {
+                            "url": "/Admin/Manage/getPhrasesOnDemand",
+                            "type": "POST",
+                            "datatype": "json",
+                            //success: function (data) {
+                            //    $.each(data.data, function (i, item) {
+                            //        debugger;
+                            //        var index = i + 1;
+                            //        htmlcontent += '<tr role="row" class="even"><td class="sorting_1">' + index + '</td>' +
+                            //            '<td>' + item.SearchQuery + '</td>' +
+                            //            '<td>' + item.Traffic + '</td>' +
+                            //            '<td class="text-center"><a  id ="' + item.Id + '" href="#" onclick="getSinglePhraseDetails(' + "'" + item.Id + "'" + ');"><i class="fa fa-pencil" data-toggle="modal" data-target="#myModal29" aria-hidden="true"></i></a></td>' +
+                            //            '<td class="text-center"><a  id ="' + item.Id + '" href="#" onclick="deleteSinglePhrase(' + "'" + item.Id + "'" + ');"><i class="fa fa-trash" aria-hidden="true"></i></a></td>';
+                            //    });
+                            //    $('#div_result6tbody').html(htmlcontent);
+                            //    alert(JSON.stringify(data.data));
+                            //}
+                        },
+                        "columns": [
+                            { "data": "index", "name": "Index", "autoWidth": true },
+                            { "data": "Id", "name": "Id", "autoWidth": true },
+                            { "data": "SearchQuery", "name": "SearchQuery", "autoWidth": true },
+                            { "data": "Traffic", "name": "Traffic", "autoWidth": true },
+                            { "data": "Id", "name": "Edit", "autoWidth": true },
+                            { "data": "Id", "name": "Delete", "autoWidth": true },
+                        ],
+                        "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+                            debugger;
+                            if (true) {
+                                htmlcontent = '<a id ="' + aData.Id + '" href="#" onclick="getSinglePhraseDetails(' + "'" + aData.Id + "'" + ');"><i class="fa fa-pencil" data-toggle="modal" data-target="#myModal29" aria-hidden="true"></i></a>';
+                                $('td:eq(4)', nRow).html(htmlcontent);
+                            }
+                            if (true) {
+                                htmlcontent1 = '<a  id ="' + aData.Id + '" href="#" onclick="deleteSinglePhrase(' + "'" + aData.Id + "'" + ');"><i class="fa fa-trash" aria-hidden="true"></i></a>';
+                                $('td:eq(5)', nRow).html(htmlcontent1)
+                            }
+                        },
+                        "sPaginationType": "full_numbers",
+                        "oLanguage":
+                        {
+                            "sEmptyTable": "No Record Found"
+                        },
+                        aoColumnDefs: [
+                            //{ aTargets: ['_all'], bSortable: false },
+                            //{ aTargets: [0], bSortable: true },
+                            //{ aTargets: [1], bSortable: true },
+                            //{ aTargets: [1], visible: false },
+                            { aTargets: [4], bSortable: false },
+                            { aTargets: [5], bSortable: false }
+                        ]
+                    });
+                }
+            </script>

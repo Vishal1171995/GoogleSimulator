@@ -1,0 +1,148 @@
+﻿@{
+    ViewBag.Title = "Tools";
+    Layout = "~/Areas/Students/Views/Shared/Student_Layout.cshtml";
+}
+
+<!---------------------  Content start  --------------------->
+
+<div class="admin-tab">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="tab-content">
+                    <div id="KeyPlan1" class="tab-pane fade in active">
+                        <div class="admin-manage-header">
+                            <div class="row">
+                                <div class="col-md-3"><h3>Keywords Planner</h3></div>
+                                <div class="col-md-9 text-right">
+                                    <ul class="campaings-nav pull-right">
+                                        <li>
+                                            <select id="ddlUniqueCampaign" name="ddlCampaign" onchange="KeyPlanCampaignDropdownChange(this.value);"></select>
+
+                                        </li>
+                                        <li>
+                                            <select id="ddlUniqueAdGroups" name="ddlCampaign" onchange="KeyPlanAdGroupDropdownChange();">
+                                                <option value="ALL">ALL Ad Groups</option>
+                                            </select>
+                                        </li>
+                                        <li>
+
+                                            <a href="#" onclick="KeyPlanDownloadExcel();">
+                                                <i class="fa fa-download" area-hidden="true"></i>
+                                                Download
+                                            </a>
+                                        </li>
+                                        <li class="dropdown">
+                                            <img src="/content/images/excel.png" />
+                                            <a href="#" class="dropdown-toggle" onclick="OpenExcelPopup('KEYPLAN');" data-toggle="modal">
+                                                Import From Excel
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div id="Kewords_Result"></div>
+                        </div>
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--import to excel-->
+<div class="modal fade in" id="ModalExcelUpload" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <h4 id="TitlePopupExcel" class="modal-title">Import From Excel</h4>
+            </div>
+            <form enctype="multipart/form-data" id="excelUpload">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group">
+
+                            <div class="col-xs-12 col-md-12">
+                                <div class="form-group">
+
+                                    <div class="fileinput-button">
+                                        <input type="file" name="excelfile" id="excelfile" class="">
+                                        <div class="error-green">Accepted file types are: .xls, .xlsx, .csv</div>
+                                        @*<label for="imageUpload" class="file-btn">  Upload Excel</label>*@
+                                        @*<input type="button" class="uplaod-button" value="Upload">*@
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+
+
+
+                    </div>
+
+                    <div class="clearfix"></div>
+                    <div id="divExcelNotify" class="error-red erroor-boder">Upload valid file</div>
+                    <input type="hidden" id="hdnIdenType" value="0" name="hdnIdenType" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default cancel" data-dismiss="modal">Cancel</button>
+                    <button type="submit" id="btnUploadExcel" name="btnUploadExcel" value="" class="btn btn-default save" onclick="return ExcelValidation();">Save</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="ModalExcelSuccess" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="success-message"> <i class="fa fa-smile-o" aria-hidden="true"></i> File Successfully upload</div>
+                <br />
+                <h5 id="ExcelSuccessHead1" class="modal-title"></h5>
+                <h5 id="ExcelSuccessHead2" class="modal-title"></h5>
+                <h5 id="ExcelSuccessHead3" class="modal-title"></h5>
+                <h5 id="ExcelSuccessHead4" class="modal-title"></h5>
+            </div>
+            <div class="modal-footer">
+                <button type="button" style="width:100% !important" class="btn btn-default cancel" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<link href="~/Content/css/admin.css" rel="stylesheet" />
+<script src="~/Scripts/Whiskers.validations.js"></script>
+<script>
+    $(document).ready(function ()
+    {
+        BindCampaignDropdown();
+        getKeywordPlannerOnDemand();
+    });
+    function KeyPlanDataTable()
+    {
+        //check admin.css DataTable section if you want to hide header paging
+        $('#tableKeyPlan').dataTable(
+            {
+            "searching": false,
+            //scrollY: '50vh',
+            //scrollCollapse: true,
+            /*Remove sorting on index column
+            order: [],
+            columnDefs: [ { orderable: false, targets: [0]}],
+            */
+            //"bLengthChange": true
+            }
+        );
+    }
+</script>
+<!---------------------  Content End  --------------------->

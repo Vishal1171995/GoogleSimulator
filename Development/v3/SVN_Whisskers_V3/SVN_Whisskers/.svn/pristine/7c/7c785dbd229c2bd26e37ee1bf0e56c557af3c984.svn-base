@@ -1,0 +1,583 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{17564B50-4D13-4813-BDE1-1A6E3EB6D770}</ProjectGuid>
+    <ProjectTypeGuids>{E3E379DF-F4C6-4180-9B81-6769533ABE47};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Whisker</RootNamespace>
+    <AssemblyName>Whisker</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <WebGreaseLibPath>..\packages\WebGrease.1.5.2\lib</WebGreaseLibPath>
+    <TargetFrameworkProfile />
+    <UseGlobalApplicationHostFile />
+    <MvcProjectUpgradeChecked>true</MvcProjectUpgradeChecked>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>4.0</OldToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime">
+      <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="DocumentFormat.OpenXml">
+      <HintPath>C:\Users\PC10\Desktop\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net40\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.5.0.4\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.4.0.20710.0\lib\net40\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.2.0.20710.0\lib\net40\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Net.Http.2.0.20710.0\lib\net40\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.4.0.20710.0\lib\net40\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Net.Http.2.0.20710.0\lib\net40\System.Net.Http.WebRequest.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.4.0.20710.0\lib\net40\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.4.0.20710.0\lib\net40\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="WebGrease">
+      <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AccountsMaster.cs">
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AdGroup.cs">
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Content Include="App_Code\CommonFunc.cs" />
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\ExceptionHandler.cs" />
+    <Compile Include="App_Start\SessionExpireFilterAttribute.cs" />
+    <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\ManageController.cs" />
+    <Compile Include="Areas\Admin\Models\Account.cs" />
+    <Compile Include="Areas\Admin\Models\Batch.cs" />
+    <Compile Include="Areas\Admin\Models\Common.cs" />
+    <Compile Include="Areas\Admin\Models\Keyword.cs" />
+    <Compile Include="Areas\Admin\Models\Phrase.cs" />
+    <Compile Include="Areas\Admin\Models\Student.cs" />
+    <Compile Include="Areas\Admin\Models\Trainer.cs" />
+    <Compile Include="Areas\Students\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Students\Models\KeywordMapping.cs" />
+    <Compile Include="Areas\Students\StudentsAreaRegistration.cs" />
+    <Compile Include="Areas\Trainers\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Trainers\Controllers\ReportController.cs" />
+    <Compile Include="Areas\Trainers\TrainersAreaRegistration.cs" />
+    <Compile Include="BatchAndStudentMapping.cs">
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BatchAndTrainerMapping.cs">
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BatchMaster.cs">
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CampaignMaster.cs">
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CheckRFAStatus_Result.cs">
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CommonClass\CommonFunc.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="GetAccountAdGrpReport_Result.cs">
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GetAccountCampReport_Result.cs">
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GetAccountReport_Result.cs">
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="getADGroupsOnDemand_Result.cs">
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="getAssignedStudentsPerBatch_Result.cs">
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GetBatchesOfTrainer_Result.cs">
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="getCampaignAdsOnDemand_Result.cs">
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GetCampaignMatrix_Report_Result.cs">
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GetIndustryReport_TopKey_Result.cs">
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="getMappedkeyWordsOnDemand_Result.cs">
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GetMappedkeyWords_Result.cs">
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="getSingleKeywordDetails_Result.cs">
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GetTopAccount_Report_Result.cs">
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="getTrainerToBatch_Result.cs">
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="KeywordMaster.cs">
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="keyWordRank.cs">
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LocationMaster.cs">
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MapKeywordsAG.cs">
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Login.cs" />
+    <Compile Include="prcAccountsPerBatches_Result.cs">
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="prcBatchesOnDemand_Result.cs">
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="prcCheckKeywordFromMapKeywordsAG_Result.cs">
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="prcGetAccntsDetails_Result.cs">
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="prcGetAdGroupsByID_Result.cs">
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="prcGetCampaign_Result.cs">
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="prcGetCurrentBatches_Result.cs">
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="prcGetDistAdGroups_Result.cs">
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="prcGetKeywordsbyCampCode_Result.cs">
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="prcGetKeywords_Result.cs">
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="prcGetRemainingAccounts_Result.cs">
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="prcGetUserDetails_Result.cs">
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="prcPhraseOnDemand_Result.cs">
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="prcSrudentsPerBatches_Result.cs">
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="prcStudentOnDemand_Result.cs">
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="prcTrainerOnDemand_Result.cs">
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="prcUserDetailsOnDemand_Result.cs">
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RFAHistory.cs">
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RFAMaster.cs">
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RFA_Percentage_Result.cs">
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RFA_Result.cs">
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RFA_Result_bak.cs">
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SearchQueryMaster.cs">
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_helpdiagramdefinition_Result.cs">
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_helpdiagrams_Result.cs">
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sysdiagram.cs">
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblAd.cs">
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserMaster.cs">
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WhiskerDB.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WhiskerDB.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WhiskerDB.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WhiskerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WhiskerDB.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WhiskerDB.edmx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Content Include="App_Start\Content\css\bootstrap.css" />
+    <Content Include="App_Start\Content\css\bootstrap.min.css" />
+    <Content Include="App_Start\Content\css\font-awesome.min.css" />
+    <Content Include="App_Start\Content\css\jquery.mCustomScrollbar.min.css" />
+    <Content Include="App_Start\Content\css\login.css" />
+    <Content Include="App_Start\Content\css\style.css" />
+    <Content Include="App_Start\Content\css\style1.css" />
+    <Content Include="App_Start\Content\images\arrow-left.png" />
+    <Content Include="App_Start\Content\images\arrow-right.png" />
+    <Content Include="App_Start\Content\images\arrow.png" />
+    <Content Include="App_Start\Content\images\bg-img.jpg" />
+    <Content Include="App_Start\Content\images\bg-img1.jpg" />
+    <Content Include="App_Start\Content\images\check-icon.png" />
+    <Content Include="App_Start\Content\images\close.png" />
+    <Content Include="App_Start\Content\images\lock.png" />
+    <Content Include="App_Start\Content\images\logo-inner.jpg" />
+    <Content Include="App_Start\Content\images\logo.jpg" />
+    <Content Include="App_Start\Content\images\plus-icon.png" />
+    <Content Include="App_Start\Content\images\plus.png" />
+    <Content Include="App_Start\Content\images\student\amazon.jpg" />
+    <Content Include="App_Start\Content\images\student\delete.png" />
+    <Content Include="App_Start\Content\images\student\edit-icon.png" />
+    <Content Include="App_Start\Content\images\trainer\amazon.png" />
+    <Content Include="App_Start\Content\images\trainer\cancel-icon.png" />
+    <Content Include="App_Start\Content\images\trainer\check-icon.png" />
+    <Content Include="App_Start\Content\images\trainer\edit-icon.png" />
+    <Content Include="App_Start\Content\images\trainer\flipcart.png" />
+    <Content Include="App_Start\Content\images\trainer\group-icon.png" />
+    <Content Include="App_Start\Content\images\trainer\jabong.png" />
+    <Content Include="App_Start\Content\images\trainer\snapdeal.png" />
+    <Content Include="Areas\Admin\Views\Home\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Manage\Accounts.cshtml" />
+    <Content Include="Areas\Admin\Views\Manage\Batches.cshtml" />
+    <Content Include="Areas\Admin\Views\Manage\BatchView.cshtml" />
+    <Content Include="Areas\Admin\Views\Manage\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Manage\Keywords.cshtml" />
+    <Content Include="Areas\Admin\Views\Manage\Phrases.cshtml" />
+    <Content Include="Areas\Admin\Views\Manage\Students.cshtml" />
+    <Content Include="Areas\Admin\Views\Manage\Trainers.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\Admin_Layout.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\Admin_Manage_Layout.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\SomeException.cshtml" />
+    <Content Include="Areas\Admin\Views\Web.config" />
+    <Content Include="Areas\Trainers\Views\Home\CreateAccount.cshtml" />
+    <Content Include="Areas\Trainers\Views\Home\Index.cshtml" />
+    <Content Include="Areas\Trainers\Views\Report\Account.cshtml" />
+    <Content Include="Areas\Trainers\Views\Report\Industry.cshtml" />
+    <Content Include="Areas\Trainers\Views\Shared\Trainer_Layout.cshtml" />
+    <Content Include="Areas\Trainers\Views\Web.config" />
+    <Content Include="Content\css\admin.css" />
+    <Content Include="Content\css\bootstrap.css" />
+    <Content Include="Content\css\bootstrap.min.css" />
+    <Content Include="Content\css\font-awesome.min.css" />
+    <Content Include="Content\css\jquery-ui.css" />
+    <Content Include="Content\css\jquery.mCustomScrollbar.min.css" />
+    <Content Include="Content\css\login.css" />
+    <Content Include="Content\css\style.css" />
+    <Content Include="Content\css\style1.css" />
+    <Content Include="Content\images\arrow-left.png" />
+    <Content Include="Content\images\arrow-right.png" />
+    <Content Include="Content\images\arrow.png" />
+    <Content Include="Content\images\bg-img.jpg" />
+    <Content Include="Content\images\bg-img1.jpg" />
+    <Content Include="Content\images\check-icon.png" />
+    <Content Include="Content\images\close.png" />
+    <Content Include="Content\images\excel.png" />
+    <Content Include="Content\images\lock.png" />
+    <Content Include="Content\images\logo-inner.jpg" />
+    <Content Include="Content\images\logo.jpg" />
+    <Content Include="Content\images\plus-icon.png" />
+    <Content Include="Content\images\plus.png" />
+    <Content Include="Content\images\progressbar.gif" />
+    <Content Include="Content\images\student\amazon.jpg" />
+    <Content Include="Content\images\student\delete.png" />
+    <Content Include="Content\images\student\edit-icon.png" />
+    <Content Include="Content\images\trainer\amazon.png" />
+    <Content Include="Content\images\trainer\cancel-icon.png" />
+    <Content Include="Content\images\trainer\check-icon.png" />
+    <Content Include="Content\images\trainer\edit-icon.png" />
+    <Content Include="Content\images\trainer\flipcard.png" />
+    <Content Include="Content\images\trainer\flipcart.png" />
+    <Content Include="Content\images\trainer\group-icon.png" />
+    <Content Include="Content\images\trainer\jabong.png" />
+    <Content Include="Content\images\trainer\snapdeal.png" />
+    <Content Include="Global.asax" />
+    <Content Include="Scripts\admin.js" />
+    <Content Include="Scripts\AdminUtility.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\CallCentreUtility.js" />
+    <Content Include="Scripts\designutility.js" />
+    <Content Include="Scripts\EmployerInstitute.js" />
+    <Content Include="Scripts\Employerutility.js" />
+    <Content Include="Scripts\EmployerWisestudentdetails.js" />
+    <Content Include="Scripts\FacultyUtility.js" />
+    <Content Include="Scripts\GraduateUtility.js" />
+    <Content Include="Scripts\gridmvc.js" />
+    <Content Include="Scripts\gridmvc.lang.ru.js" />
+    <Content Include="Scripts\gridmvc.min.js" />
+    <Content Include="Scripts\instituteUtility.js" />
+    <Content Include="Scripts\InstituteWise.js" />
+    <Content Include="Scripts\jquery-1.11.0.min.js" />
+    <Content Include="Areas\Students\Views\Home\Tools.cshtml" />
+    <None Include="Properties\PublishProfiles\whiskers.pubxml" />
+    <None Include="Scripts\jquery-1.9.1.intellisense.js" />
+    <Content Include="Scripts\jquery-1.9.1.js" />
+    <Content Include="Scripts\jquery-1.9.1.min.js" />
+    <Content Include="Scripts\jquery-ui-1.10.2.js" />
+    <Content Include="Scripts\jquery-ui-1.8.24.js" />
+    <Content Include="Scripts\jquery-ui-1.8.24.min.js" />
+    <Content Include="Scripts\jquery-ui.js" />
+    <Content Include="Scripts\jquery.maskedinput.min.js" />
+    <Content Include="Scripts\jquery.mCustomScrollbar.concat.min.js" />
+    <Content Include="Scripts\jquery.min.js" />
+    <Content Include="Scripts\jquery.tooltipster.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\knockout-2.2.0.debug.js" />
+    <Content Include="Scripts\knockout-2.2.0.js" />
+    <Content Include="Scripts\Locationwisestudentdetails.js" />
+    <Content Include="Scripts\MasterUtility.js" />
+    <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\npm.js" />
+    <Content Include="Scripts\Paging.js" />
+    <Content Include="Scripts\ReportUtility.js" />
+    <Content Include="Scripts\TestUtility.js" />
+    <Content Include="Scripts\trainer.js" />
+    <Content Include="Scripts\TrainerWiseStudentReport.js" />
+    <Content Include="Scripts\UtilityScript.js" />
+    <Content Include="Scripts\webGrid.js" />
+    <Content Include="Scripts\Whiskers.validations.js" />
+    <Content Include="Scripts\_references.js" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="App_Start\Content\images\admin\" />
+    <Folder Include="Areas\Trainers\Models\" />
+    <Folder Include="Content\images\admin\" />
+    <Folder Include="ExcelFiles\" />
+    <Folder Include="Images\" />
+    <Folder Include="Models\Images\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Students\Views\Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EntityDeploy Include="WhiskerDB.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>WhiskerDB.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="WhiskerDB.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>WhiskerDB.edmx</DependentUpon>
+      <LastGenOutput>WhiskerDB.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="WhiskerDB.edmx.diagram">
+      <DependentUpon>WhiskerDB.edmx</DependentUpon>
+    </Content>
+    <Content Include="WhiskerDB.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>WhiskerDB.edmx</DependentUpon>
+      <LastGenOutput>WhiskerDB.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Students\Views\Home\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\Forgot.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Students\Views\Shared\Student_Layout.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Scripts\jquery-1.9.1.min.map" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:49957/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

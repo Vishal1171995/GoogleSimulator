@@ -1,0 +1,219 @@
+﻿
+@{
+    Layout = "~/Views/Shared/MasterLayoutOuter.cshtml";
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/Content/css/style.css" rel="stylesheet" />
+    <title></title>
+    <script>
+        (function ($) {
+            $(window).load(function () {
+            });
+        })(jQuery);
+        $(document).ready(function () {
+            //ShowResultStudentCampaignTab();
+            $("#liResources").addClass("active");
+            $(".nav-tabs a").click(function () {
+                debugger;
+                $(this).tab('show');
+                //alert(this);
+            });
+            //li_ads
+            $('.nav-tabs a').on('shown.bs.tab', function (event) {
+                debugger;
+                var x = $(event.target).text();         // active tab
+                var y = $(event.relatedTarget).text();  // previous tab
+                $(".act span").text(x);
+                $(".prev span").text(y);
+            });
+        });
+    </script>
+</head>
+<body>
+
+    <div class="container">
+        @if (ViewBag.isStudent == null)
+        {
+            <div class="row" style="display:none">
+                <div class="col-md-6">
+
+                    <div class="resources">
+                        <h3>CTR</h3>
+                        <div class="campaings-table-border table-responsive">
+                            <table id="CTR" border="0" cellspacing="0" cellpadding="0" class="">
+                                <thead>
+                                    <tr id="Headrow">
+                                        <th>Average Position</th>
+                                        <th>CTR (%)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>10.0</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>8.0</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>6.0</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4</td>
+                                        <td>3.5</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5</td>
+                                        <td>3.0</td>
+                                    </tr>
+                                    <tr>
+                                        <td>6</td>
+                                        <td>2.5</td>
+                                    </tr>
+                                    <tr>
+                                        <td>7</td>
+                                        <td>2.0</td>
+                                    </tr>
+                                    <tr>
+                                        <td>8</td>
+                                        <td>1.5</td>
+                                    </tr>
+                                    <tr>
+                                        <td>9</td>
+                                        <td>1.0</td>
+                                    </tr>
+                                    <tr>
+                                        <td>10</td>
+                                        <td>0.7</td>
+                                    </tr>
+                                    <tr>
+                                        <td>11</td>
+                                        <td>0.5</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            @*<img title="CTR" src="~/Content/images/CTR_Table.png" class="img-responsive" />*@
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="resources" style="display:none">
+                        <h3>CVR</h3>
+                        @*<img title="CVR" src="~/Content/images/CVR_Table.png" class="img-responsive" />*@
+                        <div class="campaings-table-border table-responsive">
+                            <table id="CTR" border="0" cellspacing="0" cellpadding="0" class="">
+                                <thead>
+                                    <tr id="Headrow">
+                                        <th>Average Position</th>
+                                        <th>CVR (%)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>5.0</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>4.5</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>4.0</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4</td>
+                                        <td>3.5</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5</td>
+                                        <td>3.0</td>
+                                    </tr>
+                                    <tr>
+                                        <td>6</td>
+                                        <td>2.5</td>
+                                    </tr>
+                                    <tr>
+                                        <td>7</td>
+                                        <td>2.0</td>
+                                    </tr>
+                                    <tr>
+                                        <td>8</td>
+                                        <td>1.5</td>
+                                    </tr>
+                                    <tr>
+                                        <td>9</td>
+                                        <td>1.0</td>
+                                    </tr>
+                                    <tr>
+                                        <td>10</td>
+                                        <td>0.7</td>
+                                    </tr>
+                                    <tr>
+                                        <td>11</td>
+                                        <td>0.5</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        }
+        <p>
+            <h1>Resources</h1>
+            <br /><b>Definitions:</b><br /><br />
+            1. <b>Impressions:</b> This term is used to define the number of times a company’s ad will appear to its target audience. Impression could also be related to a website and the number of times the web page appear in total.<br /><br />
+
+            Example of how impressions work: 1 visitor could view 5 pages which would create 5 impressions. 2 visitors could view 5 pages which would generate 10 impressions.
+            <br /><br />2. <b>
+                Clicks:
+            </b> A click is just that. A click. Once a user sees your ad (logs an impression), they can click on it to take them to your landing page.
+            <br /><br />3. <b>
+                CTR – Click-Through Rate:
+            </b> Click-through Rate identifies the percentage of people who click on link. Usually placed in an email, an ad, website page… etc. The higher the CTR percentage, the more people went through. CTR is extremely important for many parts of the Digital world.
+            <br /><br /> 4. <b>
+                CPC – Cost per Click:
+            </b> Cost per Click is a pricing model where companies are charged by publishers for every click people make on a displayed/test ad which leads people to your company’s website (hopefully to a landing page!).
+            <br /><br />5. <b>
+                Conversion:
+            </b> When a visitor takes the desired action while visiting your site, it is called conversion. This can be a purchase, membership signup, download or registration for newsletter.
+            <br /><br /> 6. <b>
+                CPA – Cost per Acquisition:
+            </b>
+            </b> Cost per Acquisition is a pricing model where companies are charged by advertising platforms only when leads, sales or conversions are generated. It’s been around for awhile but has been generating much more traffic as a common pricing model in late 2013 and early 2013. Best part about CPA is you are only charged for the results that you want.
+            <br /><br />   7. <b>CVR:</b>  CVR stands for Conversion Ratio, and shows you how effective your marketing campaigns are at converting clicks to sales. It is the percentage value calculated as follows: (Conversion / Total Clicks) * 100
+            <br /><br /> 8. <b>Impressions Share:</b> Impression share is the number of impressions you've received divided by the estimated number of impressions you were eligible to receive. Eligibility is based on your current ads' targeting settings, approval statuses, bids, and Quality Scores.
+            <br /><br />9. <b>Average Position:</b> A statistic that describes how your ad typically ranks against other ads. This rank determines in which order ads appear on the page.
+            <br /><br />10. <b>RFA:</b> Run for auction: The process that happens with each search engines to decide which ads will appear for that specific search and in which order those ads will show on the page.
+            <br /><br />11. <b>Keyword:</b> A keyword is word or phrase that your audience uses to search for relevant topics on search engines. If you are a flower shop, a relevant keyword could be “Buy Red Roses” [short keyword] or “Looking to purchase roses from a flower shop” [long tail keyword]
+            <h2>Tool Flow</h2>
+            You must be well versed with the theoretical part of the search network marketing but let’s play around to see if you are ready with the practical aspect.<br />
+            <h4>Steps</h4>
+            <br /><b> Step 1)</b> Create campaign for the product or service you want to see
+            <br /><b>Step 2)</b> Go to Ad Group Tab and click on the already created ad group.
+            <br /><b>Step 3)</b> Create Text Ads
+            <br /><b>Step 4)</b> Go to tools  -
+
+            <br /><br /><b>Keyword Planner Tool:</b> How to use/ Points to remember><br /><br />
+            Import your excel file of the keyword list. Make sure your excel has the exact campaigns and ad groups names in order to avoid any errors.<br />
+            Make sure the columns are in the same order as per the template.<br />
+            Check all the data on the main tab before proceeding ahead with RFA.
+            <br /> <br /><b>Step 5)</b> Reporting and Monitoring
+            Get a complete understanding on your performance as per the industry standard and also get a comparative overview with all your previous RFAs.
+            <br /><b>  Step 6)</b> Go for the next round of RFA and refer to the  opportunity tab for optimization ideas.
+        </p>
+    </div>
+
+
+
+</body>
+</html>

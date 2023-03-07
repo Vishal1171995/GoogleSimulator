@@ -1,0 +1,247 @@
+﻿@{
+    Layout = "~/Areas/Admin/Views/Shared/Admin_Manage_Layout.cshtml";
+}
+<div class="admin-tab">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="tab-content">
+                    <div id="batches2" class="tab-pane fade in active">
+                        <div class="admin-manage-header">
+                            <div class="row">
+                                <div class="col-md-3"><h3>Batch</h3></div>
+                                <div class="col-md-9 text-right campaings-nav">
+                                    <select id="dropBatchTime" onchange="getBatchesOnDemand();">
+                                        <option value="0">All Batch</option>
+                                        <option value="1">Past Batch</option>
+                                        <option value="2">Current Batch</option>
+                                        <option value="3">Future Batch</option>
+                                    </select>
+                                    <select id="dropTrainerCode" class="width200" onchange="getBatchesOnDemand();">
+                                        <option value="">Choose Trainer</option>
+                                        @foreach (var item in @ViewBag.TrainerDetails)
+                                        {
+                                            <option value="@item.UserID">@item.FullName</option>
+                                        }
+                                    </select>
+
+                                    <select id="dropLocationCode" class="width200" onchange="getBatchesOnDemand();">
+                                        <option value="">Choose Location</option>
+                                        @foreach (var item in @ViewBag.Location)
+                                        {
+                                            <option value="@item.LocationCode">@item.LocationName</option>
+                                        }
+                                    </select>
+
+                                    <a href="/Admin/Manage/BatchDownloadExcel" class="fa-download-icon"><i class="fa fa-download" area-hidden="true"></i>Download</a>
+                                    <a href="#" class="popup-btn" data-toggle="modal" onclick="showBatchPopup();" data-target="#myModal"><img src="/content/images/plus-icon.png" alt="icon" />Add new Batch</a>
+
+
+
+                                </div>
+                            </div>
+                            <div id="div_result2"></div>
+
+                        </div>
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*@using (Ajax.BeginForm("CreateBatch", "Manage", FormMethod.Post, new AjaxOptions { UpdateTargetId = "divBatchNotify", InsertionMode = InsertionMode.Replace, OnSuccess = "closepoup();", OnFailure = "Failure();" }))
+    {*@
+@using (Ajax.BeginForm("CreateBatch", "Manage", FormMethod.Post, new AjaxOptions { OnSuccess = "closepoup", OnBegin = "AjaxBegin", OnFailure = "OnError" }))
+{
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 id="TitlePopupBatch" class="modal-title">Add New Batch</h4>
+                </div>
+                <div class="modal-body">
+
+
+                    <div class="form-details">
+
+                        <div class="row">
+
+
+                            <div class="form-group">
+                                <div class="col-xs-12 col-md-3"> <label class="lab_01 required">Batch Name</label>   </div>
+                                <div class="col-xs-12 col-md-9">
+                                    <div class="form-group">
+                                        <input type="text" id="txtBatchName" maxlength="29" name="txtBatchName" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="form-group">
+                                <div class="col-xs-12 col-md-3"> <label class="lab_01 required">Location (City)</label>   </div>
+                                <div class="col-xs-12 col-md-9">
+                                    <div class="form-group">
+                                        <input type="text" id="txtLocation" maxlength="19" name="txtLocation" class="form-control">
+                                        @*<select id="dropocation" name="dropLocation" class="form-control">
+                                                <option value="">Choose Location</option>
+                                                @foreach (var item in @ViewBag.Location)
+                                                {
+                                                    <option value="@item.LocationCode">@item.LocationName</option>
+                                                }
+                                            </select>*@
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-xs-12 col-md-3"> <label class="lab_01 required">Address</label>   </div>
+                                <div class="col-xs-12 col-md-9">
+                                    <div class="form-group"> <input type="text" id="txtAdress" maxlength="99" name="txtAdress" value="khu" class="form-control"> </div>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <div class="col-xs-12 col-md-3"> <label class="lab_01">Date</label>   </div>
+                                <div class="col-xs-12 col-md-9">
+                                    <div class="date-box">
+                                        <div class="form-group">
+                                            <input id="txtBxBatchStartDate" name="txtBxBatchStartDate" style="font-size: 14px !important;" type="text" value="28/Apr/2016" class="form-control" readonly> <i class="fa fa-calendar" aria-hidden="true"></i>
+
+                                            <span class="required">Start</span>
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <input id="txtBxBatchEndDate" name="txtBxBatchEndDate" style="font-size: 14px !important;" type="text" value="28/Apr/2016" class="form-control" readonly> <i class="fa fa-calendar" aria-hidden="true"></i>
+                                            <span class="required">End</span>
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <select id="dropBindTime" name="dropBindTime" class="form-control">
+                                                <option value="">Time</option>
+                                                int i = 0;
+                                                @foreach (var item in @ViewBag.BindTime)
+                                                {
+                                                    <option value="@item.Text">@item.Text</option>
+                                                }
+                                            </select>
+                                            <span class="required">Time</span>
+                                        </div>
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                    <div class="clearfix"></div>
+
+
+
+                    <div id="divBatchNotify" class="error-red erroor-boder">All Fields are required</div>
+                    <input type="hidden" id="hdnBatchCode" value="0" name="hdnBatchCode" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="btnCancelBatch" class="btn btn-default cancel" onclick="ClearBatchPopup();">Cancel</button>
+                    <button type="submit" id="btnCreateBatch" class="btn btn-default save" onclick="return BatchValidation();">Save</button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+}
+<div class="modal fade" id="ModalBatchSuccess" role="dialog" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                @*<button type="button" class="close" data-dismiss="modal">&times;</button>*@
+                <h5 id="BatchSuccessHead" class="modal-title"></h5>
+                <button type="button" id="btnCloseBatch" class="btn btn-default close-btn" onclick="refreshPage();">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+@*<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>*@
+
+
+<script>
+    $(document).ready(function () {
+        getBatchesOnDemand();
+        $("#li_Manage").addClass("active");
+        $('#Batches2').addClass("active");
+        var today = new Date();
+        var tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
+        $('#txtBxBatchStartDate').datepicker({
+            minDate: null,
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: 'dd-M-yy',
+            yearRange: '2016:2030',
+            onSelect: function (dat, inst) {
+                $('#txtBxBatchEndDate').datepicker('option', 'minDate', dat);
+                //$('#AssessmentDate').datepicker('option', 'minDate', dat);
+            }
+        });
+        $('#txtBxBatchEndDate').datepicker({
+            dateFormat: 'dd-M-yy',
+            changeMonth: true,
+            changeYear: true,
+            yearRange: '2016:2030',
+        });
+    });
+    function closepoup(data) {
+        var JsonObj = data[0];
+        $('#divBatchNotify').text(data[0]);
+        fadeOut("divBatchNotify");
+        if (data[0] == "0") {
+            $('#hdnBatchCode').val('0');
+            $('#BatchSuccessHead').text('New batch is added successfully.');
+        }
+        if (data[0] == "1") {
+            $('#hdnBatchCode').val('0');
+            $('#BatchSuccessHead').text('Batch is updated successfully.');
+        }
+        $("#btnCreateBatch").attr("disabled", false);
+        if (data[1] == "1") {
+            ClearBatchPopup();
+            //getBatchesOnDemand();
+            $('#ModalBatchSuccess').modal('show');
+            $('#hdnBatchCode').val('0');
+        }
+    }
+    function AjaxBegin() {
+        $("#btnCreateBatch").attr("disabled", true);
+    }
+    function ClearBatchPopup() {
+        $('#txtBatchName').val('');
+        $('#txtLocation').val('');
+        $('#txtAdress').val('');
+        $('#txtBxBatchStartDate').val('');
+        $('#txtBxBatchEndDate').val('');
+        $("select#dropBindTime")[0].selectedIndex = 0;
+        $('#divBatchNotify').text('All fields are required.');
+        $("#btnCreateBatch").attr("disabled", false);
+        $('#hdnBatchCode').val('0');
+        $('#myModal').modal('hide');
+        $("#txtBxBatchStartDate").removeClass("disable9");
+    }
+</script>
+
+

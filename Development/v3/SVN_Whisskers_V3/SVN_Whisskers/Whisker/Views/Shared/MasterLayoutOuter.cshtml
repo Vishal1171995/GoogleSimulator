@@ -1,0 +1,113 @@
+﻿@{
+    ViewBag.Title = "Student_Layout";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Successfully Registered</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/Content/css/bootstrap.css" type="text/css">
+    <link rel="stylesheet" href="/Content/css/animation.css">
+    <link rel="stylesheet" href="bootstrap-social.css" type="text/css">
+
+    <!-- Custom StyleSheets -->
+    <link rel="stylesheet" href="/Content/css/login.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400" rel="stylesheet">
+
+    <style>
+        .success-box {
+            text-align: center;
+        }
+
+        #scrollDown {
+            margin-top: 1em;
+        }
+        
+    </style>
+
+</head>
+<body>
+    <header id="successHeader">
+        <div class="container">
+            <section class="logo">
+                <h1>
+                    <span>W</span>
+                    <span>W</span>
+                </h1>
+                <section class="co-name">
+                    <h2>whisskers</h2><br>
+                    <h2>marketing</h2>
+                </section>
+            </section><!--Ending Logo -->
+            <section id="title">
+                <h1>Digital <span style="color:#2a2a2a;">Marketing</span> Tool</h1>
+            </section>
+        </div>
+    </header>
+
+    @RenderBody()
+
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <ul class="footer-contact">
+                        <li><a href="mailto:training@whisskers.com"><i class="ion-android-mail"></i>training@whisskers.com</a></li>
+                        <li><a href="tel:+917042835451"><i class="ion-android-call"></i>+91 704 283 5451</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-6">
+                    <ul class="social-links">
+                        <li><a href="https://www.facebook.com/whisskersmarketing/" target="_blank"><i class="ion-social-facebook"></i></a></li>
+                        <li><a href="https://www.linkedin.com/company/3964468/" target="_blank"><i class="ion-social-linkedin"></i></a></li>
+                        <li><a href="https://twitter.com/whisskersm" target="_blank"><i class="ion-social-twitter"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <p class="copy">&copy; Whisskers 2016-17. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+    <script src="~/Scripts/jquery.js"></script>
+    <script src="~/Scripts/waypoints.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+    <script src="~/Scripts/script.js"></script>
+    <script>
+        $(document).ready(function () {
+            
+            function BatchDropdownChange() {
+                $.ajax({
+                    url: "/Home/GetBatch",
+                    method: 'GET',
+                    //dataType="Application/json",
+                    success: function (data) {
+                        console.log(data);
+
+                        $.each(data, function (i, item) {
+                            $('#ddlBatchSwitcher').append($('<option></option>').val(item.BatchName).text(item.BatchName));
+                        });
+                    }, async: false,
+                    error: function (data) {
+                    }
+                });
+            }
+            BatchDropdownChange();
+          
+        });
+    </script>
+</body>
+</html>

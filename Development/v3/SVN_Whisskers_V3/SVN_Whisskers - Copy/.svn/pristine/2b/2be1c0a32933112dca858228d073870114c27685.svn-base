@@ -1,0 +1,195 @@
+﻿@{
+    ViewBag.Title = "AccountReport";
+    Layout = "~/Areas/Trainers/Views/Shared/Trainer_Layout.cshtml";
+}
+<!---------------------  Content start  --------------------->
+<div class="manage-batch">
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-md-8"><h1>Account Report</h1></div>
+            <div class="col-md-4 text-right">
+
+                @*<ul class="campaings-nav">
+                    <li>*@
+                <select id="ddlBatchReport" name="ddlBatchReport" onchange="GetAccountReport(this.value);" class="select"></select>
+                @*<ul class="dropdown-menu">
+                        <li><a href="#">Batch 1</a></li>
+                        <li><a href="#">Batch 2</a></li>
+                        <li><a href="#">Batch 3</a></li>
+                    </ul>*@
+                @*</li>
+                    </ul>*@
+
+
+            </div>
+            <div class="clearfix"></div>
+
+            <div class="batch-detail">
+
+                <div class="col-md-6">
+
+                    <div class="batch">
+                        <p><span>Batch Name :</span> <span id="spnBatchNamReport"></span></p>
+
+                        <p><span>Trainer :</span> <span id="spnTrainerNamReport"></span></p>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="batch">
+                        <p><span>Center :</span><span id="spnLocationReport"></span></p>
+
+                        <p><span>Date :</span><span id="spnStartDateReport"></span><span class="hidden" style="color: #898989;">/</span><span id="spnTimeReport" class="hidden"></span></p>
+
+                    </div>
+
+                </div>
+
+
+
+
+            </div>
+
+
+        </div>
+    </div>
+
+</div>
+
+
+
+<div class="campaigns-tab">
+    <div class="account-report">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#account">Account</a> <img class="arrow" src="/Content/images/arrow.png" alt="arrow" /></li>
+                        <li><a href="#campaigns">Campaigns</a> <img class="arrow" src="/Content/images/arrow.png" alt="arrow" /></li>
+                        <li><a href="#ads">Ad Groups</a> <img class="arrow" src="/Content/images/arrow.png" alt="arrow" /></li>
+                        <li><a href="#keywords">Ads</a> <img class="arrow" src="/Content/images/arrow.png" alt="arrow" /></li>
+
+                    </ul>
+
+                    <div class="tab-content">
+                        <div id="account" class="tab-pane fade in active">
+                            <div class="campaings-header">
+                                <div class="row">
+                                    <div class="col-md-8"><h3>Account List</h3></div>
+
+                                    <div class="col-md-4">
+                                         <select id="ddlAccount" name="ddlAccount" onchange="GetAccountReport();" class="select pull-right"></select>
+                                    </div>
+                                </div>
+                                <div id="div_resultAccRpt"></div>
+
+                            </div>
+
+
+
+
+                        </div>
+
+
+                        <div id="campaigns" class="tab-pane fade">
+
+                            <div class="campaings-header">
+
+                                <div id="div_resultAccCampRpt"></div>
+
+                            </div>
+                        </div>
+
+
+
+
+
+                        <div id="ads" class="tab-pane fade">
+
+
+                            <div class="campaings-header">
+
+                                <div id="div_resultAccAdGrpRpt"></div>
+
+                            </div>
+                        </div>
+
+                        <div id="keywords" class="tab-pane fade">
+                            <div class="campaings-header">
+
+                                <div id="div_resultAccAdsRpt"></div>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+<!---------------------  Content End  --------------------->
+<script src="~/Scripts/trainer.js"></script>
+<script>
+    (function ($) {
+        $(window).load(function () {
+            GetBatchDropdown();
+            location.hash = "#account";
+            window.location = location.hash;
+            BindAccountReport();
+        });
+    })(jQuery);
+    $(document).ready(function () {
+        $(".nav-tabs a").click(function ()
+        {
+            $(this).tab('show');
+        });
+        $('.nav-tabs a').on('shown.bs.tab', function (event) {
+            var x = $(event.target).text();         // active tab
+            var y = $(event.relatedTarget).text();  // previous tab
+            $(".act span").text(x);
+            $(".prev span").text(y);
+            BindAccountReport();
+        });
+    });
+    function BindAccountReport()
+    {
+        GetBatchDetails();
+        var UrlLength = window.location.href.toString().split("#").length;
+        if (window.location.href.toString().split("#")[1].toUpperCase() == "ACCOUNT" && UrlLength == 2) {
+            GetAccountDropdown();
+            GetAccountReport();
+        }
+        if (window.location.href.toString().split("#")[1].toUpperCase() == "CAMPAIGNS" && UrlLength == 2) {
+            GetAccountCampReport();
+        }
+        if (window.location.href.toString().split("#")[1].toUpperCase() == "ADS" && UrlLength == 2) {
+            GetAccountAdGrpReport();
+        }
+
+    }
+</script>

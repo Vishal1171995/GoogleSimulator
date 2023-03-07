@@ -1,0 +1,40 @@
+.slideIn {
+    animation-name: slideIn;
+}
+
+.bounce {
+    animation-name: bounce;
+}
+
+@keyframes slideIn {
+    0% { transform: translateY(100%); }
+    100%{ transform: translateY(0); }
+}
+
+@keyframes bounce {
+    0% { transform: scale(1); }
+    50%{ transform: scale(1.2); }
+    100%{ transform: scale(1); }
+}
+
+.js--anim-1,
+.js--anim-2,
+.js--anim-3{
+    opacity: 0;
+    transition-duration: 1s;
+    transition-delay: 0.5s;
+    animation-duration: 1s;
+    animation-delay: 0.5s;
+
+}
+
+.js--anim-4{
+    animation-duration: 1s;
+    animation-delay: 0.2s;
+}
+
+.js--anim-1.animate,
+.js--anim-2.animate,
+.js--anim-3.animate{
+    opacity: 1;
+}

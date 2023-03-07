@@ -1,0 +1,204 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using Whisker.Models;
+using System.Web.Mvc.Ajax;
+using Whisker.App_Start;
+
+namespace Whisker.Areas.Trainers.Controllers
+{
+    [SessionExpireFilterAttribute]
+    public class ReportController : Controller
+    {
+        //
+        // GET: /Trainers/Report/
+        WhiskersDBEntities objDBentity = new WhiskersDBEntities();
+        UserLoginInfo objUserInfo = new UserLoginInfo();
+        public ActionResult Index()
+        {
+            //ViewBag.Active = "#li_Reports";
+            return View();
+        }
+        public ActionResult Account()
+        {
+            ViewBag.Active = "#li_Reports";
+            GetAccountDetails();
+            return View();
+        }
+        public ActionResult Industry()
+        {
+            ViewBag.Active = "#li_Reports";
+            GetAccountDetails();
+            return View();
+        }
+        private ActionResult GetAccountDetails()
+        {
+
+            //ViewBag.FName = Request.Cookies["MainCookie"]["Name"];
+            //ViewBag.UserID = Request.Cookies["MainCookie"]["Id"];
+            //objUserInfo.UserID = ViewBag.UserID;
+            //var userDetail = objDBentity.UserMasters.Where(x => x.UserID == objUserInfo.UserID).FirstOrDefault();
+            //objUserInfo.FirstName = userDetail.FirstName;
+            //objUserInfo.EMAILID = userDetail.Email;
+            //objUserInfo.UserID = userDetail.UserID;
+
+            if (Session["LoginInfo"] == null)
+            {
+                return RedirectToRoute("default");
+            }
+            else
+            {
+                objUserInfo = (UserLoginInfo)Session["LoginInfo"];
+                string unicornName = objUserInfo.EMAILID;
+
+                var userInfo = objDBentity.prcGetUserDetails(unicornName).FirstOrDefault();
+                ViewBag.FName = userInfo.FirstName;
+                ViewBag.AccCode = userInfo.AccCode;
+                ViewBag.AccName = userInfo.AccName;
+                ViewBag.ImagePath = userInfo.ImagePath;
+                ViewBag.Description = userInfo.Description;
+                ViewBag.AccFullName = userInfo.AccFullName;
+                ViewBag.UserID = userInfo.UserID;
+                return null;
+            }
+        }
+        public JsonResult GetBatchDropdown()
+        {
+            GetAccountDetails();
+            //var BatchCode = objDBentity.BatchAndTrainerMappings.Where(x => x.UserID == objUserInfo.UserID).OrderBy(x => x.BatchCode).Select(x => x.BatchCode).FirstOrDefault().ToString();
+
+            List<object> AllAccountDetail = new List<object>();
+            object AllBatches = objDBentity.prcGetCurrentBatches(objUserInfo.UserID, "a", null).ToArray();
+
+            AllAccountDetail.Add(AllBatches);
+
+            var vg = Json(AllAccountDetail, JsonRequestBehavior.AllowGet);
+            return Json(AllAccountDetail, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult GetAccountDropdown()
+        {
+            GetAccountDetails();
+
+            List<object> AllAccountDetail = new List<object>();
+            object AllAccount = objDBentity.AccountsMasters.Where(x => x.IsActive == true).Select(x => new { x.AccCode,x.AccName }).ToList();
+
+            AllAccountDetail.Add(AllAccount);
+
+            var vg = Json(AllAccountDetail, JsonRequestBehavior.AllowGet);
+            return Json(AllAccountDetail, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetBatchDetails(string BatchCode)
+        {
+            GetAccountDetails();
+            List<object> AllAccountDetail = new List<object>();
+            if (BatchCode == null || BatchCode == "" || BatchCode == "undefined")
+            {
+                return Json(AllAccountDetail, JsonRequestBehavior.AllowGet);
+            }
+            object BatchDetails = objDBentity.prcGetCurrentBatches(objUserInfo.UserID, "a", BatchCode).FirstOrDefault();
+
+            AllAccountDetail.Add(BatchDetails);
+            //AllAccountDetail.Add(AdDetails);
+
+            var vg = Json(AllAccountDetail, JsonRequestBehavior.AllowGet);
+            return Json(AllAccountDetail, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult GetAccountReport(string BatchCode, string AccCode)
+        {
+            GetAccountDetails();
+            List<object> AllAccountDetail = new List<object>();
+            if (BatchCode == null || BatchCode == "" || BatchCode == "undefined")
+            {
+                return Json(AllAccountDetail, JsonRequestBehavior.AllowGet);
+            }
+            if (AccCode != null && AccCode != "" && AccCode != "undefined")
+            {
+                object AccountDetails = objDBentity.GetAccountReport(Convert.ToInt32(BatchCode), Convert.ToInt32(AccCode)).ToArray();
+                AllAccountDetail.Add(AccountDetails);
+                var vg = Json(AllAccountDetail, JsonRequestBehavior.AllowGet);
+                return Json(AllAccountDetail, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                object AccountDetails = objDBentity.GetAccountReport(Convert.ToInt32(BatchCode),null).ToArray();
+                AllAccountDetail.Add(AccountDetails);
+                var vg = Json(AllAccountDetail, JsonRequestBehavior.AllowGet);
+                return Json(AllAccountDetail, JsonRequestBehavior.AllowGet);
+            }
+        }
+        public JsonResult GetAccountCampReport(string BatchCode)
+        {
+            GetAccountDetails();
+            List<object> AllAccountDetail = new List<object>();
+            if (BatchCode == null || BatchCode == "" || BatchCode == "undefined")
+            {
+                return Json(AllAccountDetail, JsonRequestBehavior.AllowGet);
+            }
+            object CampaignDetails = objDBentity.GetAccountCampReport(Convert.ToInt32(BatchCode)).ToArray();
+
+            AllAccountDetail.Add(CampaignDetails);
+            var vg = Json(AllAccountDetail, JsonRequestBehavior.AllowGet);
+            return Json(AllAccountDetail, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult GetAccountAdGrpReport(string BatchCode)
+        {
+            GetAccountDetails();
+            List<object> AllAccountDetail = new List<object>();
+            if (BatchCode == null || BatchCode == "" || BatchCode == "undefined")
+            {
+                return Json(AllAccountDetail, JsonRequestBehavior.AllowGet);
+            }
+            object AdGroupDetails = objDBentity.GetAccountAdGrpReport(Convert.ToInt32(BatchCode)).ToArray();
+            AllAccountDetail.Add(AdGroupDetails);
+            var vg = Json(AllAccountDetail, JsonRequestBehavior.AllowGet);
+            return Json(AllAccountDetail, JsonRequestBehavior.AllowGet);
+        }
+
+
+
+        public JsonResult GetIndustryReportTopSearch(string BatchCode)
+        {
+            GetAccountDetails();
+            List<object> AllAccountDetail = new List<object>();
+            if (BatchCode == null || BatchCode == "" || BatchCode == "undefined")
+            {
+                return Json(AllAccountDetail, JsonRequestBehavior.AllowGet);
+            }
+            object keywordDetails = objDBentity.GetIndustryReport_TopKey(Convert.ToInt32(BatchCode)).ToArray();
+
+            AllAccountDetail.Add(keywordDetails);
+            var vg = Json(AllAccountDetail, JsonRequestBehavior.AllowGet);
+            return Json(AllAccountDetail, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult GetIndustryReportCampaignMatrix(string BatchCode)
+        {
+            GetAccountDetails();
+            List<object> AllAccountDetail = new List<object>();
+            if (BatchCode == null || BatchCode == "" || BatchCode == "undefined")
+            {
+                return Json(AllAccountDetail, JsonRequestBehavior.AllowGet);
+            }
+            object CampaignDetails = objDBentity.GetCampaignMatrix_Report(Convert.ToInt32(BatchCode)).ToArray();
+
+            AllAccountDetail.Add(CampaignDetails);
+            var vg = Json(AllAccountDetail, JsonRequestBehavior.AllowGet);
+            return Json(AllAccountDetail, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult GetIndustryReportTopAccount(string BatchCode)
+        {
+            GetAccountDetails();
+            List<object> AllAccountDetail = new List<object>();
+            if (BatchCode == null || BatchCode == "" || BatchCode == "undefined")
+            {
+                return Json(AllAccountDetail, JsonRequestBehavior.AllowGet);
+            }
+            object AccountDetails = objDBentity.GetTopAccount_Report(Convert.ToInt32(BatchCode)).ToArray();
+            AllAccountDetail.Add(AccountDetails);
+            var vg = Json(AllAccountDetail, JsonRequestBehavior.AllowGet);
+            return Json(AllAccountDetail, JsonRequestBehavior.AllowGet);
+        }
+    }
+}

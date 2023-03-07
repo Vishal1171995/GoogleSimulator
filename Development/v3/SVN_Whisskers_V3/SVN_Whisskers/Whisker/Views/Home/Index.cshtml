@@ -1,0 +1,185 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Simulation Tool</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/Content/css/bootstrap.css" type="text/css">
+    <link rel="stylesheet" href="css/font-awesome.css" type="text/css">
+
+    <!-- Custom StyleSheets -->
+    <link rel="stylesheet" href="/Content/css/login.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400" rel="stylesheet">
+</head>
+<body>
+
+    <header id="main-page">
+        <div class="container">
+            <section class="logo">
+                <h1>
+                    <span>W</span>
+                    <span>W</span>
+                </h1>
+                <section class="co-name">
+                    <h2>whisskers</h2><br>
+                    <h2>marketing</h2>
+                </section>
+            </section><!--Ending Logo -->
+            <nav>
+                <ul>
+                    <li><a class="link-button" href="#">About</a></li>
+                    <li><a class="link-button" href="#">Simmulation Tool</a></li>
+                    <li><a class="link-button" href="#">Training</a></li>
+                    <li><a class="link-button" href="#">Contact</a></li>
+                    <li><a class="link-button" href="#">Blog</a></li>
+                </ul>
+            </nav>
+            <section class="headTitle">
+                <h5>India's first Digital Marketing Simulation Tool.</h5>
+                <a class="link-button" href="#">Know More</a>
+            </section>
+        </div>
+        <div class="login-box form-container">
+            <!-- <img src="img/lock.png" alt=""> -->
+            <h3>Login to Your Account</h3>
+
+            @using (Html.BeginForm("Login", "Home", FormMethod.Post, new { @class = "login-form" }))
+            {
+                <div class="form-item">
+                    <i class="ion-email"></i>
+                    <input type="email" class="user" name="EmailId" id="EmailId" placeholder="Username" required>
+                </div>
+                <div class="form-item">
+                    <i class="ion-key"></i>
+                    <input type="password" class="user" name="password" id="password" placeholder="Password" required>
+                </div>
+                <div class="for-pass">
+                    <a href="home/Forgot">Forgot Password?</a>
+                </div>
+                <div>
+                    @ViewBag.iMessage
+                </div>
+                <div class="buttons">
+                    <button type="submit" name="Submit" class="submit-btn">Login</button>
+                </div>
+            }
+            <div class="login-reg">
+                <p>Don't have any account? <span id="goToReg">Register</span></p>
+            </div>
+        </div>
+    </header><!-- Ending Header -->
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <section id="register">
+        <div id="signup-box-wrap" class="box-wrapper signup" style="">
+            <h1>Let's Setup your Account!</h1>
+
+
+            @using (Html.BeginForm("Register", "Home", FormMethod.Post, new { @class = "customer-signup",@id= "signup" }))
+        {
+            <div class="signup-box-wrapper">
+                <div class="signup-box">
+                    <h4>Account Information</h4>
+                    <div class="form-item">
+                        <p>
+                            <i class="ion-person"></i>
+                            <input placeholder="First Name" id="reg-first-name" name="fname" class="user half-input" type="text">
+                            <input placeholder="Last Name" id="reg-last-name" name="lname" class="user half-input" type="text">
+                        </p>
+                    </div>
+                    <div class="form-item">
+                        <p>
+                            <i class="ion-email"></i>
+                            <input placeholder="Email" id="RegEmail" name="RegEmail" class="user" type="email">
+                        </p>
+                    </div>
+                    <div class="form-item last-form-item">
+                        <p>
+                            <i class="ion-key"></i>
+                            <input placeholder="Create a Password" id="regPassword" name="regPassword" class="user half-input" type="password">
+                            <input placeholder="Confirm your Password" id="regCPassword" name="regCPassword" class="user half-input" type="password">
+                        </p>
+                    </div>
+                    <i class="note-label">Must be between 8 - 15 alphanumeric characters</i>
+                </div>
+                <div class="box-divider"></div>
+                <div class="signup-box">
+                    <h4>Additional Information</h4>
+                    <div class="form-item two-col">
+                        <p>
+                            <i class="ion-iphone"></i>
+                            <input placeholder="Mobile Phone" id="reg-contact" name="Contact" class="user" type="tel">
+                        </p>
+                    </div>
+                    <div class="form-item">
+                        <p>
+                            <i class="ion-briefcase"></i>
+                            <input placeholder="Current Organization/University" id="reg-company" name="Company" class="user" type="text">
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="last-wrap">
+                <div class="btn-wrap">
+                    <div>
+                        By clicking 'Register’, you agree to Whisskers Marketing's
+                        <a id="terms-click" href="" target="_blank">Terms &amp; Conditions</a>
+                    </div>
+                    <div class="buttons">
+                        <button type="submit" name="Submit" class="submit-btn">Register</button>
+                        <button type="reset" name="Reset" class="reset-btn">Cancel</button>
+                    </div>
+                    <div>
+                        Already have an account?
+                        <a href="#" id="back-to-login" onclick="showLogin(); return false">Login here</a>
+                    </div>
+                </div>
+            </div>
+
+    }
+
+        </div>
+    </section>
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <ul class="footer-contact">
+                        <li><a href="mailto:training@whisskers.com"><i class="ion-android-mail"></i>training@whisskers.com</a></li>
+                        <li><a href="tel:+917042835451"><i class="ion-android-call"></i>+91 704 283 5451</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-6">
+                    <ul class="social-links">
+                        <li><a href="https://www.facebook.com/whisskersmarketing/" target="_blank"><i class="ion-social-facebook"></i></a></li>
+                        <li><a href="https://www.linkedin.com/company/3964468/" target="_blank"><i class="ion-social-linkedin"></i></a></li>
+                        <li><a href="https://twitter.com/whisskersm" target="_blank"><i class="ion-social-twitter"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <p class="copy">&copy; Whisskers 2016-17. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    <p id="regFail" style="display:none;">@ViewBag.RegistrationFail</p>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+    <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+    <script src="~/Scripts/jquery.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+    <script src="~/Scripts/script.js"></script>
+
+</body>
+</html>
+<script>
+    function preventBack() { window.history.forward(); }
+    setTimeout("preventBack()", 0);
+    window.onunload = function () { null };
+</script>
